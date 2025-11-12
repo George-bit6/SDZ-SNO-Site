@@ -9,6 +9,7 @@ html, body {
     min-height: 100vh;
     width: 100%;
     margin: 0;
+    background-color: aliceblue;
 
 }
 
@@ -21,27 +22,25 @@ body{
 
 header{
    
-    background-image: url(sdz-church-outside-image.jpeg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+    background-color: rgb(62, 63, 62);
+    background-image: 
+    radial-gradient( circle, rgb(38, 39, 38) .2rem, transparent 1rem);
 
-    padding-top: 1rem 0;
+    background-position: .5rem .5rem;
+    background-size: .5rem .5rem;
+    background-repeat: repeat;
+
     max-width: 100%;
+    max-height: 100px;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     flex-direction: row;
     position: static;
-
-
-}
-
-header > * {
-
-    z-index: 1;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
 
 }
+
 
 header > div {
 
@@ -58,16 +57,63 @@ img[src="stDemetriosLogo.png"]{
 
 }
 
-/*img[src="sdz-church-outside-image.jpeg"]{
+#header-options{
 
-    position: absolute;
-    z-index: -1;
+    height: 100%;
+    width: min(40%, 400px);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 12px;
+
+
+}
+
+img[src="sdz-church-outside-image.jpeg"]{
+
+    position: relative;
     height: auto;
     max-width: 100%;
-    inset: 0;
-    object-fit: cover;
     pointer-events: none;
-    filter: blur(2px);
+    border-radius: 0 0 24px 24px;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
 
-}*/
+}
+
+#main-view{
+
+    min-height:400px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    
+
+}
+
+#content-block{
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+
+    height: 400px;
+    width: 80%;
+    margin: 20px;
+    border-radius: 32px;
+    background-color: rgb(231, 244, 255);
+
+    box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.3);
+
+}
+
+#content-block > p {
+
+    height: 95%;
+    width: 95%;
+
+}
 
