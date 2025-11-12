@@ -1,5 +1,6 @@
 :root{
 
+    
 
 
 }
@@ -9,7 +10,34 @@ html, body {
     min-height: 100vh;
     width: 100%;
     margin: 0;
-    background-color: aliceblue;
+    background-color: #fff;
+    font-family: "amble";
+    color: #000000;
+    background-size: 15%;
+    background-repeat: repeat;
+
+}
+
+
+@font-face {
+    font-family: "amble";
+    src: url("amble/Amble-Regular.woff2") format("woff2"),
+        url("amble/Amble-Regular.woff") format("woff");
+
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+
+}
+
+@font-face {
+    font-family: "amble-bold";
+    src: url("amble/Amble-Bold.woff2") format("woff2"),
+        url("amble/Amble-Bold.woff") format("woff");
+
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 
 }
 
@@ -21,14 +49,6 @@ body{
 }
 
 header{
-   
-    background-color: rgb(62, 63, 62);
-    background-image: 
-    radial-gradient( circle, rgb(38, 39, 38) .2rem, transparent 1rem);
-
-    background-position: .5rem .5rem;
-    background-size: .5rem .5rem;
-    background-repeat: repeat;
 
     max-width: 100%;
     max-height: 100px;
@@ -45,14 +65,32 @@ header{
 header > div {
 
     margin: 12px;
-    color: aliceblue;
-    font-size: 1.4rem;
+    font-size: 0.9rem;
+
+}
+
+#Logo{
+
+    height: 15%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#Logo-text{
+
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0px;
+    font-family: "amble-bold";
+    font-size: 1.75rem;
 
 }
 
 img[src="stDemetriosLogo.png"]{
 
-    max-height: 9rem;
+    max-height: 12rem;
     width: auto;
 
 }
@@ -65,19 +103,20 @@ img[src="stDemetriosLogo.png"]{
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
-    margin: 12px;
+    margin: 8px;
+    border-bottom: 2px;
+    border-color: #000000;
 
 
 }
 
-img[src="sdz-church-outside-image.jpeg"]{
+img[src = "full-sno-image.jpeg"]{
 
     position: relative;
     height: auto;
     max-width: 100%;
     pointer-events: none;
-    border-radius: 0 0 24px 24px;
-    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 0 20px rgba(0, 0, 0, 0.3);
 
 }
 
@@ -99,14 +138,15 @@ img[src="sdz-church-outside-image.jpeg"]{
     justify-content: flex-start;
     align-items: center;
     flex-wrap: wrap;
+    font-weight: 550;
+    font-size: 2rem;
+    font-family: "amble-bold";
 
-    height: 400px;
+    border-radius: 5px;
+    text-align: center;
     width: 80%;
     margin: 20px;
-    border-radius: 32px;
-    background-color: rgb(231, 244, 255);
 
-    box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.3);
 
 }
 
