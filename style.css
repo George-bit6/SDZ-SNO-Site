@@ -1,0 +1,73 @@
+:root{
+
+
+
+}
+
+html, body {
+
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+
+}
+
+body{
+
+    display: flex;
+    flex-direction: column;
+
+}
+
+header{
+   
+    background-image: url(sdz-church-outside-image.jpeg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
+    padding-top: 1rem 0;
+    max-width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    position: static;
+
+
+}
+
+header > * {
+
+    z-index: 1;
+
+}
+
+header > div {
+
+    margin: 12px;
+    color: aliceblue;
+    font-size: 1.4rem;
+
+}
+
+img[src="stDemetriosLogo.png"]{
+
+    max-height: 9rem;
+    width: auto;
+
+}
+
+/*img[src="sdz-church-outside-image.jpeg"]{
+
+    position: absolute;
+    z-index: -1;
+    height: auto;
+    max-width: 100%;
+    inset: 0;
+    object-fit: cover;
+    pointer-events: none;
+    filter: blur(2px);
+
+}*/
+
