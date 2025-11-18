@@ -1,0 +1,30 @@
+html, body {
+
+    min-height: 100%;
+    width: 100%;
+    margin: 0;
+    background-color: #fff;
+    font-family: "amble";
+    color: #000000;
+
+}
+
+
+.container{
+
+    height: 100px;
+    width: 1000px;
+    display: grid;
+    grid-template: 200px 200px / 200px 200px;
+    gap: 100px;
+
+
+}
+.container > div{
+
+    height: 200px;
+    width: 200px;
+    background-color: blue;
+
+}
+

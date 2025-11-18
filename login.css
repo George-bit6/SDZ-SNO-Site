@@ -1,0 +1,67 @@
+
+html, body {
+
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    background-color: #fff;
+    font-family: "amble";
+    color: #000000;
+
+}
+
+
+@font-face {
+    font-family: "amble";
+    src: url("amble/Amble-Regular.woff2") format("woff2"),
+        url("amble/Amble-Regular.woff") format("woff");
+
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+
+}
+
+@font-face {
+    font-family: "amble-bold";
+    src: url("amble/Amble-Bold.woff2") format("woff2"),
+        url("amble/Amble-Bold.woff") format("woff");
+
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+
+}
+
+header{
+
+    width: 100%;
+    max-height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    position: static;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+
+}
+div:has(#Login-Bubble){
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#Login-Bubble{
+
+    height: 560px;
+    width: 480px;
+    margin-top: 160px;
+    background-color: rgba(211, 208, 208,0.3);
+    border-radius: 36px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
