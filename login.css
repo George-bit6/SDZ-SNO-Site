@@ -1,13 +1,28 @@
+:root{
+
+--general-background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);    
+--general-font-color: #000000;
+
+}
+
 
 html, body {
 
     min-height: 100vh;
     width: 100%;
     margin: 0;
-    background-color: #fff;
+    background-color: var(--general-background);
     font-family: "amble";
-    color: #000000;
+    color: var(--general-font-color);
 
+}
+
+body{
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: var(--general-background);
 }
 
 
@@ -36,7 +51,7 @@ html, body {
 header{
 
     width: 100%;
-    max-height: 100px;
+    height: 48px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -45,23 +60,67 @@ header{
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
 
 }
-div:has(#Login-Bubble){
+
+svg {
+    width: 24px;
+    height: 24px;
+    margin: 8px;
+}
+
+.cont{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-#Login-Bubble{
+.arrow{
 
-    height: 560px;
-    width: 480px;
-    margin-top: 160px;
-    background-color: rgba(211, 208, 208,0.3);
-    border-radius: 36px;
+    width: 48px;
+    height: 48px;
+}
+
+#main {
+
+    height: 880px;
+    width: 100%;
+   
+}
+
+#log-bubble{
+
+
+    background-color: var(--general-background);
+    border-radius: 32px;
+    box-shadow: 0 0 24px 2px rgba(44, 44, 44, 0.4);
+    height: 480px;
+    width: 320px;
+}
+
+form > div{
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-evenly;
 
 }
+
+
+
+img[src="stDemetriosLogo.png"]{
+
+    height: 240px;
+    aspect-ratio: auto;
+    
+
+}
+
+div:has[button]{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 24px;
+    width: 48px;
+    flex-wrap: nowrap;
+}
+

@@ -4,19 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log In</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="login.css">
 </head>
 <body>
     <header>
-        <p>&larr;</p>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25"><path style="fill:#232326" d="M24 12.001H2.914l5.294-5.295-.707-.707L1 12.501l6.5 6.5.707-.707-5.293-5.293H24v-1z" data-name="Left"/></svg>
     </header>
-    <div>
-         <div id="Login-Bubble">
-            <img src="stDemetriosLogo.png" alt="Saint Demetrios Logo">
-            <h1>Log In</h1>
 
+        <div id="main" class="cont">
+            <div id="log-bubble" class="cont">
+                   
+                <img src="stDemetriosLogo.png" alt="Saint Demetrios Icon">
+                <div>
+                    <p>SDZ - Log In</p>
+                </div> 
+                
+                
+                <form action="" method="post">
+                    <div>
+                        <label for="login-email">Email:</label>
+                        <input type="email" id="login-email" name="login_email" placeholder="bob1234@gmail.com">
+                    </div>
+                    <div>
+                        <label for="login-pass">Password:</label>
+                        <input type="password" id="login-pass" name="login_pass" placeholder="123456">
+                    </div>
+                    <button type="submit">Log In</button>
+                  
+                    
+                    
+                </form>
+            </div>
+            
         </div>
-    </div>
    
 </body>
 </html>

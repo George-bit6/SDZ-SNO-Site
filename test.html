@@ -7,15 +7,21 @@
     <link rel="stylesheet" href="test.css">
 </head>
 <body>
-    
-    <div class="container">
-
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-
-    </div>
-
-</body>
+    <svg viewBox="0 0 800 600">
+  <!-- Background path -->
+  <path d="M 50,550 Q 200,400 400,450 T 750,100" 
+        stroke="brown" fill="none" />
+  
+  <!-- Level checkpoints -->
+  <circle cx="50" cy="550" r="15" class="checkpoint start" />
+  <circle cx="400" cy="450" r="15" class="checkpoint level-2" />
+  <circle cx="750" cy="100" r="15" class="checkpoint end" />
+  
+  <!-- Task markers -->
+  <circle cx="150" cy="500" r="8" class="task" id="task-1" />
+  <circle cx="250" cy="440" r="8" class="task completed" id="task-2" />
+  
+  <!-- Scout avatar -->
+  <image href="avatar.png" x="240" y="430" width="30" height="30" />
+</svg>
 </html>

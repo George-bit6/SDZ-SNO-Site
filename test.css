@@ -10,21 +10,456 @@ html, body {
 }
 
 
-.container{
-
-    height: 100px;
-    width: 1000px;
-    display: grid;
-    grid-template: 200px 200px / 200px 200px;
-    gap: 100px;
-
-
-}
-.container > div{
-
-    height: 200px;
-    width: 200px;
-    background-color: blue;
-
+/* Container */
+.map-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
 }
 
+/* SVG Canvas */
+#progress-map {
+    width: 100%;
+    height: auto;
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+/* Main Path Styling */
+#main-path {
+    stroke-dasharray: 0; /* For animation later */
+    transition: stroke-dasharray 1s ease;
+}
+
+#completed-path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 0;
+    animation: drawPath 2s ease forwards;
+}
+
+@keyframes drawPath {
+    from {
+        stroke-dashoffset: 1000;
+    }
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* Checkpoints (Start, Levels, End) */
+.checkpoint {
+    fill: #3498db;
+    stroke: white;
+    stroke-width: 4;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.checkpoint:hover {
+    transform: scale(1.1);
+    fill: #2980b9;
+}
+
+.checkpoint.start {
+    fill: #27ae60;
+}
+
+.checkpoint.level-2 {
+    fill: #f39c12;
+}
+
+.checkpoint.end {
+    fill: #e74c3c;
+}
+
+/* Checkpoint Labels */
+.checkpoint-label {
+    font-size: 18px;
+    font-weight: bold;
+    fill: #2c3e50;
+    text-anchor: middle;
+    font-family: 'Arial', sans-serif;
+}
+
+.level-label {
+    font-size: 14px;
+    fill: #7f8c8d;
+    text-anchor: middle;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Task Circles */
+.task {
+    stroke: white;
+    stroke-width: 3;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.task:hover {
+    transform: scale(1.2);
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+}
+
+/* Task States */
+.task.completed {
+    fill: #27ae60;
+    animation: completePulse 0.5s ease;
+}
+
+@keyframes completePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+.task.current {
+    fill: #3498db;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.1);
+    }
+}
+
+.task.locked {
+    fill: #bdc3c7;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.task.locked:hover {
+    transform: none;
+}
+
+/* Pulse Ring for Current Task */
+.pulse-ring {
+    fill: none;
+    stroke: #3498db;
+    stroke-width: 2;
+    opacity: 0;
+    animation: pulseRing 2s infinite;
+}
+
+@keyframes pulseRing {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+}
+
+/* Task Labels */
+.task-label {
+    font-size: 14px;
+    fill: #2c3e50;
+    font-family: 'Arial', sans-serif;
+    pointer-events: none;
+}
+
+.task-label.locked {
+    fill: #95a5a6;
+}
+
+/* Scout Avatar */
+#scout-avatar {
+    animation: bounce 2s infinite ease-in-out;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translate(500px, 500px) translateY(0);
+    }
+    50% {
+        transform: translate(500px, 500px) translateY(-10px);
+    }
+}
+
+/* Progress Stats */
+.progress-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-value {
+    display: block;
+    font-size: 36px;
+    font-weight: bold;
+    color: #3498db;
+}
+
+.stat-label {
+    display: block;
+    font-size: 14px;
+    color: #7f8c8d;
+    margin-top: 5px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .map-container {
+        padding: 10px;
+    }
+    
+    .checkpoint-label {
+        font-size: 14px;
+    }
+    
+    .task-label {
+        font-size: 11px;
+    }
+    
+    #scout-avatar text {
+        font-size: 16px;
+    }
+}/* Container */
+.map-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+/* SVG Canvas */
+#progress-map {
+    width: 100%;
+    height: auto;
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+/* Main Path Styling */
+#main-path {
+    stroke-dasharray: 0; /* For animation later */
+    transition: stroke-dasharray 1s ease;
+}
+
+#completed-path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 0;
+    animation: drawPath 2s ease forwards;
+}
+
+@keyframes drawPath {
+    from {
+        stroke-dashoffset: 1000;
+    }
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* Checkpoints (Start, Levels, End) */
+.checkpoint {
+    fill: #3498db;
+    stroke: white;
+    stroke-width: 4;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.checkpoint:hover {
+    transform: scale(1.1);
+    fill: #2980b9;
+}
+
+.checkpoint.start {
+    fill: #27ae60;
+}
+
+.checkpoint.level-2 {
+    fill: #f39c12;
+}
+
+.checkpoint.end {
+    fill: #e74c3c;
+}
+
+/* Checkpoint Labels */
+.checkpoint-label {
+    font-size: 18px;
+    font-weight: bold;
+    fill: #2c3e50;
+    text-anchor: middle;
+    font-family: 'Arial', sans-serif;
+}
+
+.level-label {
+    font-size: 14px;
+    fill: #7f8c8d;
+    text-anchor: middle;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Task Circles */
+.task {
+    stroke: white;
+    stroke-width: 3;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.task:hover {
+    transform: scale(1.2);
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+}
+
+/* Task States */
+.task.completed {
+    fill: #27ae60;
+    animation: completePulse 0.5s ease;
+}
+
+@keyframes completePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+.task.current {
+    fill: #3498db;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.1);
+    }
+}
+
+.task.locked {
+    fill: #bdc3c7;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.task.locked:hover {
+    transform: none;
+}
+
+/* Pulse Ring for Current Task */
+.pulse-ring {
+    fill: none;
+    stroke: #3498db;
+    stroke-width: 2;
+    opacity: 0;
+    animation: pulseRing 2s infinite;
+}
+
+@keyframes pulseRing {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+}
+
+/* Task Labels */
+.task-label {
+    font-size: 14px;
+    fill: #2c3e50;
+    font-family: 'Arial', sans-serif;
+    pointer-events: none;
+}
+
+.task-label.locked {
+    fill: #95a5a6;
+}
+
+/* Scout Avatar */
+#scout-avatar {
+    animation: bounce 2s infinite ease-in-out;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translate(500px, 500px) translateY(0);
+    }
+    50% {
+        transform: translate(500px, 500px) translateY(-10px);
+    }
+}
+
+/* Progress Stats */
+.progress-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-value {
+    display: block;
+    font-size: 36px;
+    font-weight: bold;
+    color: #3498db;
+}
+
+.stat-label {
+    display: block;
+    font-size: 14px;
+    color: #7f8c8d;
+    margin-top: 5px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .map-container {
+        padding: 10px;
+    }
+    
+    .checkpoint-label {
+        font-size: 14px;
+    }
+    
+    .task-label {
+        font-size: 11px;
+    }
+    
+    #scout-avatar text {
+        font-size: 16px;
+    }
+}
