@@ -8,7 +8,7 @@
 
 html, body {
 
-    min-height: 100vh;
+    min-height: 100%;
     width: 100%;
     margin: 0;
     background-color: var(--general-background);
@@ -22,7 +22,8 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-image: var(--general-background);
+    background-color: var(--general-background);
+    
 }
 
 
@@ -81,7 +82,7 @@ svg {
 }
 
 #main {
-
+    
     height: 880px;
     width: 100%;
    
@@ -89,12 +90,12 @@ svg {
 
 #log-bubble{
 
-
     background-color: var(--general-background);
     border-radius: 32px;
     box-shadow: 0 0 24px 2px rgba(44, 44, 44, 0.4);
     height: 480px;
     width: 320px;
+    
 }
 
 form > div{
