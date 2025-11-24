@@ -15,22 +15,14 @@ const roversShirt = rovers.children[0]
 
  let opacity = 0
     const interval = 10
-    const steps = 80
-    const opacityDecrement = 1/80
+    const steps = 800
+    const opacityDecrement = 1/800
 
 
-function fadeIn(image){
-
-    while(opacity <= 1){
-        opacity = opacity + steps
-   image.style.opacity = opacity
-    }
-
-}
 
 function resetElement(e1, e2 , e3){
 
-    e1.style.display = 'none'
+    e1.style.opacity = 0
     e2.style.top = '400px' 
     e3.style.top = '440px' 
     
@@ -38,10 +30,9 @@ function resetElement(e1, e2 , e3){
 
 function setElement(e1, e2 , e3,){
 
-    e1.fadeIn
-    e1.style.display = 'block'
-    e2.style.top = '640px' 
-    e3.style.top = '680px'
+    e1.style.opacity = 1
+    e2.style.top = '500px' 
+    e3.style.top = '540px'
 
 }
 
@@ -68,4 +59,11 @@ rovers.addEventListener('click',()=>{
     setElement(roversShirt, roverName, roverAge, roversShirt) 
     resetElement(cubsShirt, cubName, cubAge)
     resetElement(scoutsShirt, scoutName, scoutAge)
+})
+
+scoutsShirt.addEventListener('dblclick', ()=>{
+
+    window.location.href = "profile.html"
+
+
 })

@@ -2,20 +2,9 @@
 
 --general-background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);    
 --general-font-color: #000000;
+--header-color: #0c3f14;
 
 }
-
-html, body {
-
-    min-height: 100%;
-    width: 100%;
-    margin: 0;
-   
-    font-family: "amble";
-    color:  var(--general-font-color);
-
-}
-
 
 @font-face {
     font-family: "amble";
@@ -39,7 +28,16 @@ html, body {
 
 }
 
+html, body {
 
+    min-height: 100%;
+    width: 100%;
+    margin: 0;
+   
+    font-family: "amble";
+    color:  var(--general-font-color);
+
+}
 
 body{
 
@@ -53,7 +51,7 @@ header{
 
     height: 600px;
     width: 100%;
-    background-color: #062c66;
+    background-color: var(--header-color);
     box-shadow: 0px 4px 16px -4px black;
     border-radius: 0 0 8px 8px;
 }
@@ -122,7 +120,7 @@ h2.Logo-text {
 
 }
 
-#StDemetrios-parent{
+#img-parent{
 
     height: 100%;
     display: flex;
@@ -131,7 +129,7 @@ h2.Logo-text {
 
 }
 
-img[src="StDemetrios.png"]{
+#saint-img{
 
     height: 580px;
     width: auto;
@@ -178,57 +176,3 @@ img[src="StDemetrios.png"]{
     width: 95%;
 
 }
-
-#group-selector{
-
-    height: 720px;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
-
-}
-
-.scout-group{
-
-    width: 33%;
-    height: 100%;
-    margin-top: 6rem;
-    margin-bottom: 6rem;
-    
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-
-
-}
-.shirt-img{
-
-    height: 24rem;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-
-}
-
-.scout-group > p {
-
-    position: absolute;
-    transition: top 0.3s ease-in-out;    
-
-}
-
-.group-name{
-
-    top: 400px;
-
-}
-.group-age{
-    top: 440px;
-}
-
-
-
