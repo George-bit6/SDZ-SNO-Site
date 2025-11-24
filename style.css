@@ -90,10 +90,6 @@ html, body {
  */
 
 
-.bg-pan-left {
-	-webkit-animation: bg-pan-left 8s infinite both;
-	        animation: bg-pan-left 8s infinite both;
-}
 
 body{
 
@@ -102,16 +98,27 @@ body{
     align-items: center;
     background-image: var(--general-background);
 }
+
 header{
 
+    height: 600px;
     width: 100%;
-    max-height: 100px;
+    background-color: #062c66;
+    box-shadow: 0px 4px 16px -4px black;
+    border-radius: 0 0 8px 8px;
+}
+
+#top{
+
+    width: 100%;
+    height: 48px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-direction: row;
-    position: static;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+    color: #ebedee;
+    
+   
 
 }
 
@@ -121,13 +128,14 @@ header{
     flex-wrap: nowrap;
     justify-content: space-between;
     align-items: center;
+    
 
 }
 
 #header-options > div, #login {
 
     margin: 12px;
-    font-size: 1.5rem;
+    font-size: 1rem;
 
 }
 
@@ -136,10 +144,9 @@ header{
     margin: 32px;
 }
 
-
 #Logo{
 
-    height: 15%;
+    height: 552px;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -148,19 +155,35 @@ header{
 
 .tracking-in-expand{-webkit-animation:tracking-in-expand 2s cubic-bezier(.215,.61,.355,1.000) both;animation:tracking-in-expand 2s cubic-bezier(.215,.61,.355,1.000) both}
 
-#Logo-text{
+.Logo-text{
 
     display: flex;
     flex-wrap: wrap;
-    margin: 0px;
+    margin: 4px;
     font-family: "amble-bold";
     font-size: 1.75rem;
+    color: #ebedee;
 
 }
 
-img[src="stDemetriosLogo.png"]{
+h2.Logo-text {
 
-    max-height: 12rem;
+    font-size: 1.2rem;
+
+}
+
+#StDemetrios-parent{
+
+    height: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    
+
+}
+
+img[src="StDemetrios.png"]{
+
+    height: 580px;
     width: auto;
     aspect-ratio: auto;
 
@@ -181,18 +204,6 @@ img[src="stDemetriosLogo.png"]{
 
 }
 
-img[src = "full-sno-image.jpeg"]{
-
-    position: relative;
-    height: auto;
-    max-width: 95%;
-    pointer-events: none;
-    margin: 24px;
-    border-radius: 24px;
-    box-shadow: 0px 0 20px rgba(0, 0, 0, 0.3);
-
-}
-
 #content-block{
 
     display: flex;
@@ -201,7 +212,7 @@ img[src = "full-sno-image.jpeg"]{
     align-items: center;
     flex-wrap: wrap;
     font-weight: 550;
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-family: "amble-bold";
 
     text-align: center;
@@ -218,23 +229,56 @@ img[src = "full-sno-image.jpeg"]{
 
 }
 
-div:has(#Login-Bubble){
+#group-selector{
+
+    height: 720px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+
+}
+
+.scout-group{
+
+    width: 33%;
+    height: 100%;
+    margin-top: 6rem;
+    margin-bottom: 6rem;
+    
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
 
-#Login-Bubble{
-
-    height: 560px;
-    width: 480px;
-    margin-top: 160px;
-    background-color: rgba(211, 208, 208,0.3);
-    border-radius: 36px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    transition: all 0.8s ease-in-out;
 
 }
+.shirt-img{
+
+    height: 24rem;
+    display: none;
+    transition: all 0.8s ease-in-out;
+
+}
+
+.scout-group > p {
+
+    position: absolute;
+    transition: top 0.8s ease-in-out;    
+
+}
+
+.group-name{
+
+    top: 400px;
+
+}
+.group-age{
+    top: 440px;
+}
+
+
+

@@ -3,25 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test</title>]
+    <title>Test</title>
     <link rel="stylesheet" href="test.css">
 </head>
 <body>
-    <svg viewBox="0 0 800 600">
-  <!-- Background path -->
-  <path d="M 50,550 Q 200,400 400,450 T 750,100" 
-        stroke="brown" fill="none" />
-  
-  <!-- Level checkpoints -->
-  <circle cx="50" cy="550" r="15" class="checkpoint start" />
-  <circle cx="400" cy="450" r="15" class="checkpoint level-2" />
-  <circle cx="750" cy="100" r="15" class="checkpoint end" />
-  
-  <!-- Task markers -->
-  <circle cx="150" cy="500" r="8" class="task" id="task-1" />
-  <circle cx="250" cy="440" r="8" class="task completed" id="task-2" />
-  
-  <!-- Scout avatar -->
-  <image href="avatar.png" x="240" y="430" width="30" height="30" />
-</svg>
+    
+    <div id="group-selector">
+        <div class="scout-group" id="cubs">
+            <p class="group-name">CUBS</p>
+            <p class="group-age">Age: 6 - 11</p>
+        </div>
+        <div class="scout-group" id="scouts">
+            <p class="group-name">SCOUTS</p>
+            <p class="group-age">Age: 12 - 15</p>
+        </div>
+        <div class="scout-group" id="rovers">
+            <p class="group-name">ROVERS</p>
+            <p class="group-age">Age: 16+</p>
+        </div>
+    </div>
+
+
+    <script src="test.js"></script>
+</body>
 </html>

@@ -60,6 +60,37 @@ body{
     align-items: center;
     background-image: var(--general-background);
 }
+
+.container{
+
+    height: 880px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#points{
+
+
+
+}
+
+button {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+button:hover {
+    background: #5568d3;
+}
 header{
 
     width: 100%;
@@ -83,89 +114,3 @@ header{
     align-items: center;
 
 }
-
-#content-body{
-
-  height: 872x;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-
-
-}
-
-#content-head{
-
-  height: 200px;
-  width: 100%;
- 
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-
-}
-
-
-#content-head-text{
-  margin: 16px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: start;
-
-}
-settings
-
-#content-head-text > p{
-  
-  margin: 0;
-  
-
-}
-
-#person-rank{
-
-  font-size: 0.9rem;
-  color:  rgba(2, 2, 2, 0.8);
-
-}
-
-#content-head-img{
-  height: 160px;
-
-}
-
-img[src="scout-boy.jpg"]{
-
-  height: 100%;
-  aspect-ratio: auto;
-  border-radius: 160px;
-  box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.3);
-
-}
-div:has(h1){
-
-  height: 120px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: end;
-
-}
-
-div:has(.options){
-
-  margin: 24px 0 0 0;
-  height: 600px;
-  width: 100%;
-  display: grid;
-  grid-template: 72px 72px/ 72px 72px 72px;
-  justify-content: center;
-  align-content: start;
-  gap: 48px;
-
-}
-
-
