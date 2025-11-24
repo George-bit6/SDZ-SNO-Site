@@ -63,7 +63,7 @@ rovers.addEventListener('click',()=>{
 
 scoutsShirt.addEventListener('dblclick', ()=>{
 
-    window.location.href = "profile.html"
+    window.location.href = "scouts.html"
 
 
 })
