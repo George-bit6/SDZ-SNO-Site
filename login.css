@@ -8,7 +8,7 @@
 
 html, body {
 
-    min-height: 100%;
+    min-height: 100vh;
     width: 100%;
     margin: 0;
     background-color: var(--general-background);
@@ -23,7 +23,9 @@ body{
     flex-direction: column;
     align-items: center;
     background-color: var(--general-background);
-    
+    background-image: url(camp-cross-background.png);
+    background-repeat: repeat;
+    background-size: 4rem;
 }
 
 
@@ -95,7 +97,6 @@ svg {
     box-shadow: 0 0 24px 2px rgba(44, 44, 44, 0.4);
     height: 480px;
     width: 320px;
-    
 }
 
 form > div{

@@ -3,9 +3,12 @@ html, body{
     height: 100%;
     width: 100%;
     margin: 0;
+    
 
     font-family: 'bebas';
 }
+
+
 
 @font-face {
     font-family: "amble";
@@ -42,19 +45,150 @@ html, body{
 
     height: 640px;
     width: 100%;
+
+    grid-row: 1;
+    grid-column: 1/-1;
     display: grid;
     position: relative;
-    grid-template-rows: 1fr 3fr 1fr 1fr;
+    grid-template-rows: 1fr 3fr 1fr 4fr;
     grid-template-columns: 1fr 4fr 1fr 4fr;
-
-    
     color: white;
-   
     overflow:hidden;
 
 }
 
-#main-header::before{
+#main-content{
+
+    display: grid;
+    grid-template-rows: 1fr 2fr 1fr 5fr;
+    grid-template-columns: 1fr repeat(5,3fr) 1fr;
+    overflow: hidd;
+
+}
+#main-content > *{
+    min-width: 0;
+    min-height: 0;
+    grid-column: 2/-2;
+}
+
+#scout-group-title{
+
+    grid-row: 1;
+    grid-column: 2/-2;
+    
+
+}
+
+#main-text-title{
+
+    grid-row: 3;
+    grid-column: 2/-2;
+
+
+}
+#main-text{
+
+    grid-row: 4;
+    
+}
+
+.titles{
+    position: relative;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+}
+
+.titles::before{
+
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: black;
+    left: 0;
+}
+
+
+.titles::after{
+
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: black;
+    right: 0;
+}
+
+.titles > h1{
+
+    display: block;
+    z-index: 2;
+    background: white;
+}
+
+.scout-group{
+
+    border: 1px;
+    margin: 8px;
+    border-style: dashed;
+    border-color: black;
+    border-radius: 56px;
+}
+
+#zahrat{
+
+    grid-row: 2;
+    grid-column: 2
+
+}
+#cubs{
+
+    grid-row: 2;
+    grid-column: 3;
+}
+#guides{
+    grid-row: 2;
+    grid-column: 4;
+}
+#scouts{
+    grid-row: 2;
+    grid-column: 5;
+}
+#rovers{
+    grid-row: 2;
+    grid-column: 6;
+
+}
+
+.shirt-img{
+
+    width: 100%;
+    object-fit: cover;
+
+}
+
+#content{
+
+    grid-row: 3;
+    grid-column: 2/7;
+
+}
+
+#bg{
+
+    position: absolute;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    grid-template-rows: 1/-1;
+    grid-template-columns: 1/-1;
+    z-index: -1;
+
+}
+
+#bg::before{
 
     content: '';
     height: 640px;
@@ -72,6 +206,22 @@ html, body{
 
 
 
+#bg::after{ 
+    content:'';
+    font-family:'shape divider from ShapeDividers.com';
+    position: absolute;
+    z-index: 3;
+    pointer-events: none;
+    background-repeat: no-repeat;
+    bottom: -0.1vw;
+    left: -0.1vw;
+    right: -0.1vw;
+    top: -0.1vw; 
+    background-size: 289% 34px;
+    background-position: 50% 100%; 
+    transform: rotateY(180deg); background-image: url('data:image/svg+xml;charset=utf8, <svg preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 -0.6 2003.4 89.5"><g fill="%23ffffff"><path d="M2001 42l-12-21-12-21-12 21-12 21-4 6-8 14-6 11-6-11-12-20-12-21-12-21-12 21-12 21-8 14-4 7-8 13-8-14-12-20-12-21-12-21-12 21-12 21-8 14-4 6-6 11-6-11-12-20-12-21-12-21-12 21-12 21-12 20-8 14-8-14-12-20-12-21-12-21-12 21-12 21-12 21-6 10-6-11-12-20-12-21-12-21-12 21-12 21-8 14-4 6-8 14-8-14-12-20-12-21-12-21-12 21-12 21-4 7-8 13-6 11-6-11-12-20-12-21-12-21-12 21-12 21-12 21-8 13-8-14-12-20-12-21-12-21-12 21-12 21-12 21-6 10-6-11-12-20-12-21-12-21-12 21-12 21-12 21-7 13-8-14-12-20-12-21-12-21-12 21-12 21-4 7-8 13-6 11-6-11-12-20-12-21-12-21-12 21-12 21-13 21-8 13-7-14-12-20-12-21-12-21-12 21-12 21h-1l-12 21-5 10-6-11-12-20-12-21-13-21-12 21-12 21-4 7-8 13-8 14-7-14-12-20-12-21-12-21-12 21-12 21-4 7-8 13-6 11-6-11-12-20-12-21-12-21-12 21-12 21h-1l-12 21-7 13-8-14-12-20-12-21-12-21-12 21-12 21-8 14-4 7-6 10-6-11-12-20-12-21-12-21-12 21-12 21-4 7-8 13-8 14-8-14-12-20-12-21-12-21-12 21-12 21-12 21-6 10-6-11-12-20-12-21-12-21-12 21-12 21-8 13-4 7-8 14-8-14-12-20-12-21-12-21-12 21-12 21-8 14-4 6-6 11-6-11-12-20-12-21-12-21-12 21-12 21-12 20-8 14-8-14-12-20-12-21L86 0 74 21 62 42 50 63l-6 10-6-11-12-20-12-21L2 42l12 20-4-7-5-8-3-5 12-21L2 0 0 3v80h2003V46zM6 76l1-2 2-3 2-3-5 8zm252-34l8-14-8 14-12 20zm947 0l8-14-8 14-12 20zm344 0l7-14-7 14-12 20z" opacity=".5"/><path d="M1991 69l-12-20-12-21-12-20-12 20-12 21-12 20-6 10-6-10-12-20-12-21-12-20-12 20-12 21-10 16-2 4-8 13-7-13-13-20-12-21-12 21-12 20 12-20 12-21-12-20-12 20-12 21-9 16-3 4-6 10-6-10-12-20-12-21-12-20-12 20-12 21-2 4-10 16-8 13-7-13-12-20-12-21-12-20-12 20-12 21h-1l-12 20-6 10-6-10-12-20-12-21-12-20-12 20-12 21-12 20-7 13-8-13-12-20-12-21-12-20-12 20-12 21-3 4-9 16-6 10-6-10-12-20-12-21-13-20-12 20-12 21-12 20-7 13-8-13-12-20-12-21-12-20-12 20-12 21-12 20-6 10-6-10-12-20-12-21-12 21-12 20 12-20 12-21-12-20-12 20-12 21h-1l-12 20-7 13-8-13-12-20-12-21-12-20-12 20-12 21-3 4-9 16-6 10-6-10-12-20-12-21-12-20-12 20-12 21-12 20-8 13-8-13-12-20-12-21-12-20-12 20-12 21-10 16-2 4-6 10-6-10-12-20-12-21-12-20-12 20-12 21-3 4-9 16-8 13-8-13-12-20-12-21-12-20-12 20-12 21-2 4-10 16-6 10-6-10-12-20-12-21-12-20-12 20-12 21-10 16-2 4-8 13-8-13-12-20-12-21-12-20-12 20-12 21-9 16-3 4-6 10-6-10-12-20-12-21-12-20-12 20-12 21-3 4-9 16-8 13-8-13-12-20-12-21-12-20-12 20-12 21-12 20-6 10-6-10-12-20-12-21-12-20-12 20-12 21-9 16-3 4-8 13-7-13-12-20-13-21-12 21-12 20 12-20 12-21-12-20-12 20-12 21-9 16-3 4-6 10-6-10-12-20-12-21-12-20-12 20-12 21-12 20-8 13-7-13-12-20-12-21L65 8 53 28 41 49h-1L28 69l-6 10-6-10-1-3-3-4v-1l-2-3-4-7-2-2-1-3-3-5v48h2003l-12-20z" opacity=".75"/><path d="M1999 10l-12 21-12 20v1l-12 20-6 11-6-11-12-21-12-20-12-21-12 21-12 20v1l-4 6-8 14-8 14-8-14-12-21-12-20-12-21-12 21-12 20v1l-4 6-8 14-6 11-6-11-12-21-12-20-12-21-12 21-12 20v1l-12 20-8 14-8-14-12-21-12-20-12-21-12 21-12 20v1l-12 20-6 11-6-11-12-21-12-20-12-21-12 21-12 20v1l-4 6-8 14-8 14-7-14-12-21-12-20-13-21-12 21-12 20v1l-4 6-8 14-6 11-6-11-12-21-12-20-12-21-12 21-12 20-8 14-4 7-8 14-7-14-12-21-12-20-12-21-12 21-12 20-8 14-5 7-6 11-6-11-12-21-12-20-12-21-12 21-12 20v1l-12 20-7 14-8-14-12-21-12-20-12-21-12 21-12 20v1l-12 20-6 11-6-11-12-21-12-20-12-21-13 21-12 20-8 14-4 7-7 14-8-14-12-21-12-20-12 20-12 21 12-21 12-20-12-21-12 21-12 20-8 14-4 7-6 11-6-11-12-21-12-20-12-21-12 21-12 20-1 1-12 20-7 14-8-14-12-21-12-20-12-21-12 21-12 20v1l-12 20-6 11-6-11-12-21-12-20-12 20-12 21 12-21 12-20-12-21-12 21-12 20-8 14-4 7-8 14-8-14-12-21-12-20-12-21-12 21-12 20v1l-12 20-6 11-6-11-12-21-12-20-12-21-12 21-12 20v1l-12 20-8 14-8-14-12-21-12-20-12-21-12 21-12 20v1l-12 20-6 11-6-11-12-21-12-20-12-21-12 21-12 20v1l-4 7-8 13-8 14-8-14-12-21-12-20-12-21-12 21-12 20v1l-4 7-8 13-6 11-6-11-12-21-12-20-12-21-12 21-12 20v1l-12 20-8 14-8-14-12-21-12-20-12-21-12 21-12 20-8 14-4 7-6 11-6-11-12-21-12-20-12-21-12 21L0 51l9 16-5-8-2-5-2-3v38h2l1-1-1 1h2001V17l-4-7z" opacity=".7"/><path d="M1995 49l-12 20-6 10-6-10-12-20-12-21-12-20-12 20-12 21-12 20-8 13-8-13-12-20-12-21-12-20-12 20-12 21-12 20-6 10-6-10-12-20-12-21-12 21-12 20 12-20 12-21-12-20-12 20-12 21-12 20-8 13-8-13-12-21-12-20-12-20-12 20-12 20v1l-2 4-10 16-6 10-6-10-12-20-12-21-12-20-12 20-12 21-12 20-8 13-8-13-12-21-12-20-12-20-12 20-12 20-9 17-3 4-6 10-6-10-12-20-12-21-12-20-12 20-12 21-2 4-10 16-8 13-8-13-12-21-12-20-12-20-12 20-12 20v1l-2 4-10 16-6 10-6-10-12-21-12-20-12-20-12 20-12 20-9 17-3 4-8 13-8-13-12-21-12-20-12-20-12 20-12 20-9 17-3 4-6 10-6-10-12-20-12-21-12-20-12 20-12 21-2 4-10 16-8 13-7-13-12-21-12-20-12-20-12 20-12 20v1l-13 20-6 10-6-10-12-20-12-21-12-20-12 20-12 21-9 16-3 4-8 13-7-13-12-20-12-21-12 21-12 20 12-20 12-21-12-20-12 20-12 21-13 20-5 10-6-10-12-20-12-21-12-20-12 20-12 21h-1l-2 4-10 16-7 13-8-13-12-20-12-21-12-20-12 20-12 21-12 20-6 10-6-10-12-20-12-21-12-20-12 20-12 21-13 20-7 13-8-13-12-20-12-21-12-20-12 20-12 21-12 20-6 10-6-10-12-20-12-21-12-20-12 20-12 21-12 20-8 13-8-13-12-20-12-21-12-20-12 20-12 21-12 20-6 10-6-10-12-20-12-21-12 21-12 20 12-20 12-21-12-20-12 20-12 21-3 4-9 16-8 13-8-13-12-20-12-21-12-20-12 20-12 21-2 4-10 16-6 10-6-10-12-20-12-21L44 8 32 28 20 49 8 69l-1 2H6l-4 7-2 4v7h20l-1-1 1 1h1975v-1h8V34l-8 15zM9 71l-1-1 1 2zm1983 14l-9-16z"/></g></svg>'); 
+}
+
 #logo-name{
 
     grid-row: 1;
@@ -80,43 +230,48 @@ html, body{
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    text-decoration: underline rgb(3, 136, 3) 2px;
-
-
-
+    font-size: 1rem;
+    
 }
 
 #logo-name::before{
 
-    content: "";
-    height: 72px;
-    width: 72px;
-    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100"><g fill="%23000"><path d="M0 0v100c250 0 375-24 500-48 125 24 250 48 500 48V0H0Z" opacity=".5"></path><path d="M0 0v4c250 0 375 24 500 48C625 28 750 4 1000 4V0H0Z"></path></g></svg>');
-    background-image: url(sno-logo.png);
-    background-size: 72px;
-    background-repeat: no-repeat;
-
-    
+    content: '';
+    position: absolute;
+    width: 1px;
+    height: 48px;
+    background: white;
+    left: 8rem;
 }
 
+#title, .options{
 
+    font-size: 1.2rem;
 
+}
 
+#logos{
 
- 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 1rem;
+}
 
-/*#logo-name::after{
+#sdz-logo, #sno-logo{
 
-    content: "";
-    position: absolute;
-    width: 124px;
-    height: 2px;
-    background: rgb(21, 182, 0);
-    top: 64px;
-    left: px;
+    display: block;
+    width: 3.5rem;
+    height: 3.5rem;
+    object-fit: cover;
 
+}
 
-}*/
+#sdz-logo{
+
+    width: 4.2rem;
+    height: 4.2rem;
+}
 
 #header-options{
 
@@ -156,33 +311,31 @@ html, body{
 
     text-align: left;
     font-size: 1.5rem;
+    max-width: 480px;
 
 } 
 
-#header-button{
 
-    grid-row: 3 / 4;
-    grid-column: 2;
-    display: flex;
-    justify-content: flex-start;
-    align-items: start;
+p {
+text-align: center;
+font-size: 2rem;
 
-    margin: 16px;
+
 
 }
 
-#header-button > button{
+#content{
 
-    height: 100px;
-    width: 50px;
-    cursor: pointer;
-    border: 0;
-    font-family: 'bebas';
-    font-size: 0.8rem;
-    
-    background: rgb(255, 255, 255, 0);
-    background-size: cover;
-    color: rgb(255, 255, 255);
-    
+    display: grid;
+    grid-template-columns: 1fr 4fr 1fr;
+    grid-template-rows: 1fr;
+}
 
+#head-text{
+
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
 }
