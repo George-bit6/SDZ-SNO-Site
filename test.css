@@ -89,6 +89,7 @@ html, body{
 #main-text{
 
     grid-row: 4;
+    grid-column: 3/-3;
     
 }
 
