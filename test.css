@@ -1,10 +1,10 @@
 html, body{
 
-    margin: 0;
     height: 100%;
     width: 100%;
-    font-family: "amble";
-    font-size: 1.5rem;
+    margin: 0;
+
+    font-family: 'bebas';
 }
 
 @font-face {
@@ -18,47 +18,171 @@ html, body{
 
 }
 
-#group-selector{
+@font-face {
+    font-family: "amble-bold";
+    src: url("amble-blond/Amble-Bold.woff2") format("woff2"),
+        url("amble-blond/Amble-Bold.woff") format("woff");
 
-    height: 100%;
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "bebas";
+    src: url("bebas/Bebas-Regular.woff2") format("woff2"),
+        url("bebas/Bebas-Regular.woff") format("woff");
+
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+#main-header{
+
+    height: 640px;
     width: 100%;
+    display: grid;
+    position: relative;
+    grid-template-rows: 1fr 3fr 1fr 1fr;
+    grid-template-columns: 1fr 4fr 1fr 4fr;
+
+    
+    color: white;
+   
+    overflow:hidden;
+
+}
+
+#main-header::before{
+
+    content: '';
+    height: 640px;
+    width: 100%;
+    position: absolute;
+    background-image: url(sdz-group-image.jpeg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: brightness(58%);
+    z-index: -1;
+
+}
+
+
+
+
+
+#logo-name{
+
+    grid-row: 1;
+    grid-column: 2;
+    position: relative;
     display: flex;
-    flex-direction: row;
+    justify-content: flex-start;
     align-items: center;
+    text-decoration: underline rgb(3, 136, 3) 2px;
+
 
 
 }
 
-.scout-group{
+#logo-name::before{
 
-    width: 33%;
-    height: 100%;
-    margin-top: 6rem;
-    margin-bottom: 6rem;
+    content: "";
+    height: 72px;
+    width: 72px;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100"><g fill="%23000"><path d="M0 0v100c250 0 375-24 500-48 125 24 250 48 500 48V0H0Z" opacity=".5"></path><path d="M0 0v4c250 0 375 24 500 48C625 28 750 4 1000 4V0H0Z"></path></g></svg>');
+    background-image: url(sno-logo.png);
+    background-size: 72px;
+    background-repeat: no-repeat;
+
     
+}
+
+
+
+
+
+ 
+
+/*#logo-name::after{
+
+    content: "";
+    position: absolute;
+    width: 124px;
+    height: 2px;
+    background: rgb(21, 182, 0);
+    top: 64px;
+    left: px;
+
+
+}*/
+
+#header-options{
+
+    grid-row: 1;
+    grid-column: 4/5;
+
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+
+
+}
+
+#header-quote{
+
+    grid-row: 2 / 3;
+    grid-column: 2 /3;
+
+    margin: 16px;
 
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 
-    background-color: #fff;
-    transition: all 0.8s ease-in-out;
+
+}
+#header-quote > h2{
+
+    font-size: 2.5rem;
 
 }
 
-.scout-group > p {
 
-    position: absolute;
-    transition: top 0.8s ease-in-out;    
+#header-quote > p{
+
+    text-align: left;
+    font-size: 1.5rem;
+
+} 
+
+#header-button{
+
+    grid-row: 3 / 4;
+    grid-column: 2;
+    display: flex;
+    justify-content: flex-start;
+    align-items: start;
+
+    margin: 16px;
 
 }
 
-.group-name{
+#header-button > button{
 
-    top: 400px;
+    height: 100px;
+    width: 50px;
+    cursor: pointer;
+    border: 0;
+    font-family: 'bebas';
+    font-size: 0.8rem;
+    
+    background: rgb(255, 255, 255, 0);
+    background-size: cover;
+    color: rgb(255, 255, 255);
+    
 
-}
-.group-age{
-    top: 440px;
 }

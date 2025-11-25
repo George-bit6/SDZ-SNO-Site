@@ -47,6 +47,13 @@ body{
     background-image: var(--general-background);
 }
 
+a:link, a:visited {
+
+    color: #ebedee;
+    text-decoration: none;
+
+}
+
 header{
 
     height: 600px;
