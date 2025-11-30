@@ -61,8 +61,8 @@ html, body{
 
     display: grid;
     grid-template-rows: 1fr 2fr 1fr 5fr;
-    grid-template-columns: 1fr repeat(5,3fr) 1fr;
-    overflow: hidd;
+    grid-template-columns: 1fr repeat(6,3fr) 1fr;
+
 
 }
 #main-content > *{
@@ -138,28 +138,35 @@ html, body{
     border-radius: 56px;
 }
 
+
+#baraem{
+
+    grid-row: 2;
+    grid-column: 2;
+}
+
 #zahrat{
 
     grid-row: 2;
-    grid-column: 2
+    grid-column: 3
 
 }
 #cubs{
 
     grid-row: 2;
-    grid-column: 3;
+    grid-column: 4;
 }
 #guides{
     grid-row: 2;
-    grid-column: 4;
+    grid-column: 5;
 }
 #scouts{
     grid-row: 2;
-    grid-column: 5;
+    grid-column: 6;
 }
 #rovers{
     grid-row: 2;
-    grid-column: 6;
+    grid-column: 7;
 
 }
 
@@ -167,6 +174,8 @@ html, body{
 
     width: 100%;
     object-fit: cover;
+    position: absolute;
+    opacity: 0;
 
 }
 
