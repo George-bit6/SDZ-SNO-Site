@@ -16,8 +16,9 @@ monthIndex = 0
 
 left_arr.addEventListener('click', function(){
 
-    monthIndex = (monthIndex - 1) % 12
-    setCalendar(2025 ,months[monthIndex], month_days[monthIndex])    
+    monthIndex = (monthIndex + 11) % 12
+    setCalendar(2025 ,months[monthIndex], month_days[monthIndex])  
+    console.log(monthIndex)  
  
 
 })

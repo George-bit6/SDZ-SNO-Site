@@ -60,7 +60,7 @@ html, body{
 #main-content{
 
     display: grid;
-    grid-template-rows: 1fr 2fr 1fr 5fr;
+    grid-template-rows: repeat(3,1fr) 5fr;
     grid-template-columns: 1fr repeat(6,3fr) 1fr;
 
 
@@ -170,14 +170,14 @@ html, body{
 
 }
 
-.shirt-img{
+/*.shirt-img{
 
     width: 100%;
     object-fit: cover;
     position: absolute;
     opacity: 0;
 
-}
+}*/
 
 #content{
 
@@ -329,8 +329,12 @@ html, body{
 p {
 text-align: center;
 font-size: 2rem;
+}
 
+#main-text > p{
 
+    line-height: 3rem;
+    font-family: 'amble';
 
 }
 

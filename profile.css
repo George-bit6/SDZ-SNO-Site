@@ -12,7 +12,7 @@ html, body {
     width: 100%;
     margin: 0;
    
-    font-family: "amble";
+    font-family: "bebas";
     color:  var(--general-font-color);
 
 }
@@ -38,6 +38,16 @@ html, body {
     font-style: normal;
     font-display: swap;
 
+}
+
+@font-face {
+    font-family: "bebas";
+    src: url("bebas/Bebas-Regular.woff2") format("woff2"),
+        url("bebas/Bebas-Regular.woff") format("woff");
+
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }
 
 body{
@@ -117,7 +127,7 @@ body{
     height: var(--header-height);
     width: 100%;
     position: absolute;
-    background-image: url(sdz-group-image.jpeg);
+    background-image: url('sdz-group-image.jpeg');
     background-size: cover;
     background-repeat: no-repeat;
     filter: brightness(58%);
@@ -236,9 +246,7 @@ div:has(#personal-img){
   height: 9rem;
   
   border-radius: 200px;
-  border: 1px;
-  border-color: rgba(0, 0, 0, 0.2);
-  border-style: solid;
+  border: 1px solid  rgba(0, 0, 0, 0.2);
   object-fit: fill;
 
 }
@@ -283,7 +291,7 @@ div:has(#personal-img){
   width: auto;
   background: rgb(188, 188, 188, 0.15);
 
-  border-radius: 24px;
+  border-radius: 16px;
 
   display: flex;
   flex-direction: column;
@@ -308,8 +316,12 @@ div:has(#personal-img){
 
   height: 24px;
   width: 24px;
-  background: blue;
 
+}
+
+.left-arrow{
+
+  transform: rotate(180deg);
 }
 
 #date-list{
@@ -330,15 +342,15 @@ div:has(#personal-img){
   display: flex;
   flex-direction: row;
   align-items: center;
-  flex-grow: 2
+  flex-grow: 2;
 }
 
 
 .days{
 
   margin: 6px;
-  height: 1.75rem;
-  width: 1.75rem;
+  height: clamp(1.5rem, 40%, 2.5rem);
+  aspect-ratio: 1/1;
   border-radius: 200px;
   display: flex;
   justify-content: center;
@@ -363,13 +375,67 @@ div:has(#personal-img){
 
 .task-bubbles{
 
+  height: 72px;
+  width: 140px;
   margin: 1rem 1rem 1rem 0;
   border-radius: 16px;
   display: grid;
-  grid-template-rows: 2fr 1fr;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 8px 2fr 1fr;
+  grid-template-columns: 2fr 1fr;
+  gap: 1px;
+  color: #ebedee;
 
 }
+
+.task-bubbles > * {
+  
+  margin: 0 1rem 0 1rem;
+
+}
+
+.task-number{
+
+  grid-row: 2;
+  grid-column: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8rem;
+
+}
+
+.bubble-title{
+
+  grid-row: 3;
+  grid-column: 1/-1;
+
+  margin-left: 0.7rem;
+  height: 1rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  font-size: 1rem;
+}
+
+.task-img{
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-row: 1/-1;
+  grid-column: 2;
+  
+
+}
+
+.task-img > img{
+  height: 40px;
+  object-fit: cover;
+  border-radius: 200px;
+
+}
+
 
 #completed-tasks{
 
@@ -397,6 +463,8 @@ div:has(#personal-img){
   justify-content: flex-start;
   align-items: center;
 
+  font-size: 1.4rem;
+
 }
 
 #task-container{
@@ -410,19 +478,4 @@ div:has(#personal-img){
   line-height: 2.5rem;
 
 }
-
-.tasks{
-  font-size: 1.2rem;
-  text-decoration: underline black;
-
-}
-
-.tasks::after
-
-
-
-
-
-
-
 

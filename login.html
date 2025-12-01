@@ -3,33 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log In</title>
+    <title>Login</title>
     <link rel="stylesheet" href="login.css">
 </head>
 <body>
-    <header>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25"><path style="fill:#232326" d="M24 12.001H2.914l5.294-5.295-.707-.707L1 12.501l6.5 6.5.707-.707-5.293-5.293H24v-1z" data-name="Left"/></svg>
+    <div></div>
+
+    <header id="main-header" class="wave">
+        <div id="bg"></div>
+
+
+        <div id="logo-name">
+            
+            <div id="logos">
+                <img src="stDemetriosLogo.png" alt="" id="sdz-logo"> 
+                <img src="sno-logo.png" alt="" id="sno-logo">
+            </div>
+            
+            
+            <p id="title">SDZ Scout Tracker</p>
+        </div>
+        
+        <div id="header-options">
+            <div class="options">Church</div>
+            <div class="options">Events</div>
+            <div class="options">Leaders</div>
+            
+        </div>
+
+        
+
     </header>
 
-        <div id="main" class="cont">
-            <div id="log-bubble" class="cont">
-                   
-                <img src="stDemetriosLogo.png" alt="Saint Demetrios Icon">
-                <div>
-                    <p>SDZ - Log In</p>
+        <div id="main" >      
+                <div id="login-title">
+                    <h1>Login</h1>
+                    <p>Please Enter Your Credentials</p>
                 </div> 
                 
-                
                 <form action="" method="post">
-                    <div>
-                        <label for="login-email">Email:</label>
-                        <input type="email" id="login-email" name="login_email" placeholder="bob1234@gmail.com">
+                    <div class="credentials" id="username">
+                        <label for="login-username">Username:</label>
+                        <input type="text" id="login-username" name="login_username" placeholder="George Bou Faysal">
                     </div>
-                    <div>
+                    <div class="credentials" id="password">
                         <label for="login-pass">Password:</label>
                         <input type="password" id="login-pass" name="login_pass" placeholder="123456">
                     </div>
-                    <button type="submit">Log In</button>
+                    <div id="button-cont">
+                        <button type="submit">Log in</button>
+                    </div>
+                    
                   
                     
                     

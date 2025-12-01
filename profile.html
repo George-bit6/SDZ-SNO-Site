@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+                                                                                              <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -27,7 +27,7 @@
             <div class="options">Church</div>
             <div class="options">Events</div>
             <div class="options">Leaders</div>
-            <div class="options">Log In</div>
+            <div class="options">Log Out</div>
         </div>
 
         
@@ -58,9 +58,11 @@
        </div> 
        <div id="calendar">
             <div id="calendar-header">
-                <div class="left-arrow"></div>
+                <div class="left-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="m11.707 3.293-1.414 1.414L17.586 12l-7.293 7.293 1.414 1.414L20.414 12l-8.707-8.707z"/><path d="M5.707 3.293 4.293 4.707 11.586 12l-7.293 7.293 1.414 1.414L14.414 12 5.707 3.293z"/></svg></div>
                 <div id="date"></div>
-                <div class="right-arrow"></div>
+                <div class="right-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="m11.707 3.293-1.414 1.414L17.586 12l-7.293 7.293 1.414 1.414L20.414 12l-8.707-8.707z"/><path d="M5.707 3.293 4.293 4.707 11.586 12l-7.293 7.293 1.414 1.414L14.414 12 5.707 3.293z"/></svg>
+                </div>
 
             </div>
             <div id="date-list">
@@ -75,21 +77,46 @@
        <div id="progress-path">
             <img id="map" src="map-path.png" alt="scout map">
        </div>
-       <div class="task-bubbles" id="completed-tasks"></div>
-       <div class="task-bubbles" id="remaining-tasks"></div>
+       <div class="task-bubbles" id="completed-tasks">   
+            <div class="task-number">0</div>
+            <div class="bubble-title">Comlpeted</div>
+            <div class="task-img">
+                <img src="task-list.jpeg" alt="" >
+            </div>
+            
+            
+
+        </div>
+       <div class="task-bubbles" id="remaining-tasks">
+            <div class="task-number">0</div>
+            <div class="bubble-title">Remaining</div>
+             <div class="task-img">
+                <img src="pile-of-paper.jpg" alt="">
+            </div>
+            
+            
+
+       </div>
        
        <div id="task-view">
-        <h3>Tasks:</h3>
+        <h2>Ongoing Tasks:</h2>
         <div id="task-container">
-            <div class="tasks">Know the types of Campfires</div>
-            <div class="tasks">Know how to use morse</div>
-            <div class="tasks">Know How to use axe</div>
-            <div class="tasks">Know the types of Campfires</div>
-            <div class="tasks">Know the types of Campfires</div>
-            <div class="tasks">Know the types of Campfires</div>
-            <div class="tasks">Know the types of Campfires</div>
-            <div class="tasks">Know the types of Campfires</div>
-            <div class="tasks">Know the types of Campfires</div>
+            <div>
+                <label for="task1">Know the types of Campfires</label>
+                <input type="checkbox" id="task1" name="ongoing-task1" disabled>
+            </div>
+            
+            <div>
+                <label for="task2">Know how to use the axe</label>
+                <input type="checkbox" id="task2" name="ongoing-task2" disabled>
+            </div>
+                
+            <div>
+                <label for="task3">Know the 16 directions</label>
+                <input type="checkbox" id="task3" name="ongoing-task3" disabled>
+            </div>
+           
+            
         </div>
         
 
