@@ -216,8 +216,7 @@ body{
 
 #main{
     
-    background: rgba(180, 178, 178, 0.1);
-    border: 1px #000000 solid;
+    
     border-radius: 16px;
     position: relative;
     width: 320px;
@@ -240,6 +239,8 @@ body{
     justify-content: flex-end;
     align-items: center;
 }
+
+
 
 form {
     grid-row: 2;
@@ -300,8 +301,14 @@ button[type ='submit']{
     background-color: rgb(12, 148, 238);
     border-radius: 6px;
     cursor: pointer;
-    
+    border: 1px rgb(0, 0, 0, 0.2) solid;
 
+}
+
+::placeholder{
+
+    font-family: 'bebas';
+    letter-spacing: 1px;
 
 }
 

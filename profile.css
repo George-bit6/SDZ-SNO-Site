@@ -290,6 +290,7 @@ div:has(#personal-img){
   height: 20rem;
   width: auto;
   background: rgb(188, 188, 188, 0.15);
+  box-shadow: 0 0 32px 1px rgba(0, 0, 0, 0.2);
 
   border-radius: 16px;
 
@@ -339,17 +340,19 @@ div:has(#personal-img){
 .weeks{
 
   height: 48px;
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
-  flex-grow: 2;
+  justify-content: center;
+  flex-grow: 1;
 }
 
 
 .days{
 
   margin: 6px;
-  height: clamp(1.5rem, 40%, 2.5rem);
+  height: clamp(1.5rem, 3vw, 2.5rem);
   aspect-ratio: 1/1;
   border-radius: 200px;
   display: flex;
@@ -384,13 +387,15 @@ div:has(#personal-img){
   grid-template-columns: 2fr 1fr;
   gap: 1px;
   color: #ebedee;
+  box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.4);
+
 
 }
 
 .task-bubbles > * {
   
   margin: 0 1rem 0 1rem;
-
+  
 }
 
 .task-number{
@@ -464,8 +469,10 @@ div:has(#personal-img){
   align-items: center;
 
   font-size: 1.4rem;
-
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.4) inset;
+  border-radius: 12px;
 }
+
 
 #task-container{
 
@@ -473,9 +480,29 @@ div:has(#personal-img){
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  align-items: flex-start;
+  align-items: center;
   overflow-y: auto;
-  line-height: 2.5rem;
+  line-height: 3rem;
+ 
+
+}
+
+.tasks{
+
+  position: relative;
+  width: 320px;
+  text-align: right;
+  
+}
+
+.tasks::before{
+
+  content: '';
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  background: #000000;
+  bottom: 0;
 
 }
 

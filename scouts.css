@@ -1,10 +1,21 @@
 :root{
 
---general-background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);    
---general-font-color: #000000;
---header-color: #0c3f14;
 
+    --header-bg: url('rovers-img.jpeg')
 }
+
+html, body{
+
+    height: 100%;
+    min-height: 100%;
+    width: 100%;
+    margin: 0;
+    
+
+    font-family: 'bebas';
+}
+
+
 
 @font-face {
     font-family: "amble";
@@ -19,167 +30,193 @@
 
 @font-face {
     font-family: "amble-bold";
-    src: url("amble/Amble-Bold.woff2") format("woff2"),
-        url("amble/Amble-Bold.woff") format("woff");
+    src: url("amble-blond/Amble-Bold.woff2") format("woff2"),
+        url("amble-blond/Amble-Bold.woff") format("woff");
 
     font-weight: normal;
     font-style: normal;
     font-display: swap;
-
 }
 
-html, body {
+@font-face {
+    font-family: "bebas";
+    src: url("bebas/Bebas-Regular.woff2") format("woff2"),
+        url("bebas/Bebas-Regular.woff") format("woff");
 
-    min-height: 100%;
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+#main-header{
+
+    height: 640px;
     width: 100%;
-    margin: 0;
-   
-    font-family: "amble";
-    color:  var(--general-font-color);
+
+    grid-row: 1;
+    grid-column: 1/-1;
+    display: grid;
+    position: relative;
+    grid-template-rows: 1fr 3fr 1fr 4fr;
+    grid-template-columns: 1fr 4fr 1fr 4fr;
+    color: white;
+    overflow:hidden;
 
 }
 
-body{
+#main-content{
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-image: var(--general-background);
-}
-
-a:link, a:visited {
-
-    color: #ebedee;
-    text-decoration: none;
-
-}
-
-header{
-
-    height: 600px;
-    width: 100%;
-    background-color: var(--header-color);
-    box-shadow: 0px 4px 16px -4px black;
-    border-radius: 0 0 8px 8px;
-}
-
-#top{
-
-    width: 100%;
-    height: 48px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: row;
-    color: #ebedee;
-    
-   
-
-}
-
-#header-options{
-
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
+    display: grid;
+    grid-template-rows: 1fr 5fr 1fr;
+    grid-template-columns: min(24px, 1fr) repeat(5,1fr) min(24px, 1fr);
     
 
+
 }
 
-#header-options > div, #login {
 
-    margin: 12px;
+#bg{
+
+    position: absolute;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    grid-template-rows: 1/-1;
+    grid-template-columns: 1/-1;
+    z-index: -1;
+
+}
+
+#bg::before{
+
+    content: '';
+    height: 640px;
+    width: 100%;
+    position: absolute;
+    background-image: var(--header-bg);
+    background-position-y: center
+    ;
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: brightness(58%);
+    z-index: -1;
+
+}
+
+
+
+
+
+#bg::after{ 
+    content:'';
+    font-family:'shape divider from ShapeDividers.com';
+    position: absolute;
+    z-index: 3;
+    pointer-events: none;
+    background-repeat: no-repeat;
+    bottom: -0.1vw;
+    left: -0.1vw;
+    right: -0.1vw;
+    top: -0.1vw; 
+    background-size: 289% 34px;
+    background-position: 50% 100%; 
+    transform: rotateY(180deg); background-image: url('data:image/svg+xml;charset=utf8, <svg preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 -0.6 2003.4 89.5"><g fill="%23ffffff"><path d="M2001 42l-12-21-12-21-12 21-12 21-4 6-8 14-6 11-6-11-12-20-12-21-12-21-12 21-12 21-8 14-4 7-8 13-8-14-12-20-12-21-12-21-12 21-12 21-8 14-4 6-6 11-6-11-12-20-12-21-12-21-12 21-12 21-12 20-8 14-8-14-12-20-12-21-12-21-12 21-12 21-12 21-6 10-6-11-12-20-12-21-12-21-12 21-12 21-8 14-4 6-8 14-8-14-12-20-12-21-12-21-12 21-12 21-4 7-8 13-6 11-6-11-12-20-12-21-12-21-12 21-12 21-12 21-8 13-8-14-12-20-12-21-12-21-12 21-12 21-12 21-6 10-6-11-12-20-12-21-12-21-12 21-12 21-12 21-7 13-8-14-12-20-12-21-12-21-12 21-12 21-4 7-8 13-6 11-6-11-12-20-12-21-12-21-12 21-12 21-13 21-8 13-7-14-12-20-12-21-12-21-12 21-12 21h-1l-12 21-5 10-6-11-12-20-12-21-13-21-12 21-12 21-4 7-8 13-8 14-7-14-12-20-12-21-12-21-12 21-12 21-4 7-8 13-6 11-6-11-12-20-12-21-12-21-12 21-12 21h-1l-12 21-7 13-8-14-12-20-12-21-12-21-12 21-12 21-8 14-4 7-6 10-6-11-12-20-12-21-12-21-12 21-12 21-4 7-8 13-8 14-8-14-12-20-12-21-12-21-12 21-12 21-12 21-6 10-6-11-12-20-12-21-12-21-12 21-12 21-8 13-4 7-8 14-8-14-12-20-12-21-12-21-12 21-12 21-8 14-4 6-6 11-6-11-12-20-12-21-12-21-12 21-12 21-12 20-8 14-8-14-12-20-12-21L86 0 74 21 62 42 50 63l-6 10-6-11-12-20-12-21L2 42l12 20-4-7-5-8-3-5 12-21L2 0 0 3v80h2003V46zM6 76l1-2 2-3 2-3-5 8zm252-34l8-14-8 14-12 20zm947 0l8-14-8 14-12 20zm344 0l7-14-7 14-12 20z" opacity=".5"/><path d="M1991 69l-12-20-12-21-12-20-12 20-12 21-12 20-6 10-6-10-12-20-12-21-12-20-12 20-12 21-10 16-2 4-8 13-7-13-13-20-12-21-12 21-12 20 12-20 12-21-12-20-12 20-12 21-9 16-3 4-6 10-6-10-12-20-12-21-12-20-12 20-12 21-2 4-10 16-8 13-7-13-12-20-12-21-12-20-12 20-12 21h-1l-12 20-6 10-6-10-12-20-12-21-12-20-12 20-12 21-12 20-7 13-8-13-12-20-12-21-12-20-12 20-12 21-3 4-9 16-6 10-6-10-12-20-12-21-13-20-12 20-12 21-12 20-7 13-8-13-12-20-12-21-12-20-12 20-12 21-12 20-6 10-6-10-12-20-12-21-12 21-12 20 12-20 12-21-12-20-12 20-12 21h-1l-12 20-7 13-8-13-12-20-12-21-12-20-12 20-12 21-3 4-9 16-6 10-6-10-12-20-12-21-12-20-12 20-12 21-12 20-8 13-8-13-12-20-12-21-12-20-12 20-12 21-10 16-2 4-6 10-6-10-12-20-12-21-12-20-12 20-12 21-3 4-9 16-8 13-8-13-12-20-12-21-12-20-12 20-12 21-2 4-10 16-6 10-6-10-12-20-12-21-12-20-12 20-12 21-10 16-2 4-8 13-8-13-12-20-12-21-12-20-12 20-12 21-9 16-3 4-6 10-6-10-12-20-12-21-12-20-12 20-12 21-3 4-9 16-8 13-8-13-12-20-12-21-12-20-12 20-12 21-12 20-6 10-6-10-12-20-12-21-12-20-12 20-12 21-9 16-3 4-8 13-7-13-12-20-13-21-12 21-12 20 12-20 12-21-12-20-12 20-12 21-9 16-3 4-6 10-6-10-12-20-12-21-12-20-12 20-12 21-12 20-8 13-7-13-12-20-12-21L65 8 53 28 41 49h-1L28 69l-6 10-6-10-1-3-3-4v-1l-2-3-4-7-2-2-1-3-3-5v48h2003l-12-20z" opacity=".75"/><path d="M1999 10l-12 21-12 20v1l-12 20-6 11-6-11-12-21-12-20-12-21-12 21-12 20v1l-4 6-8 14-8 14-8-14-12-21-12-20-12-21-12 21-12 20v1l-4 6-8 14-6 11-6-11-12-21-12-20-12-21-12 21-12 20v1l-12 20-8 14-8-14-12-21-12-20-12-21-12 21-12 20v1l-12 20-6 11-6-11-12-21-12-20-12-21-12 21-12 20v1l-4 6-8 14-8 14-7-14-12-21-12-20-13-21-12 21-12 20v1l-4 6-8 14-6 11-6-11-12-21-12-20-12-21-12 21-12 20-8 14-4 7-8 14-7-14-12-21-12-20-12-21-12 21-12 20-8 14-5 7-6 11-6-11-12-21-12-20-12-21-12 21-12 20v1l-12 20-7 14-8-14-12-21-12-20-12-21-12 21-12 20v1l-12 20-6 11-6-11-12-21-12-20-12-21-13 21-12 20-8 14-4 7-7 14-8-14-12-21-12-20-12 20-12 21 12-21 12-20-12-21-12 21-12 20-8 14-4 7-6 11-6-11-12-21-12-20-12-21-12 21-12 20-1 1-12 20-7 14-8-14-12-21-12-20-12-21-12 21-12 20v1l-12 20-6 11-6-11-12-21-12-20-12 20-12 21 12-21 12-20-12-21-12 21-12 20-8 14-4 7-8 14-8-14-12-21-12-20-12-21-12 21-12 20v1l-12 20-6 11-6-11-12-21-12-20-12-21-12 21-12 20v1l-12 20-8 14-8-14-12-21-12-20-12-21-12 21-12 20v1l-12 20-6 11-6-11-12-21-12-20-12-21-12 21-12 20v1l-4 7-8 13-8 14-8-14-12-21-12-20-12-21-12 21-12 20v1l-4 7-8 13-6 11-6-11-12-21-12-20-12-21-12 21-12 20v1l-12 20-8 14-8-14-12-21-12-20-12-21-12 21-12 20-8 14-4 7-6 11-6-11-12-21-12-20-12-21-12 21L0 51l9 16-5-8-2-5-2-3v38h2l1-1-1 1h2001V17l-4-7z" opacity=".7"/><path d="M1995 49l-12 20-6 10-6-10-12-20-12-21-12-20-12 20-12 21-12 20-8 13-8-13-12-20-12-21-12-20-12 20-12 21-12 20-6 10-6-10-12-20-12-21-12 21-12 20 12-20 12-21-12-20-12 20-12 21-12 20-8 13-8-13-12-21-12-20-12-20-12 20-12 20v1l-2 4-10 16-6 10-6-10-12-20-12-21-12-20-12 20-12 21-12 20-8 13-8-13-12-21-12-20-12-20-12 20-12 20-9 17-3 4-6 10-6-10-12-20-12-21-12-20-12 20-12 21-2 4-10 16-8 13-8-13-12-21-12-20-12-20-12 20-12 20v1l-2 4-10 16-6 10-6-10-12-21-12-20-12-20-12 20-12 20-9 17-3 4-8 13-8-13-12-21-12-20-12-20-12 20-12 20-9 17-3 4-6 10-6-10-12-20-12-21-12-20-12 20-12 21-2 4-10 16-8 13-7-13-12-21-12-20-12-20-12 20-12 20v1l-13 20-6 10-6-10-12-20-12-21-12-20-12 20-12 21-9 16-3 4-8 13-7-13-12-20-12-21-12 21-12 20 12-20 12-21-12-20-12 20-12 21-13 20-5 10-6-10-12-20-12-21-12-20-12 20-12 21h-1l-2 4-10 16-7 13-8-13-12-20-12-21-12-20-12 20-12 21-12 20-6 10-6-10-12-20-12-21-12-20-12 20-12 21-13 20-7 13-8-13-12-20-12-21-12-20-12 20-12 21-12 20-6 10-6-10-12-20-12-21-12-20-12 20-12 21-12 20-8 13-8-13-12-20-12-21-12-20-12 20-12 21-12 20-6 10-6-10-12-20-12-21-12 21-12 20 12-20 12-21-12-20-12 20-12 21-3 4-9 16-8 13-8-13-12-20-12-21-12-20-12 20-12 21-2 4-10 16-6 10-6-10-12-20-12-21L44 8 32 28 20 49 8 69l-1 2H6l-4 7-2 4v7h20l-1-1 1 1h1975v-1h8V34l-8 15zM9 71l-1-1 1 2zm1983 14l-9-16z"/></g></svg>'); 
+}
+
+#logo-name{
+
+    grid-row: 1;
+    grid-column: 2;
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
     font-size: 1rem;
-
+    
 }
 
-#login {
+#logo-name::before{
 
-    margin: 32px;
+    content: '';
+    position: absolute;
+    width: 1px;
+    height: 48px;
+    background: white;
+    left: 8rem;
 }
 
-#Logo{
-
-    height: 552px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.tracking-in-expand{-webkit-animation:tracking-in-expand 2s cubic-bezier(.215,.61,.355,1.000) both;animation:tracking-in-expand 2s cubic-bezier(.215,.61,.355,1.000) both}
-
-.Logo-text{
-
-    display: flex;
-    flex-wrap: wrap;
-    margin: 4px;
-    font-family: "amble-bold";
-    font-size: 1.75rem;
-    color: #ebedee;
-
-}
-
-h2.Logo-text {
+#title, .options{
 
     font-size: 1.2rem;
 
 }
 
-#img-parent{
+#logos{
 
-    height: 100%;
     display: flex;
-    flex-direction: column-reverse;
-    
+    justify-content: center;
+    align-items: center;
+    margin-right: 1rem;
+}
+
+#sdz-logo, #sno-logo{
+
+    display: block;
+    width: 3.5rem;
+    height: 3.5rem;
+    object-fit: cover;
 
 }
 
-#saint-img{
+#sdz-logo{
 
-    height: 580px;
-    width: auto;
-    aspect-ratio: auto;
-
+    width: 4.2rem;
+    height: 4.2rem;
 }
 
 #header-options{
 
-    height: 100%;
-    width: min(40%, 400px);
+    grid-row: 1;
+    grid-column: 4/5;
+
     display: flex;
-    flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
-    margin: 8px;
-    border-bottom: 2px;
-    border-color: #000000;
+
 
 
 }
 
-#content-block{
+#header-quote{
+
+    grid-row: 2 / 3;
+    grid-column: 2 /3;
+
+    margin: 16px;
 
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    flex-wrap: wrap;
-    font-weight: 550;
+    justify-content: center;
+    align-items: flex-start;
+
+
+}
+#header-quote > h2{
+
+    font-size: 2.5rem;
+
+}
+
+
+#header-quote > p{
+
+    text-align: left;
     font-size: 1.5rem;
-    font-family: "amble-bold";
+    max-width: 480px;
 
-    text-align: center;
-    width: 80%;
-    margin: 20px;
+} 
 
 
-}
 
-#content-block > p {
 
-    height: 95%;
-    width: 95%;
 
-}
