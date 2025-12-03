@@ -15,18 +15,16 @@ html, body{
     font-family: 'bebas';
 }
 
-.scroll-container{
+/*.scroll-container{
 
-      scroll-snap-type: y mandatory;
-    height: 300vh;                 /* make the container a scrolling viewport */
-    overflow-y: auto;              /* enable scrolling inside the container */
-    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: y mandatory;           
+    overflow-y: auto;              
 }
 
 .scroll{
 
     scroll-snap-align: start;
-}
+}*/
 
 
 
@@ -82,7 +80,6 @@ html, body{
     display: grid;
     grid-template-rows: 100vh repeat(2, 100vh);
     grid-template-columns: 24px 1fr 64px 1fr 24px;
-    overflow: hidden;
     background-color: var(--bg-color);
     color: var(--general-font-color);
 
@@ -257,10 +254,6 @@ html, body{
     align-items: center;
 }
 
-.sections{
-
-    height: 100vh;
-}
 
 #after-header{
 
