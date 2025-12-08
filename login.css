@@ -56,6 +56,7 @@ body{
   grid-template-rows: var(--header-height) 100px 440px 1fr;
   grid-template-columns: 96px 1fr 96px;
   justify-items: center;
+  overflow: hidden;
   
 }
 
@@ -217,7 +218,9 @@ body{
 #main{
     
     
-    border-radius: 16px;
+    backdrop-filter: blur(2px);
+    box-shadow: 0 0 16px 4px rgb(0, 0, 0, 0.1);
+    border-radius: 5%;
     position: relative;
     width: 320px;
     grid-row: 3;
@@ -227,6 +230,17 @@ body{
     grid-template-columns: 24px 1fr 24px;
     justify-content: center;
     align-items: center;
+}
+
+.sections-bg{
+
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    z-index: -2;
+    opacity: 5%;
+
 }
 
 
