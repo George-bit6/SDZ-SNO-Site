@@ -205,7 +205,7 @@ html, body{
 }
 #header-quote > h2{
 
-    font-size: 2.5rem;
+    font-size: 3.5rem;
 
 }
 
@@ -213,7 +213,7 @@ html, body{
 #header-quote > p{
 
     text-align: left;
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     max-width: 480px;
 
 } 
@@ -251,6 +251,12 @@ html, body{
 
 }
 
+.det{
+
+  color: var(--accent-color);
+
+}
+
 #content-title{
 
   height: 50vh;
@@ -285,10 +291,7 @@ html, body{
 
   display: flex;
   flex-direction: row;
-
-
 }
-
 
 #profile-cred{
 
@@ -315,6 +318,7 @@ html, body{
   background: url('scout-boy-removebg-preview.png');
   background-size: cover;
   border: solid black 2px;
+  z-index: 2;
 
 }
 
@@ -355,9 +359,6 @@ html, body{
 
 }
 
-
-
-
 #progress-bar{
   height: 280px;
   width: clamp(700px, 60vw, 1100px);
@@ -374,7 +375,7 @@ html, body{
 
 #checkpoint-two{
 
-  stroke: rgb(0, 236, 51);
+  stroke: rgb(19, 230, 65);
   stroke-width: 1rem;
 
 }
@@ -491,6 +492,88 @@ html, body{
 
 }
 
+#calendar{
+
+  height: 520px;
+  width: clamp(800px, 65vw, 1000px);
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 5%;
+  background-color: rgba(100, 102, 102, 0.02);
+  backdrop-filter: blur(6px);
+  box-shadow: 4px 8px 8px 8px rgba(0, 0, 0, 0.05);
+
+}
+
+#calendar-head{
+
+  height: 96px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  position: relative;
+}
+
+#calendar-head::before{
+
+content: '';
+position: absolute;
+height: 4px;
+width: 100%;
+background-color: var(--accent-color);
+bottom: 0;
+left: 0;
+}
+
+
+#date-list{
+
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+}
+
+.weeks{
+
+  
+ 
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+
+}
+
+.days{
+
+  color: var(--general-font-color);
+  text-align: center;
+  width: 23px;
+  font-size: 2rem;
+  position: relative;
+
+}
+
+.days::before{
+
+content: '';
+position: absolute;
+height: 4px;
+width: 100%;
+background-color: var(--general-font-color);
+border-radius: 4px;
+bottom: 0;
+left: 0;
+}
 
 h1, h2{
     position: relative;
