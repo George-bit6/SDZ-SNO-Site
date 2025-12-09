@@ -1,4 +1,4 @@
-                                                                                              <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="profile.css">
 </head>
 <body>
-   
-        <header id="main-header" class="wave">
+    
+    <header id="main-header">
         <div id="bg"></div>
 
 
@@ -22,111 +22,126 @@
             
             <p id="title">SDZ Scout Tracker</p>
         </div>
-        
+
         <div id="header-options">
             <div class="options">Church</div>
-            <div class="options">Events</div>
+            <div class="options">Sections</div>
             <div class="options">Leaders</div>
             <div class="options">Log Out</div>
         </div>
+        
 
+        <div id="header-quote">
+            <h2>Profile</h2>
+            <p>"Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea esse eos fugit perspiciatis tenetur, maiores quibusdam asperiores molestiae velit in error sequi accusantium alias laboriosam, quam eligendi ullam dolore facilis."</p>
+        </div>
         
 
     </header>
 
-        <div id="divider-line">
-            <div></div>
-        </div>
     
-        <div>
-            <img id=personal-img src="scout-boy.jpg" alt="Perssonal Image">
-        </div> 
-            
-        <div id="personal-details">
-            <p id="person-name">George Bou Faysal</p>
-            <p id="person-rank">Scout</p>
-            <p id="person-age">Age:</p>
+    <div id="main-content" class="scroll-container">
+        <img class="sections-bg" src="Contour-Map.svg" alt="" aria-hidden="true">
+        
+        <div class="sections" id="content-title"> 
+            <h1>George Bou Faysal</h1>
+            <div id="cont-personal-details">
+                <div class="personal-details info-sections">
+                    <h2 class="categ">Group:</h2> 
+                    <h2 class="det">Scout</h2>
+                </div>
+                <div class="personal-details info-sections">
+                    <h2 class="categ">Age:</h2> 
+                    <h2 class="det">19</h2>
+                </div>
+            </div> 
+        </div>     
+          
+        <div class="sections" id="profile-cred">
+            <div class="title-details info-sections">
+               <h2 class="categ">Scout Points:</h2>
+               <h2 class="det">31</h2> 
+            </div>
+            <div id="profile-pic"></div>
+            <div class="title-details info-sections">
+                <h2 class="categ">Attendance Streak:</h2>
+                <h2 class="det">5</h2>
+            </div>
         </div>
-       <div id="badge-list">
 
-        <div class="badges"></div>
-        <div class="badges"></div>
-        <div class="badges"></div>
-        <div class="badges"></div>
-        <div class="badges"></div>
+        <div class="sections" id="cont-progress-bar">
+            <svg id="progress-bar" width="3757" height="265" viewBox="0 0 3757 265" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect id="line-one" x="207" y="88" width="726" height="89" fill="#D9D9D9"/>
+                <rect id="line-two" x="1080" y="88" width="726" height="89" fill="#D9D9D9"/>
+                <rect id="line-three" x="1953" y="88" width="726" height="89" fill="#D9D9D9"/>
+                <rect id="line-four" x="2826" y="88" width="726" height="89" fill="#D9D9D9"/>
+                <circle class="checkpoints" id="checkpoint-two" cx="1005.5" cy="132.5" r="132.5" fill="#D9D9D9"/>
+                <circle class="checkpoints" id="checkpoint-three" cx="1878.5" cy="132.5" r="132.5" fill="#D9D9D9"/>
+                <circle class="checkpoints" id="checkpoint-four" cx="2751.5" cy="132.5" r="132.5" fill="#D9D9D9"/>
+                <circle class="checkpoints" id="checkpoint-five" cx="3624.5" cy="132.5" r="132.5" fill="#D9D9D9"/>
+                <circle class="checkpoints" id="checkpoint-one" cx="132.5" cy="132.5" r="132.5" fill="#D9D9D9"/>
+                <circle cx="132.5" cy="132.5" r="74.5" fill="white"/>
+                <circle cx="1005.5" cy="132.5" r="74.5" fill="white"/>
+                <circle cx="1878.5" cy="132.5" r="74.5" fill="white"/>
+                <circle cx="2751.5" cy="132.5" r="74.5" fill="white"/>
+                <circle cx="3624.5" cy="132.5" r="74.5" fill="white"/>
+            </svg>
+        </div> 
 
-       </div> 
-       <div id="calendar">
-            <div id="calendar-header">
-                <div class="left-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="m11.707 3.293-1.414 1.414L17.586 12l-7.293 7.293 1.414 1.414L20.414 12l-8.707-8.707z"/><path d="M5.707 3.293 4.293 4.707 11.586 12l-7.293 7.293 1.414 1.414L14.414 12 5.707 3.293z"/></svg></div>
-                <div id="date"></div>
-                <div class="right-arrow">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="m11.707 3.293-1.414 1.414L17.586 12l-7.293 7.293 1.414 1.414L20.414 12l-8.707-8.707z"/><path d="M5.707 3.293 4.293 4.707 11.586 12l-7.293 7.293 1.414 1.414L14.414 12 5.707 3.293z"/></svg>
+        <div class="sections" id="cont-widgets">
+            <div class="widgets" id="progress-section">
+                <div id="cont-chart">
+                    <svg id="progress-chart" width="1903" height="1903" viewBox="0 0 1903 1903" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M951.5 0C1477 0 1903 426.001 1903 951.5C1903 1477 1477 1903 951.5 1903C426.001 1903 0 1477 0 951.5C0 426.001 426.001 0 951.5 0ZM952 209C542.205 209 210 541.205 210 951C210 1360.8 542.205 1693 952 1693C1361.8 1693 1694 1360.8 1694 951C1694 541.205 1361.8 209 952 209Z" fill="#D9D9D9"/>
+                    </svg>
+                    <h2 id="percent">76%</h2>
+                </div>                       
+                <div id="chart-subtitle">
+                    <h2 class="categ">Towards: </h2>
+                    <h2 class="det">Intermediate Scout</h2>
                 </div>
 
             </div>
-            <div id="date-list">
-                <div class="weeks" id="week1"></div>
-                <div class="weeks" id="week2"></div>
-                <div class="weeks" id="week3"></div>
-                <div class="weeks" id="week4"></div>
-                <div class="weeks" id="week5"></div>
+            <div class="widgets" id="cont-badges">
+
+                <div id="badges-list">
+
+                    <div class="badges"></div>
+                    <div class="badges"></div>
+                    <div class="badges"></div>
+                    <div class="badges"></div>
+                    <div class="badges"></div>
+                    <div class="badges"></div>
+                    <div class="badges"></div>
+
+                </div>
 
             </div>
-       </div>
-       <div id="progress-path">
-            <img id="map" src="map-path.png" alt="scout map">
-       </div>
-       <div class="task-bubbles" id="completed-tasks">   
-            <div class="task-number">0</div>
-            <div class="bubble-title">Comlpeted</div>
-            <div class="task-img">
-                <img src="task-list.jpeg" alt="" >
-            </div>
-            
-            
-
         </div>
-       <div class="task-bubbles" id="remaining-tasks">
-            <div class="task-number">0</div>
-            <div class="bubble-title">Remaining</div>
-             <div class="task-img">
-                <img src="pile-of-paper.jpg" alt="">
-            </div>
-            
-            
-
-       </div>
-       
-       <div id="task-view">
-        <h2>Ongoing Tasks:</h2>
-        <div id="task-container">
-            <div class="tasks">
-                <label for="task1">Know the types of Campfires</label>
-                <input type="checkbox" id="task1" name="ongoing-task1" disabled>
-            </div>
-            
-            <div class="tasks">
-                <label for="task2">Know how to use the axe</label>
-                <input type="checkbox" id="task2" name="ongoing-task2" disabled>
-            </div>
+            <div class="sections" id="calendar">
+                <div>
+                    <div class="left-arrow"></div>
+                    <h2 id="date"></h1>
+                    <div class="right-arrow"></div>
+                </div>
+                <div id="date-list">
+                    <div class="weeks" id="week1"></div>
+                    <div class="weeks" id="week2"></div>
+                    <div class="weeks" id="week3"></div>
+                    <div class="weeks" id="week4"></div>
+                    <div class="weeks" id="week5"></div>
+                </div>
                 
-            <div class="tasks">
-                <label for="task3">Know the 16 directions</label>
-                <input type="checkbox" id="task3" name="ongoing-task3" disabled>
-            </div>
+               
+                
+
            
-            
-        </div>
+    
+
+        
         
 
-       </div>
-       
-        
 
-       
-
-  
-    <script src="profile.js"></script>
+    </div>
 </body>
 </html>

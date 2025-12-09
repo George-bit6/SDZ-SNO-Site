@@ -1,20 +1,20 @@
 :root{
 
---general-background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);    
---general-font-color: #000000;
---header-height: 116px;
-
+    --accent-color: rgb(0, 173, 0); 
+    --title-color: rgb(15, 15, 15) ;
+    --general-font-color: rgb(46, 44, 44);
+    --bg-color: rgba(255, 255, 255, 0.1);
+    --icon-bg: rgb(8, 16, 63, 0.95);
+    --header-img: url('scout-standing.jpg')
 }
 
-html, body {
+html, body{
 
     height: 100%;
     width: 100%;
     margin: 0;
-   
-    font-family: "bebas";
-    color:  var(--general-font-color);
-
+    
+    font-family: 'bebas';
 }
 
 
@@ -31,13 +31,12 @@ html, body {
 
 @font-face {
     font-family: "amble-bold";
-    src: url("amble/Amble-Bold.woff2") format("woff2"),
-        url("amble/Amble-Bold.woff") format("woff");
+    src: url("amble-blond/Amble-Bold.woff2") format("woff2"),
+        url("amble-blond/Amble-Bold.woff") format("woff");
 
     font-weight: normal;
     font-style: normal;
     font-display: swap;
-
 }
 
 @font-face {
@@ -50,63 +49,36 @@ html, body {
     font-display: swap;
 }
 
-body{
-
-  display: grid;
-  grid-template-rows: var(--header-height) 2fr 128px repeat(4, 1fr);
-  grid-template-columns: 48px repeat(4, 1fr) 2fr 48px;
-}
-
 #main-header{
 
-    height: var(--header-height);
+    height: 110vh;
     width: 100%;
 
     grid-row: 1;
     grid-column: 1/-1;
     display: grid;
     position: relative;
-    grid-template-rows: 2fr 1fr;
+    grid-template-rows: 1fr 3fr 1fr 4fr;
     grid-template-columns: 1fr 4fr 1fr 4fr;
     color: white;
     overflow:hidden;
 
 }
 
-.titles{
-    position: relative;
+#main-content{
+
+    height: 250vh;
+    width: 100%;
+
     display: flex;
-    position: relative;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
-}
+    background-color: var(--bg-color);
+    color: var(--general-font-color);
+    position: relative;
+    overflow: hidden;
 
-.titles::before{
-
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    background: black;
-    left: 0;
-}
-
-
-.titles::after{
-
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    background: black;
-    right: 0;
-}
-
-.titles > h1{
-
-    display: block;
-    z-index: 2;
-    background: white;
 }
 
 #bg{
@@ -124,16 +96,18 @@ body{
 #bg::before{
 
     content: '';
-    height: var(--header-height);
+    height: 110vh;
     width: 100%;
     position: absolute;
-    background-image: url('sdz-group-image.jpeg');
+    background-image: var(--header-img);
+    background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
     filter: brightness(58%);
     z-index: -1;
 
 }
+
 
 #bg::after{ 
     content:'';
@@ -210,299 +184,330 @@ body{
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+
+
+
 }
 
-#divider-line{
+#header-quote{
 
-  grid-column: 4;
-  grid-row: 2/-2;
+    grid-row: 2 / 3;
+    grid-column: 2 /3;
 
+    margin: 16px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+
+}
+#header-quote > h2{
+
+    font-size: 2.5rem;
+
+}
+
+
+#header-quote > p{
+
+    text-align: left;
+    font-size: 1.5rem;
+    max-width: 480px;
+
+} 
+
+.text-sections{
+
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.text-sections p{
+
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+#head-text{
+
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.sections-bg{
+
+    position: absolute;
+    height: 100%;
+    
+    opacity: 5%;
+
+}
+
+#content-title{
+
+  height: 50vh;
+  width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
 
-  
+      h1{
+        font-size: clamp(7rem, 10vw, 12rem);
+
+      }
+
+      *{
+
+        margin: 0;
+      }
 
 }
 
-#divider-line > div{
+#cont-personal-details{
 
-  width: 2px;
-  border-radius: 200px;
-  background: rgb(22, 22, 22, 0.3);
-  
-}
-
-div:has(#personal-img){
-
-  grid-row: 2;
-  grid-column: 2;
+  width: 60%;
   display: flex;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-around;
   align-items: center;
 }
 
-#personal-img{
+.personal-details{
 
-  height: 9rem;
-  
-  border-radius: 200px;
-  border: 1px solid  rgba(0, 0, 0, 0.2);
-  object-fit: fill;
+  display: flex;
+  flex-direction: row;
+
 
 }
-#personal-details{
-  grid-row: 2;
-  grid-column: 3;
+
+
+#profile-cred{
+
+    height: 50vh;
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+
+    font-size: 2rem;
+    color: var(--title-color);
+}
+
+#profile-pic{
+
+  height: clamp(320px, 30vw, 480px);
+  width: clamp(320px, 30vw, 480px);
+  
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: url('scout-boy-removebg-preview.png');
+  background-size: cover;
+  border: solid black 2px;
+
+}
+
+.title-details{
+
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: clamp(180px, 20vw, 400px);
+}
+
+.info-sections{
+
+  * {
+
+      margin: 0;
+
+  }
+
+}
+
+.title-details *{
+
+
+  text-wrap: wrap;
+  text-align: center;
+}
+
+#cont-progress-bar{
+
+  height: 30vh;
+  width: 100%;
+  margin-top: 3rem;
+  display: flex;
   justify-content: center;
   align-items: flex-start;
-}
-#personal-details > p{
-
-  margin: 2px 0 2px 0;
 
 }
 
-#badge-list{
 
-  grid-row: 3;
-  grid-column: 2/4;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
+
+
+#progress-bar{
+  height: 280px;
+  width: clamp(700px, 60vw, 1100px);
+  z-index: 2
 }
 
-.badges{
 
-  height: 48px;
-  width: 48px;
-  background: grey;
-  border-radius: 200px;
 
-}
+#checkpoint-one, #line-one, #checkpoint-two{
 
-#calendar{
-
-  grid-row: 4/8;
-  grid-column: 2/4;
-
-  height: 20rem;
-  width: auto;
-  background: rgb(188, 188, 188, 0.15);
-  box-shadow: 0 0 32px 1px rgba(0, 0, 0, 0.2);
-
-  border-radius: 16px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  
+    fill: var(--accent-color);
 
 }
 
-#calendar-header{
+#checkpoint-two{
 
-  height: 25%;
+  stroke: rgb(0, 236, 51);
+  stroke-width: 1rem;
+
+}
+
+
+
+
+#cont-widgets{
+
+  height: 40vh;
   width: 100%;
-  border-radius: 24px;
   display: flex;
+  flex-direction: row;
   justify-content: space-around;
   align-items: center;
 
 }
 
-.left-arrow, .right-arrow{
+.widgets{
 
-  height: 24px;
-  width: 24px;
-
+  height: 320px;
+  width: 320px;
+  background-color: rgba(100, 102, 102, 0.02);
+  backdrop-filter: blur(6px);
+  box-shadow: 4px 8px 8px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 10%;
 }
 
-.left-arrow{
+#cont-chart{
 
-  transform: rotate(180deg);
-}
-
-#date-list{
-
-  height: calc(75% - 0.8rem);
-  width: calc(100% - 1.5rem);
+  height: 55%;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  
+  position: relative;
 
 }
 
-.weeks{
+#progress-chart{
 
-  height: 48px;
-  width: 100%;
+  height: 220px;
+  width: 220px;
+  aspect-ratio: 1;
+  filter: drop-shadow(8px 8px 10px rgba(0, 0, 0, 0.2));
+}
+
+#progress-chart > path{
+
+  fill: var(--accent-color);
+}
+
+#percent{
+
+  font-size: 3rem;
+  position: absolute;
+
+}
+
+#chart-subtitle{
+
+  height: 33%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  flex-grow: 1;
-}
-
-
-.days{
-
-  margin: 6px;
-  height: clamp(1.5rem, 3vw, 2.5rem);
-  aspect-ratio: 1/1;
-  border-radius: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  
-  color: #353535;
-  background: rgb(217, 217, 217);
-}
-
-#progress-path{
-
-  grid-row: 2/4;
-  grid-column: 5/7;
-
-}
-#map{
-
-  width: 520px;
-  object-fit: cover;
-
-}
-
-.task-bubbles{
-
-  height: 72px;
-  width: 140px;
-  margin: 1rem 1rem 1rem 0;
-  border-radius: 16px;
-  display: grid;
-  grid-template-rows: 8px 2fr 1fr;
-  grid-template-columns: 2fr 1fr;
-  gap: 1px;
-  color: #ebedee;
-  box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.4);
 
 
 }
 
-.task-bubbles > * {
-  
-  margin: 0 1rem 0 1rem;
-  
-}
 
-.task-number{
-
-  grid-row: 2;
-  grid-column: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.8rem;
-
-}
-
-.bubble-title{
-
-  grid-row: 3;
-  grid-column: 1/-1;
-
-  margin-left: 0.7rem;
-  height: 1rem;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-
-  font-size: 1rem;
-}
-
-.task-img{
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  grid-row: 1/-1;
-  grid-column: 2;
-  
-
-}
-
-.task-img > img{
-  height: 40px;
-  object-fit: cover;
-  border-radius: 200px;
-
-}
-
-
-#completed-tasks{
-
-  grid-row: 4;
-  grid-column: 5;
-  background: rgb(39, 35, 35);
-
-}
-
-#remaining-tasks{
-
-  grid-row: 5;
-  grid-column: 5;
-  background: rgb(22, 91, 22);
-}
-
-#task-view{
-
-  grid-row: 4/7;
-  grid-column: 6;
-  
-
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-
-  font-size: 1.4rem;
-  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.4) inset;
-  border-radius: 12px;
-}
-
-
-#task-container{
-
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  overflow-y: auto;
-  line-height: 3rem;
- 
-
-}
-
-.tasks{
+#cont-badges{
 
   position: relative;
-  width: 320px;
-  text-align: right;
-  
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
 }
 
-.tasks::before{
+#cont-badges::before{
 
   content: '';
   position: absolute;
-  height: 2px;
-  width: 100%;
-  background: #000000;
-  bottom: 0;
+  height: 240px;
+  width: 240px;
+  filter: drop-shadow(8px 8px 4px rgba(0, 0, 0, 0.377));
+  background-image: url('scout-salut.png');
+  background-size: cover;
+  top: -6rem;
+  left: 10%;
+  z-index: 2;
 
 }
+
+#badges-list{
+
+  height: 50%;
+  width: 80%;
+  margin: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.badges{
+
+  height: 50px;
+  width: 50px;
+  margin: 2px;
+  border-radius: 50%;
+  background: grey;
+
+}
+
+
+h1, h2{
+    position: relative;
+    display: inline-block;
+    width: fit-content;
+
+}
+/*
+h1::after, h2::after {
+  content: '';
+  position: absolute;
+  bottom: -5px; 
+  left: 0;
+  width: 100%;
+  height: 6px; 
+  background-color: var(--accent-color); 
+  border-radius: 4px 24px 8px 40px;
+}*/
+
 

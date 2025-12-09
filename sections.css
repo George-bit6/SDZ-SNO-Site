@@ -2,11 +2,12 @@
 
     --header-bg: url('rovers-img.jpeg');
     --saint-icon:url('StNestor1.png');
+    --accent-gradient: linear-gradient( 109.6deg,  rgba(204,0,0,1) 11.2%, rgba(68,0,0,1) 100.6% );
     --accent-color: rgb(153, 13, 13); 
     --title-color: rgb(15, 15, 15) ;
     --general-font-color: rgb(46, 44, 44);
     --bg-color: rgba(255, 255, 255, 0.1);
-    --icon-bg: rgb(37, 2, 2);
+    --icon-bg: rgb(43, 0, 0);
 }
 
 
@@ -310,7 +311,7 @@ html, body{
     left: 0;
     width: 110%;
     height: 12px; 
-    background-color: var(--accent-color); 
+    background: var(--accent-gradient); 
     border-radius: 50%;
     z-index: 2;
 }
@@ -433,7 +434,7 @@ html, body{
 
     content: '';
     position: absolute;
-    background: var(--accent-color);
+    background: var(--accent-gradient);
     height: 25%;
     width: 100%;
 
@@ -469,7 +470,7 @@ h1::after, h2::after {
   left: 0;
   width: 100%;
   height: 6px; 
-  background-color: var(--accent-color); 
+  background: var(--accent-gradient); 
   border-radius: 4px 24px 8px 40px;
 }
 

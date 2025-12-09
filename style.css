@@ -1,6 +1,7 @@
 :root{
 
     --accent-color: rgb(255, 136, 0); 
+    --accent-gradient: linear-gradient(to right, #f7b733, #fc4a1a); 
     --title-color: rgb(15, 15, 15) ;
     --general-font-color: rgb(46, 44, 44);
     --bg-color: rgba(255, 255, 255, 0.1);
@@ -66,9 +67,9 @@ html, body{
 
 #main-content{
 
-    display: grid;
-    grid-template-rows: 25vh 50vh 50vh repeat(2, 90vh);
-    grid-template-columns: 24px 1fr 64px 1fr 24px;
+    display: flex;
+    flex-direction: column;
+    
     background-color: var(--bg-color);
     color: var(--general-font-color);
     position: relative;
@@ -246,8 +247,7 @@ html, body{
 
 #content-title{
 
-    grid-row: 1;
-    grid-column: 1/-1;
+    height: 25vh;
     width: 100%;
 
     display: flex;
@@ -261,14 +261,16 @@ html, body{
 
 #after-header{
 
-    grid-row: 2;
-    grid-column: 2/-2;
+    height: 50vh;
+    width: 95%;
+    margin: auto;
     position: relative;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     
 }
+
 
 #after-header::before{
 
@@ -305,7 +307,7 @@ html, body{
     left: 0;
     width: 110%;
     height: 12px; 
-    background-color: var(--accent-color); 
+    background: var(--accent-gradient); 
     border-radius: 50%;
     z-index: 2;
 }
@@ -315,10 +317,6 @@ html, body{
     height: 100%;
     object-fit: fill;
     filter: drop-shadow(8px 12px 0px rgba(0,0,0, 0.3));
-
-    
-
-
 }
 
 .stats{
@@ -341,9 +339,10 @@ html, body{
 }
 
 
+
 .sections{
 
-    height: 100%;
+    height: 85vh;
     width: 100%;
     position: relative;
 
@@ -364,45 +363,69 @@ html, body{
 
 #groups-container{
 
-    grid-row: 3;
-    grid-column: 2/-2;
+    width: 95%;
     display: flex;
     justify-content: space-evenly;
-    align-items: flex-end;
+    align-items: center;
     position: relative;
     flex-wrap: wrap;
 }
 
 .scout-groups{
 
-    height: clamp(128px, 15vw, 180px);
-    width: clamp(128px, 15vw, 180px);
+    height: clamp(320px, 35vw, 420px);
+    width: clamp(180px, 15vw, 280px);
     margin: 8px;
-    background-color: rgb(214, 214, 214, 0.2);
     text-align: center;
-    border-radius: 15%;
-    box-shadow: 0 0 6px 2px rgba(0,0,0, 0.1);
-    backdrop-filter: blur(4px); 
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    border-radius: 8%;
+    background: gray;
+    box-shadow: 0 0 6px 2px rgba(0,0,0, 0.1);
+    
+}
+
+.groups-text{
+
+    -webkit-text-stroke: 2px rgb(255, 255, 255);
+    color: #ffffff00;
+    letter-spacing: 4px;
+    font-size: 3.2rem;
+    
+}
+
+.scout-groups::after{
+
+    content: '';
+    position: absolute;
+    background: url('fleur-de-lis-green.png');
+    background-size: cover;
+    height: 180px;
+    width: 180px;
+    aspect-ratio: auto;
+    top: -5rem;
+    z-index: 2;
+    filter: drop-shadow(0px 8px 4px rgb(0,0,0, 0.8));
 
 }
 
-.scout-groups > div{
+#rovers-group::after{
 
-    font-size: 2rem;
-
-
-   
+    background: url('fleurs-de-lis-red.png');
+    background-size: cover;
 }
 
-#section-one{
+#cubs-group::after, #baraem-group::after{
 
-    grid-row: 4;
-    grid-column: 1/-1;
+    background: url('fleurs-de-lis-yellow.png');
+    background-size: cover;
+
 
 }
+
+
 
 .text-sections{
 
@@ -414,8 +437,8 @@ html, body{
 .section-img{
 
     width: 90%;
+     height: clamp(280px, 30vw, 480px);
     
-    aspect-ratio: auto;
     box-shadow: 0 0 12px 4px rgb(7, 7, 7, 0.2);
     object-fit: fill;
     display: inline-block;
@@ -428,7 +451,7 @@ html, body{
 
     content: '';
     position: absolute;
-    background: var(--accent-color);
+    background: var(--accent-gradient);
     height: 25%;
     width: 100%;
 
@@ -464,14 +487,17 @@ h1::after, h2::after {
   left: 0;
   width: 100%;
   height: 6px; 
-  background-color: var(--accent-color); 
+  background: var(--accent-gradient); 
   border-radius: 4px 24px 8px 40px;
 }
 
 #section-two{
 
-    grid-row: 5;
-    grid-column: 1/-1;
     flex-direction: row-reverse;
 } 
 
+#map{
+
+    height: clamp(280px, 30vw, 480px);
+
+}
