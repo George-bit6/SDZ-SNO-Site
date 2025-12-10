@@ -8,6 +8,14 @@ const week5 = document.getElementById('week5')
 const left_arr = document.querySelector('.left-arrow')
 const right_arr = document.querySelector('.right-arrow')
 
+const home = document.getElementById('title');
+
+home.addEventListener('click', () => {
+
+    window.location.href = 'index.html';
+})
+
+
 const currentDate = new Date()
 const currentYear = currentDate.getFullYear()
 const currentMonth = currentDate.getMonth

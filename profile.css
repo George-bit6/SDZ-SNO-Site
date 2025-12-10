@@ -4,7 +4,7 @@
     --title-color: rgb(15, 15, 15) ;
     --general-font-color: rgb(46, 44, 44);
     --bg-color: rgba(255, 255, 255, 0.1);
-    --icon-bg: rgb(8, 16, 63, 0.95);
+    --icon-bg: rgb(228,213,183);
     --header-img: url('scout-standing.jpg')
 }
 
@@ -67,12 +67,12 @@ html, body{
 
 #main-content{
 
-    height: 250vh;
+    height: 550vh;
     width: 100%;
 
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: space-around;
     align-items: center;
     background-color: var(--bg-color);
     color: var(--general-font-color);
@@ -495,8 +495,8 @@ html, body{
 #calendar{
 
   height: 520px;
-  width: clamp(800px, 65vw, 1000px);
-  margin: auto;
+  width: clamp(800px, 60vw, 1000px);
+  margin: 6rem auto 6rem auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -536,43 +536,93 @@ left: 0;
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
 
 }
 
 .weeks{
 
-  
- 
+  position: relative;
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
 
 }
 
 .days{
 
-  color: var(--general-font-color);
+  margin: 1.5rem;
+  border-radius: 4px;
+  color: rgba(41, 41, 41, 0.95);
+  filter: drop-shadow(4px 4px 2px rgba(0, 0, 0, 0.2));
   text-align: center;
-  width: 23px;
-  font-size: 2rem;
+  width: 60px;
+  height: 40px;
+  font-size: 2.2rem;
   position: relative;
 
 }
 
-.days::before{
 
-content: '';
-position: absolute;
-height: 4px;
-width: 100%;
-background-color: var(--general-font-color);
-border-radius: 4px;
-bottom: 0;
-left: 0;
+.mataleb {
+
+  height: 90vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.mataleb > ul{
+
+
+  width: clamp(800px, 60vw, 1000px);
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+
+  background-color: rgba(100, 102, 102, 0.02);
+  backdrop-filter: blur(6px);
+  box-shadow: 4px 8px 8px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 5%;
+
+  list-style: none;
+  font-size: 1.5rem;
+
+  position: relative;
+
+}
+
+.mataleb > ul::before{
+
+
+  content: '';
+  position: absolute;
+  height: 220px;
+  width: 220px;
+  background: url('Compass\ Sticker\ _\ Outdoor.jpeg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  top: -14rem;
+  left: 40%;
+  z-index: 3;
+  border-radius: 20%;
+  filter: drop-shadow(8px 10px 6px rgba(0, 0, 0, 0.1));
+
+
+
+}
+
+ul > li{
+  display: flex;
+  flex-direction: row-reverse;
+  margin: 1.2rem;
+
 }
 
 h1, h2{

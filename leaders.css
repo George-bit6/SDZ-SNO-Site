@@ -316,7 +316,7 @@ html, body{
 
 .leader-img-cont{
 
-    height: 66%;
+    height: 100%;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -324,8 +324,8 @@ html, body{
 
 .leader-img{
 
-    height: 100%;
     width: auto;
+    height: 280px;
     aspect-ratio: auto;
     object-fit: cover;
 

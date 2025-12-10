@@ -20,19 +20,19 @@
             </div>
             
             
-            <p id="title">SDZ Scout Tracker</p>
+            <p id="title" class="clickable">SDZ Scout Tracker</p>
         </div>
         
         <div id="header-options">
-            <div class="options">Church</div>
-            <div class="options">Sections</div>
-            <div class="options">Leaders</div>
-            <div class="options">Log In</div>
+            <div class="options clickable">Church</div>
+            <div class="options clickable">Sections</div>
+            <div class="options clickable">Leaders</div>
+            <div class="options clickable" id="login">Log In</div>
         </div>
         
 
         <div id="header-quote">
-            <h2>Hello Mello</h2>
+            <h2>One Community</h2>
             <p>"Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea esse eos fugit perspiciatis tenetur, maiores quibusdam asperiores molestiae velit in error sequi accusantium alias laboriosam, quam eligendi ullam dolore facilis."</p>
         </div>
         
@@ -40,10 +40,11 @@
     </header>
 
     
+
     <div id="main-content" class="scroll-container">
         <img class="sections-bg" src="Contour-Map.svg" alt="" aria-hidden="true">
             
-        <div class="sections" id="content-title"> <h1>Saint Demetrios Parish Group</h1> </div>        
+        <div class="content-title"> <h1>Saint Demetrios Parish Group</h1> </div>        
         
         <div id="after-header" class="sections">
                 <div class="stats" id="church-stats">
@@ -60,11 +61,22 @@
 
         </div>
 
+        <div class="content-title">
+            <h1 >Our Sections</h1>
+        </div>
         <div class="sections" id="groups-container">
-            <div class="scout-groups" id="baraem-group"><div class="groups-text">Baraem</div></div>
-            <div class="scout-groups" id="cubs-group"><div class="groups-text">Cubs</div></div>
-            <div class="scout-groups" id="scouts-group"><div class="groups-text">Scouts</div></div>
-            <div class="scout-groups" id="rovers-group"><div class="groups-text">Rovers</div></div>
+            <div class="scout-groups" id="cubs-group">
+                <img class="img-groups clickable" id="img-cubs" src="Component 2.png" alt="">  
+                
+            </div>
+            <div class="scout-groups" id="scouts-group">
+                <img class="img-groups clickable" id="img-scouts" src="Component 3.png" alt="">
+                
+            </div>
+            <div class="scout-groups" id="rovers-group">
+                <img class="img-groups clickable" id="img-rovers" src="Component 4.png" alt="">
+                
+            </div>
         </div>
 
         <div class="sections"  id="section-one">
@@ -87,8 +99,8 @@
             </div>
             
             
-                </div>
+    </div>
 
-   
+   <script src="script.js"></script>
 </body>
 </html>

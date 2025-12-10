@@ -5,7 +5,7 @@
     --title-color: rgb(15, 15, 15) ;
     --general-font-color: rgb(46, 44, 44);
     --bg-color: rgba(255, 255, 255, 0.1);
-    --icon-bg: rgb(8, 16, 63, 0.95);
+    --icon-bg: rgba(8, 16, 63, 1);
 }
 
 html, body{
@@ -69,7 +69,7 @@ html, body{
 
     display: flex;
     flex-direction: column;
-    
+    justify-content: space-around;
     background-color: var(--bg-color);
     color: var(--general-font-color);
     position: relative;
@@ -207,7 +207,7 @@ html, body{
 }
 #header-quote > h2{
 
-    font-size: 2.5rem;
+    font-size: 3.5rem;
 
 }
 
@@ -215,7 +215,7 @@ html, body{
 #header-quote > p{
 
     text-align: left;
-    font-size: 1.5rem;
+    font-size: 2.2rem;
     max-width: 480px;
 
 } 
@@ -245,7 +245,7 @@ html, body{
 }
 
 
-#content-title{
+.content-title{
 
     height: 25vh;
     width: 100%;
@@ -261,7 +261,7 @@ html, body{
 
 #after-header{
 
-    height: 50vh;
+    height: 70vh;
     width: 95%;
     margin: auto;
     position: relative;
@@ -280,12 +280,9 @@ html, body{
     left: 0;
     width: 100%;
     height: 75%;
-    background: var(--icon-bg);
-    background-repeat: no-repeat;
-    background-size: cover;
+    background: var(--icon-bg); 
     border-radius: 24px 24px 30% 30%;
-
-
+    
 }
 
 
@@ -316,7 +313,7 @@ html, body{
 
     height: 100%;
     object-fit: fill;
-    filter: drop-shadow(8px 12px 0px rgba(0,0,0, 0.3));
+    filter: drop-shadow(12px -4px 20px rgba(255, 255, 255, 0.2));
 }
 
 .stats{
@@ -329,7 +326,7 @@ html, body{
 
 .stats > div{
 
-    text-align: right;
+    text-align: center;
 }
 .stats h2{
 
@@ -354,78 +351,63 @@ html, body{
 
 .sections-bg{
 
-    position: absolute;
     height: 100%;
-    
-    opacity: 5%;
+    position: absolute;
+    object-fit: cover;
+    opacity: 10%;
+    z-index: -10;
 
 }
 
 #groups-container{
 
-    width: 95%;
+    height: 40vw;
+    width: 100%;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     position: relative;
-    flex-wrap: wrap;
+
+
 }
 
 .scout-groups{
 
-    height: clamp(320px, 35vw, 420px);
-    width: clamp(180px, 15vw, 280px);
-    margin: 8px;
-    text-align: center;
+    height: 100%;
+    margin: 0;
+    width: clamp(220px, 35vw, 500px);
+    overflow: visible;
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
-    border-radius: 8%;
-    background: gray;
-    box-shadow: 0 0 6px 2px rgba(0,0,0, 0.1);
     
 }
 
-.groups-text{
+.img-groups{
 
-    -webkit-text-stroke: 2px rgb(255, 255, 255);
-    color: #ffffff00;
-    letter-spacing: 4px;
-    font-size: 3.2rem;
-    
-}
-
-.scout-groups::after{
-
-    content: '';
+    margin: 0;
     position: absolute;
-    background: url('fleur-de-lis-green.png');
-    background-size: cover;
-    height: 180px;
-    width: 180px;
-    aspect-ratio: auto;
-    top: -5rem;
-    z-index: 2;
-    filter: drop-shadow(0px 8px 4px rgb(0,0,0, 0.8));
+    display: inline-block;
+    object-fit: cover;
+    height: auto;
+    width: 130%;
+    aspect-ratio: 1;
+    filter: drop-shadow(16px 16px 8px rgba(0, 0, 0, 0.158));
 
 }
 
-#rovers-group::after{
+#img-scouts{
 
-    background: url('fleurs-de-lis-red.png');
-    background-size: cover;
-}
-
-#cubs-group::after, #baraem-group::after{
-
-    background: url('fleurs-de-lis-yellow.png');
-    background-size: cover;
-
+    top: 0;
 
 }
 
+#img-cubs, #img-rovers{
 
+    bottom: 0;
+
+}
 
 .text-sections{
 
@@ -477,7 +459,7 @@ h1, h2{
     position: relative;
     display: inline-block;
     width: fit-content;
-
+    
 }
 
 h1::after, h2::after {
@@ -500,4 +482,9 @@ h1::after, h2::after {
 
     height: clamp(280px, 30vw, 480px);
 
+}
+
+.clickable{
+
+    cursor: pointer;
 }
