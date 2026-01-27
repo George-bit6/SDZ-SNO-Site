@@ -1,106 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    
-    <header id="main-header">
-        <div id="bg"></div>
-
-
-        <div id="logo-name">
-            
-            <div id="logos">
-                <img src="stDemetriosLogo.png" alt="" id="sdz-logo"> 
-                <img src="sno-logo.png" alt="" id="sno-logo">
-            </div>
-            
-            
-            <p id="title" class="clickable">SDZ Scout Tracker</p>
-        </div>
-        
-        <div id="header-options">
-            <div class="options clickable">Church</div>
-            <div class="options clickable">Sections</div>
-            <div class="options clickable">Leaders</div>
-            <div class="options clickable" id="login">Log In</div>
-        </div>
-        
-
-        <div id="header-quote">
-            <h2>One Community</h2>
-            <p>"Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea esse eos fugit perspiciatis tenetur, maiores quibusdam asperiores molestiae velit in error sequi accusantium alias laboriosam, quam eligendi ullam dolore facilis."</p>
-        </div>
-        
-
-    </header>
-
-    
-
-    <div id="main-content" class="scroll-container">
-        <img class="sections-bg" src="Contour-Map.svg" alt="" aria-hidden="true">
-            
-        <div class="content-title"> <h1>Saint Demetrios Parish Group</h1> </div>        
-        
-        <div id="after-header" class="sections">
-                <div class="stats" id="church-stats">
-                    <h2>Church Adherents:</h2>
-                    <div>+1300</div>
-                </div>
-                <div id="icon-img-container">
-                    <img id="icon-img" src="StDemetrios.png" alt="Saint Demetrios Icon">
-                </div>
-                <div class="stats" id="group-stats">
-                    <h2>Scout Memebers:</h2>
-                    <div>+90</div>
-                </div>
-
-        </div>
-
-        <div class="content-title">
-            <h1 >Our Sections</h1>
-        </div>
-        <div class="sections" id="groups-container">
-            <div class="scout-groups" id="cubs-group">
-                <img class="img-groups clickable" id="img-cubs" src="Component 2.png" alt="">  
-                
-            </div>
-            <div class="scout-groups" id="scouts-group">
-                <img class="img-groups clickable" id="img-scouts" src="Component 3.png" alt="">
-                
-            </div>
-            <div class="scout-groups" id="rovers-group">
-                <img class="img-groups clickable" id="img-rovers" src="Component 4.png" alt="">
-                
-            </div>
-        </div>
-
-        <div class="sections"  id="section-one">
-                <div class="text-sections" >
-                    <h2>Church and Scout</h2>
-                    <p>Lorem ipsum dolor sit Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque, voluptas molestiae pariatur harum asperiores magnam accusantium. Odit natus explicabo itaque voluptatibus, excepturi voluptates? Illo, fuga ipsam. Vitae excepturi quae illum. amet consectetur adipisicing elit. Corporis aliquid, voluptatibus esse, eveniet recusandae libero ullam nulla consequatur tenetur quasi sapiente in debitis commodi quod delectus qui laboriosam minima dicta!</p>
-                </div>
-                <div class="section-img-container" id="img-container-one">
-                    <iframe class="section-img" id="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3308.883818358637!2d35.621956711736814!3d33.969825573076335!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151f409db61eb53b%3A0x350c9d60da48580!2sSaint%20Demetrios%20-%20Zouk!5e0!3m2!1sen!2slb!4v1765157873477!5m2!1sen!2slb" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>                </div>
-            </div>
-            
-            <div class="sections" id="section-two">
-                <div class="text-sections">
-                    <h2>Our History</h2>
-                    <p>Lorem ipsum dolor sit Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque, voluptas molestiae pariatur harum asperiores magnam accusantium. Odit natus explicabo itaque voluptatibus, excepturi voluptates? Illo, fuga ipsam. Vitae excepturi quae illum. amet consectetur adipisicing elit. Corporis aliquid, voluptatibus esse, eveniet recusandae libero ullam nulla consequatur tenetur quasi sapiente in debitis commodi quod delectus qui laboriosam minima dicta!</p>
-                </div>
-                <div class="section-img-container" class="left-img-container" id="img-container-two">
-                    <img src="full-sno-image.jpeg" alt="sno image" class="section-img">
-                </div>
-            </div>
-            
-            
-    </div>
-
-   <script src="script.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="./src/styles/index.css">
+    <meta name="viewport" content="initial-scale=1, width=device-width"  />
+    <title>App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
