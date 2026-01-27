@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chakra-ui/react": "^3.31.0",
+    "@emotion/react": "^11.14.0",
+    "@fontsource/inter": "^5.2.8",
     "@fontsource/roboto": "^5.2.9",
     "@tailwindcss/vite": "^4.1.18",
     "clsx": "^2.1.1",
@@ -27,12 +30,17 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
     "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
-    "prettier": "^3.8.1",
+    "prettier": "3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "vite": "^7.2.4",
-    "vite-jsconfig-paths": "^2.0.1"
+    "vite-jsconfig-paths": "^2.0.1",
+    "vite-tsconfig-paths": "^6.0.5"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   }
 }
