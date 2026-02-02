@@ -1,16 +1,17 @@
-import { Fieldset, CheckboxGroup, Checkbox, For} from "@chakra-ui/react";
+import { Fieldset, CheckboxGroup, Checkbox, For, VStack} from "@chakra-ui/react";
 
 
-export default function TaskList([props]){
-return <Fieldset.Root >
+export default function TaskList({tasksTitle = "Title Not Added", taskList = []}){
+return <VStack>
+      <Fieldset.Root >
         <CheckboxGroup >
-          <Fieldset.Legend fontSize={"2xl"} fontWeight={"semibold"} display={"flex"} justifyContent={"center"}>
-              {props.tasksTitle}
+          <Fieldset.Legend margin={"4"} fontSize={"2xl"} fontWeight={"semibold"} display={"flex"} justifyContent={"center"}>
+              {tasksTitle}
           </Fieldset.Legend>
           <Fieldset.Content >
-            <For each={props.taskList}>
+            <For each={taskList}>
               {(task) => (
-                <Checkbox.Root key={task} value={task} >
+                <Checkbox.Root key={task} value={task}>
                   <Checkbox.HiddenInput/>
                   <Checkbox.Control/>
                   <Checkbox.Label>{task}</Checkbox.Label>
@@ -21,4 +22,5 @@ return <Fieldset.Root >
         </CheckboxGroup>
 
       </Fieldset.Root>
+      </VStack>
 }

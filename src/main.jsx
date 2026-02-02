@@ -6,6 +6,7 @@ import "./styles/index.css";
 import App from "./app/App.jsx";
 import "@fontsource/inter/400.css"
 
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ChakraProvider value={defaultSystem}>
