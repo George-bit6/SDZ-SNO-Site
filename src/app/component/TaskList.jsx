@@ -1,26 +1,60 @@
-import { Fieldset, CheckboxGroup, Checkbox, For, VStack} from "@chakra-ui/react";
+import { Heading, CheckboxGroup, Checkbox, For, VStack, Button} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import supabase from "../supabase-client";
+
+const checkboxStyles = {
+
+  colorPalette: 'red',
+  variant: "solid",
+
+}
+
+export default function TaskList(){
+  
+  const [taskList, setTaskList] = useState([]);
+
+  const fetchTasks = async () => {
+
+  let { data, error } = await supabase
+    .from('scouts_guides_group_tasks')
+    .select('*')
+
+    if(error){
+
+      console.error("Error Occured while fetching data: " + error);
+    }
+    else{
+      const taskData = data.map((task) => {
+        return {
+          id: task.id,
+          descriptiton: task.task_desc,
+          type: task.task_type,
+          isCompleted: task.is_completede
+        }
+      });
+      setTaskList(taskData);
+      
+    }    
+  }
+  useEffect(() => {
+    
+    fetchTasks();
+    
+  }, [])
 
 
-export default function TaskList({tasksTitle = "Title Not Added", taskList = []}){
 return <VStack>
-      <Fieldset.Root >
         <CheckboxGroup >
-          <Fieldset.Legend margin={"4"} fontSize={"2xl"} fontWeight={"semibold"} display={"flex"} justifyContent={"center"}>
-              {tasksTitle}
-          </Fieldset.Legend>
-          <Fieldset.Content >
+          <Heading>{taskList.type}</Heading>
             <For each={taskList}>
-              {(task) => (
-                <Checkbox.Root colorPalette={"red"} variant={"solid"} key={task} value={task}>
+              {(task) => (      
+                <Checkbox.Root {...checkboxStyles} key={task.id} value={task.id}>
                   <Checkbox.HiddenInput/>
                   <Checkbox.Control/>
-                  <Checkbox.Label>{task}</Checkbox.Label>
+                  <Checkbox.Label>{task.descriptiton}</Checkbox.Label>
                 </Checkbox.Root>
               )}
             </For>
-          </Fieldset.Content>
         </CheckboxGroup>
-
-      </Fieldset.Root>
       </VStack>
 }

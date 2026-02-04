@@ -1,4 +1,4 @@
-import supabase from "./supabase-client";
+
 import UserProfile from "./pages/UserProfile";
 import "../styles/fonts.css";
 
@@ -20,7 +20,7 @@ let tasks = {
 export default function App() {
   return (
     <>
-      <UserProfile User={User} tasks={tasks}></UserProfile>
+      <UserProfile User={User}></UserProfile>
     </>
   );
 }
