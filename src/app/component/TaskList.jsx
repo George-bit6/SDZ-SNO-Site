@@ -11,7 +11,7 @@ return <VStack>
           <Fieldset.Content >
             <For each={taskList}>
               {(task) => (
-                <Checkbox.Root key={task} value={task}>
+                <Checkbox.Root colorPalette={"red"} variant={"solid"} key={task} value={task}>
                   <Checkbox.HiddenInput/>
                   <Checkbox.Control/>
                   <Checkbox.Label>{task}</Checkbox.Label>

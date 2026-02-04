@@ -1,3 +1,4 @@
+import supabase from "./supabase-client";
 import UserProfile from "./pages/UserProfile";
 import "../styles/fonts.css";
 
@@ -6,7 +7,7 @@ let User = {
   firstName: "George",
   lastName: "Bou Faysal",
   section: "Rover",
-  color: "red.700",
+  color: "red.600",
 
 }
 
@@ -19,7 +20,7 @@ let tasks = {
 export default function App() {
   return (
     <>
-      <UserProfile {...User} taskList = {tasks.taskList}></UserProfile>
+      <UserProfile User={User} tasks={tasks}></UserProfile>
     </>
   );
 }

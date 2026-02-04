@@ -4,14 +4,14 @@ import DashboardTabs from "../component/DashboardTabs"
 import TaskList from "../component/TaskList"
 import { VStack } from "@chakra-ui/react"
 
-export default function UserProfile(User, tasks){
+export default function UserProfile({User, tasks}){
 
     return <>
             <Navigation></Navigation>
             <VStack height={"fit"} gap={"8"}>
             <UserCreds {...User}></UserCreds>
             <DashboardTabs></DashboardTabs>
-            <TaskList {...tasks} ></TaskList>
+            <TaskList {...tasks}></TaskList>
             </VStack>
     </>
 
