@@ -1,111 +1,271 @@
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+@import "tailwindcss";
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Antioch Scout Portal — Byzantine Heritage meets Modern SaaS
+   All colors HSL. Dark-mode first.
+*/
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+    /* LIGHT MODE — clean modern white with warm undertone */
+    --background: 40 25% 98%;
+    --foreground: 145 20% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 145 20% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 145 20% 10%;
+
+    --primary: 42 55% 42%;                /* deeper gold for contrast on light */
+    --primary-foreground: 40 25% 98%;
+    --primary-glow: 44 70% 60%;
+
+    --secondary: 145 36% 17%;
+    --secondary-foreground: 44 53% 90%;
+
+    --muted: 40 15% 94%;
+    --muted-foreground: 145 8% 38%;
+
+    --accent: 0 64% 32%;
+    --accent-foreground: 40 25% 98%;
+
+    --destructive: 0 64% 42%;
+    --destructive-foreground: 40 25% 98%;
+
+    --border: 40 12% 88%;
+    --input: 40 12% 88%;
+    --ring: 42 55% 42%;
+
+    --radius: 0.5rem;
+
+    --gold: 42 55% 42%;
+    --gold-soft: 44 50% 58%;
+    --surface-elevated: 40 20% 96%;
+    --crimson: 0 64% 32%;
+
+    --gradient-gold: linear-gradient(135deg, hsl(42 55% 42%), hsl(44 65% 55%));
+    --gradient-dark: radial-gradient(ellipse at top, hsl(145 25% 12%), hsl(140 36% 5%));
+    --shadow-glow: 0 0 24px hsl(42 55% 42% / 0.18);
+    --shadow-card: 0 1px 3px hsl(145 20% 10% / 0.04), 0 8px 24px -12px hsl(145 20% 10% / 0.08);
+    --transition-base: 200ms ease;
+
+    --sidebar-background: 140 36% 6%;
+    --sidebar-foreground: 44 30% 85%;
+    --sidebar-primary: 44 53% 54%;
+    --sidebar-primary-foreground: 140 36% 8%;
+    --sidebar-accent: 145 25% 14%;
+    --sidebar-accent-foreground: 44 53% 84%;
+    --sidebar-border: 145 20% 18%;
+    --sidebar-ring: 44 53% 54%;
   }
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
+  .dark {
+    --background: 140 14% 6%;             /* #0F1410 */
+    --foreground: 44 38% 92%;             /* #EEE8D5 */
+
+    --card: 145 18% 12%;                  /* #1A2420 */
+    --card-foreground: 44 38% 92%;
+
+    --popover: 145 18% 10%;
+    --popover-foreground: 44 38% 92%;
+
+    --primary: 44 53% 54%;
+    --primary-foreground: 140 36% 8%;
+    --primary-glow: 44 70% 65%;
+
+    --secondary: 145 36% 17%;
+    --secondary-foreground: 44 38% 92%;
+
+    --muted: 145 12% 15%;
+    --muted-foreground: 44 15% 65%;
+
+    --accent: 0 64% 35%;
+    --accent-foreground: 44 38% 92%;
+
+    --destructive: 0 64% 38%;
+    --destructive-foreground: 44 38% 92%;
+
+    --border: 145 15% 18%;
+    --input: 145 15% 18%;
+    --ring: 44 53% 54%;
+
+    --gold: 44 53% 54%;
+    --gold-soft: 44 50% 65%;
+    --surface-elevated: 145 18% 14%;
+    --crimson: 0 64% 35%;
+
+    --gradient-gold: linear-gradient(135deg, hsl(44 53% 50%), hsl(44 65% 62%));
+    --gradient-dark: radial-gradient(ellipse at top, hsl(145 22% 10%), hsl(140 36% 4%));
+    --shadow-glow: 0 0 28px hsl(44 53% 54% / 0.22);
+    --shadow-card: 0 8px 32px -12px hsl(0 0% 0% / 0.6);
+
+    --sidebar-background: 140 36% 5%;
+    --sidebar-foreground: 44 30% 85%;
+    --sidebar-primary: 44 53% 54%;
+    --sidebar-primary-foreground: 140 36% 8%;
+    --sidebar-accent: 145 25% 12%;
+    --sidebar-accent-foreground: 44 53% 84%;
+    --sidebar-border: 145 20% 14%;
+    --sidebar-ring: 44 53% 54%;
   }
 }
 
-body {
-  margin: 0;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  html.font-arabic,
+  html.font-arabic body {
+    font-family: 'Noto Kufi Arabic', 'Inter', system-ui, sans-serif;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "ss01", "cv11", "cv02";
+  }
+  h1, h2, h3, h4, h5, h6, .font-serif {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+  html.font-arabic h1,
+  html.font-arabic h2,
+  html.font-arabic h3,
+  html.font-arabic h4,
+  html.font-arabic h5,
+  html.font-arabic h6,
+  html.font-arabic .font-serif {
+    font-family: 'Noto Kufi Arabic', 'Inter', system-ui, sans-serif;
+  }
+  h1 { letter-spacing: -0.04em; font-weight: 700; }
+  html.font-arabic h1 { letter-spacing: 0; }
+
+  /* RTL flips for icons that imply direction */
+  [dir="rtl"] .rtl-flip { transform: scaleX(-1); }
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
+@layer components {
+  .gold-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, hsl(var(--gold) / 0.6), transparent);
+  }
+  .gold-text {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .arch-top {
+    border-top-left-radius: 9999px;
+    border-top-right-radius: 9999px;
+  }
+  .ornament-border {
+    position: relative;
+  }
+  .ornament-border::before,
+  .ornament-border::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, hsl(var(--gold) / 0.5), transparent);
+  }
+  .ornament-border::before { top: 0; }
+  .ornament-border::after { bottom: 0; }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
+  .shield-clip {
+    clip-path: polygon(50% 0, 100% 18%, 100% 70%, 50% 100%, 0 70%, 0 18%);
+  }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+  .glow-hover {
+    transition: box-shadow var(--transition-base), transform var(--transition-base);
+  }
+  .glow-hover:hover {
+    box-shadow: var(--shadow-glow);
   }
 }
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
+
+@layer utilities {
+  .bg-gradient-gold { background: var(--gradient-gold); }
+  .bg-gradient-dark { background: var(--gradient-dark); }
+  .shadow-glow { box-shadow: var(--shadow-glow); }
+  .shadow-card { box-shadow: var(--shadow-card); }
+  .text-gold { color: hsl(var(--gold)); }
+  .border-gold { border-color: hsl(var(--gold)); }
+  .bg-crimson { background-color: hsl(var(--crimson)); }
+
+  /* Editorial italic serif accent — used for emphasized words in display headings */
+  .font-italic-serif {
+    font-family: 'Instrument Serif', 'Cormorant Garamond', Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.01em;
   }
-}
-p {
-  margin: 0;
-}
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
+  /* Cosmic night sky — dark mode default; light mode swaps to a warm parchment sky */
+  .bg-cosmos {
+    background-color: hsl(40 35% 96%);
+    background-image:
+      radial-gradient(ellipse 80% 55% at 50% 0%, hsl(42 70% 60% / 0.18), transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 100%, hsl(0 60% 55% / 0.10), transparent 60%),
+      radial-gradient(1.5px 1.5px at 12% 18%, hsl(42 55% 35% / 0.35), transparent 60%),
+      radial-gradient(1px 1px at 27% 62%, hsl(42 55% 35% / 0.25), transparent 60%),
+      radial-gradient(1.5px 1.5px at 45% 30%, hsl(42 55% 35% / 0.30), transparent 60%),
+      radial-gradient(1px 1px at 63% 78%, hsl(42 55% 35% / 0.25), transparent 60%),
+      radial-gradient(1.5px 1.5px at 78% 22%, hsl(42 55% 35% / 0.32), transparent 60%),
+      radial-gradient(1px 1px at 88% 55%, hsl(42 55% 35% / 0.22), transparent 60%),
+      radial-gradient(1px 1px at 8% 85%, hsl(42 55% 35% / 0.22), transparent 60%),
+      radial-gradient(1.5px 1.5px at 33% 92%, hsl(42 55% 35% / 0.28), transparent 60%),
+      radial-gradient(1px 1px at 55% 12%, hsl(42 55% 35% / 0.22), transparent 60%),
+      radial-gradient(1px 1px at 72% 48%, hsl(42 55% 35% / 0.22), transparent 60%),
+      radial-gradient(1px 1px at 95% 88%, hsl(42 55% 35% / 0.22), transparent 60%);
+    background-size: 100% 100%, 100% 100%, 220px 220px, 220px 220px, 320px 320px, 320px 320px, 420px 420px, 420px 420px, 280px 280px, 280px 280px, 360px 360px, 360px 360px, 200px 200px;
+  }
+  .dark .bg-cosmos {
+    background-color: hsl(140 30% 4%);
+    background-image:
+      radial-gradient(ellipse 80% 55% at 50% 0%, hsl(44 53% 30% / 0.18), transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 100%, hsl(0 64% 30% / 0.18), transparent 60%),
+      radial-gradient(1.5px 1.5px at 12% 18%, hsl(44 53% 80% / 0.9), transparent 60%),
+      radial-gradient(1px 1px at 27% 62%, hsl(44 53% 80% / 0.7), transparent 60%),
+      radial-gradient(1.5px 1.5px at 45% 30%, hsl(44 53% 80% / 0.85), transparent 60%),
+      radial-gradient(1px 1px at 63% 78%, hsl(44 53% 80% / 0.7), transparent 60%),
+      radial-gradient(1.5px 1.5px at 78% 22%, hsl(44 53% 80% / 0.9), transparent 60%),
+      radial-gradient(1px 1px at 88% 55%, hsl(44 53% 80% / 0.7), transparent 60%),
+      radial-gradient(1px 1px at 8% 85%, hsl(44 53% 80% / 0.7), transparent 60%),
+      radial-gradient(1.5px 1.5px at 33% 92%, hsl(44 53% 80% / 0.8), transparent 60%),
+      radial-gradient(1px 1px at 55% 12%, hsl(44 53% 80% / 0.7), transparent 60%),
+      radial-gradient(1px 1px at 72% 48%, hsl(44 53% 80% / 0.7), transparent 60%),
+      radial-gradient(1px 1px at 95% 88%, hsl(44 53% 80% / 0.7), transparent 60%);
+  }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+  .glass-card {
+    background: linear-gradient(180deg, hsl(0 0% 100% / 0.7), hsl(40 25% 96% / 0.55));
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border: 1px solid hsl(42 55% 42% / 0.22);
+    box-shadow: 0 20px 60px -30px hsl(42 30% 25% / 0.25), inset 0 1px 0 hsl(0 0% 100% / 0.6);
+  }
+  .dark .glass-card {
+    background: linear-gradient(180deg, hsl(145 18% 14% / 0.55), hsl(145 18% 8% / 0.55));
+    border: 1px solid hsl(44 53% 54% / 0.18);
+    box-shadow: 0 30px 80px -30px hsl(0 0% 0% / 0.7), inset 0 1px 0 hsl(44 53% 80% / 0.06);
+  }
+
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  .animate-float-slow { animation: float-slow 7s ease-in-out infinite; }
+
+  @keyframes orb-pulse {
+    0%, 100% { opacity: 0.55; transform: scale(1); }
+    50% { opacity: 0.9; transform: scale(1.04); }
+  }
+  .animate-orb { animation: orb-pulse 6s ease-in-out infinite; }
 }
