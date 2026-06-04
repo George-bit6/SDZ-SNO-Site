@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { dictionary } from "./dictionary";
 const I18nContext = createContext(undefined);
 const STORAGE_KEY = "antioch-lang";
-export const i18nProvider = ({ children }) => {
+export const I18nProvider = ({ children }) => {
     const [lang, setLangState] = useState(() => {
         if (typeof window === "undefined")
             return "en";

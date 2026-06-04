@@ -113,7 +113,7 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @reference border-border;
   }
   html {
     font-family: 'Inter', system-ui, sans-serif;
@@ -123,7 +123,7 @@
     font-family: 'Noto Kufi Arabic', 'Inter', system-ui, sans-serif;
   }
   body {
-    @apply bg-background text-foreground antialiased;
+    @reference bg-background text-foreground antialiased;
     font-feature-settings: "ss01", "cv11", "cv02";
   }
   h1, h2, h3, h4, h5, h6, .font-serif {

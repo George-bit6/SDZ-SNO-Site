@@ -1,4 +1,4 @@
-import { cn } from "../libs/utils";
+import { cn } from "../lib/utils";
 /**
  * Placeholder logo — the brand mark for the portal.
  * Renders a circular frame without an image.
