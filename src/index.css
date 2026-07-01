@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+* {
+  font-family: 'Inter';
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/inter/Inter_18pt-Regular.woff2") format("woff2"),
+       url("./assets/inter/Inter_18pt-Regular.woff") format("woff");
+}
 
 /* Antioch Scout Portal — Byzantine Heritage meets Modern SaaS
    All colors HSL. Dark-mode first.

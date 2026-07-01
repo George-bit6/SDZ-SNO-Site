@@ -5,6 +5,9 @@ import { Crest } from "@/components/Crest";
 import { StatusPill } from "@/components/StatusPill";
 import { Check, Clock, MoreHorizontal, Plus, Users } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
+import { useState, useEffect } from "react";
+import Leader from "@/processes/leaders";
+import ScoutMember from "@/processes/members";
 
 // Choose a CSS class set for the heatmap based on a numeric progress value.
 // Higher values get a stronger color, lower values get a warning red tone.
