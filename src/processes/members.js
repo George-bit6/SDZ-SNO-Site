@@ -14,49 +14,49 @@ export default class ScoutMember {
                 phone_nb='N/A', 
                 gender='N/A', 
                 birthdate='N/A', 
-                membership_date='N/A', 
+                date_of_membership='N/A', 
                 unit_title='N/A'){
 
-        this.scout_id = scout_id;
+        this.Scout_id = scout_id;
         this.subgrp_id = subgrp_id;
         this.unit_name = unit_name;
-        this.fname = fname;
-        this.lname = lname;
+        this.Fname = fname;
+        this.Lname = lname;
         this.city = city;
         this.country = country;
         this.phone_nb = phone_nb;
         this.gender = gender;
         this.birthdate = birthdate;
-        this.membership_date = membership_date;
+        this.date_of_membership = date_of_membership;
         this.unit_title = unit_title;
                     
     }
 
     async getMemberById(member_id){
-        const { data, error } = await supabase
-            .from('scout_members')
+        const { data: memberData, error } = await supabase
+            .from('Scout_members')
             .select('*')
-            .eq('scout_id', member_id)
+            .eq('Scout_id', member_id)
             .single();
 
-        if (error) {
+        if (error || !memberData) {
             console.error('Error fetching member:', error);
             return null;
         }
 
         return new ScoutMember(
-            data.scout_id,
-            data.subgrp_id,
-            data.unit_name,
-            data.fname,
-            data.lname,
-            data.city,
-            data.country,
-            data.phone_nb,
-            data.gender,
-            data.birthdate,
-            data.membership_date,
-            data.unit_title
+            memberData.Scout_id,
+            memberData.subgrp_id,
+            memberData.unit_name,
+            memberData.Fname,
+            memberData.Lname,
+            memberData.city,
+            memberData.country,
+            memberData.phone_nb,
+            memberData.gender,
+            memberData.birthdate,
+            memberData.date_of_membership,
+            memberData.unit_title
         );
 
     }
@@ -73,12 +73,25 @@ export default class ScoutMember {
         return data;
     }
 
-    member_intials() {
-        const firstInitial = this.fname ? this.fname.charAt(0).toUpperCase() : '';
-        const lastInitial = this.lname ? this.lname.charAt(0).toUpperCase() : '';
+    member_initials() {
+        const firstInitial = this.Fname ? this.Fname.charAt(0).toUpperCase() : '';
+        const lastInitial = this.Lname ? this.Lname.charAt(0).toUpperCase() : '';
         return firstInitial + lastInitial;
     }
 
+    async getTasks(){
+
+        const { data, error } = await supabase
+        .rpc('get_member_tasks', { member_id: this.Scout_id });
+
+        if (error) {
+            console.error('Error fetching member tasks:', error);
+            return null;
+        }
+
+        return data;
+
+    }
 
 
 }

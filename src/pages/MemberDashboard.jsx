@@ -6,15 +6,73 @@ import { BadgeMedallion } from "@/components/BadgeMedallion";
 import { Award, Calendar, Compass, Flag, Flame, HandHeart, Tent, TreePine } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/i18n/I18nProvider";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import ScoutMember from "../processes/members";
+
+const fallbackTasks = [
+    { id: "1", task_id: "task.t1", task_status: "in-progress" },
+    { id: "2", task_id: "task.t2", task_status: "not-started" },
+    { id: "3", task_id: "task.t3", task_status: "pending" },
+];
+
+const normalizeTaskTitleKey = (rawKey) => {
+    if (!rawKey) {
+        return "task.t1";
+    }
+
+    return rawKey.startsWith("task.") ? rawKey : `task.${rawKey}`;
+};
+
 const MemberDashboard = () => {
     const { t } = useI18n();
-    const tasks = [
-        { id: "1", titleKey: "task.t1", dueDate: "May 5", status: "in-progress" },
-        { id: "2", titleKey: "task.t2", dueDate: "May 10", status: "not-started" },
-        { id: "3", titleKey: "task.t3", dueDate: "Apr 28", status: "pending" },
-        { id: "4", titleKey: "task.t4", dueDate: "May 14", status: "complete" },
-    ];
-    const badges = [
+    const { memberId } = useParams();
+    const [member, setMember] = useState(null);
+    const [tasks, setTasks] = useState(fallbackTasks);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const loadMember = async () => {
+            if (!memberId) {
+                setMember(null);
+                setTasks(fallbackTasks);
+                return;
+            }
+
+            const memberInstance = new ScoutMember();
+            const memberData = await memberInstance.getMemberById(memberId);
+            console.log("MemberDashboard memberData:", memberData);
+
+            if (!isMounted) {
+                return;
+            }
+
+            setMember(memberData);
+
+            if (memberData) {
+                const memberTasks = await memberData.getTasks();
+                console.log("MemberDashboard tasks:", memberTasks);
+                setTasks(Array.isArray(memberTasks) && memberTasks.length > 0 ? memberTasks : fallbackTasks);
+            } else {
+                setTasks(fallbackTasks);
+            }
+        };
+
+        loadMember();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [memberId]);
+
+    const taskList = tasks.map(task => ({
+        id: task.id ?? task.task_id,
+        titleKey: normalizeTaskTitleKey(task.task_id ?? task.titleKey ?? task.taskKey),
+        status: task.task_status ?? task.status ?? "not-started"
+    }));
+        
+      const badges = [
         { icon: Flame, key: "badge.firekeeper" },
         { icon: HandHeart, key: "badge.service" },
         { icon: Compass, key: "badge.navigator" },
@@ -45,22 +103,24 @@ const MemberDashboard = () => {
             <h1 className="font-serif text-4xl md:text-5xl">
               {t("mem.welcome", { name: "Elias" })}
             </h1>
-            <p className="text-muted-foreground mt-2">{t("mem.intro")}</p>
+            <p className="text-muted-foreground mt-2">
+              {memberId ? `${t("mem.intro")} (ID: ${memberId})` : t("mem.intro")}
+            </p>
           </div>
 
           <div className="grid lg:grid-cols-[1fr_320px] gap-8">
             <div className="space-y-10">
-              <section className="rounded-lg border border-border bg-card shadow-card overflow-hidden">
+              <section className="rounded-2xl border-black/5 border shadow-[0_0_6px_rgba(0,0,0,0.1)]  border-border bg-card overflow-hidden ">
                 <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent"/>
-                <div className="grid md:grid-cols-[auto_1fr] gap-8 p-8 items-center">
-                  <ProgressRing value={68} label={t("mem.honor")}/>
-                  <div className="grid grid-cols-3 gap-4">
+                <div className="grid md:grid-cols-[auto_1fr] gap-8 p-8 items-center ">
+                  <ProgressRing value={99} label={t("mem.honor")}/>
+                  <div className="grid grid-cols-3 gap-4 ">
                     {[
             { label: t("mem.stat.badges"), value: "12" },
             { label: t("mem.stat.tasks"), value: "47" },
             { label: t("mem.stat.hours"), value: "84" },
-        ].map((s) => (<div key={s.label} className="rounded-md bg-background border border-border p-4">
-                        <p className="font-serif text-3xl gold-text">{s.value}</p>
+        ].map((s) => (<div key={s.label} className="rounded-xl border-black/10 border shadow-[0_0_4px_rgba(0,0,0,0.1)]  bg-background border-border  p-4">
+                        <p className="font-serif text-3xl text-green-700">{s.value}</p>
                         <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mt-1">
                           {s.label}
                         </p>
@@ -75,7 +135,7 @@ const MemberDashboard = () => {
                   <a href="#" className="text-xs uppercase tracking-wider text-gold hover:underline">{t("mem.viewAll")}</a>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
-                  {tasks.map((tk) => (<TaskCard key={tk.id} id={tk.id} title={t(tk.titleKey)} dueDate={tk.dueDate} status={tk.status} subgroup={t("groups.scouts.name")}/>))}
+                  {taskList.map((tk) => (<TaskCard key={tk.id} id={tk.id} title={t(tk.titleKey)} status={tk.status} subgroup={t("groups.scouts.name")}/>))}
                 </div>
               </section>
 

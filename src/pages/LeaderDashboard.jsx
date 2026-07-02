@@ -6,6 +6,7 @@ import { StatusPill } from "@/components/StatusPill";
 import { Check, Clock, MoreHorizontal, Plus, Users } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Leader from "@/processes/leaders";
 import ScoutMember from "@/processes/members";
 
@@ -21,6 +22,7 @@ const heatColor = (p) => {
 
 const LeaderDashboard = () => {
     const { t } = useI18n();
+    const { leaderId } = useParams();
 
     // Summary statistics shown in the top cards.
     const stats = [
@@ -63,6 +65,7 @@ const LeaderDashboard = () => {
                         <div>
                             <p className="text-xs uppercase tracking-[0.3em] text-gold mb-2">{t("ld.kicker")}</p>
                             <h1 className="font-serif text-4xl md:text-5xl famil">{t("Boy Scouts")}</h1>
+                            {leaderId ? <p className="text-sm text-muted-foreground mt-2">Leader ID: {leaderId}</p> : null}
                         </div>
                         <div className="flex gap-2">
                             <Button variant="gold-outline" size="sm">{t("ld.export")}</Button>

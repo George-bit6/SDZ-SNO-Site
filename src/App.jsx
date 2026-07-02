@@ -29,9 +29,11 @@ const App = () => (<ThemeProvider>
               <Route path="/" element={<Index />}/>
               <Route path="/login" element={<Login />}/>
               <Route path="/member" element={<MemberDashboard />}/>
+              <Route path="/member/:memberId" element={<MemberDashboard />}/>
               <Route path="/member/tasks" element={<Tasks role="member"/>}/>
               <Route path="/member/leaderboard" element={<Leaderboard role="member"/>}/>
               <Route path="/leader" element={<LeaderDashboard />}/>
+              <Route path="/leader/:leaderId" element={<LeaderDashboard />}/>
               <Route path="/leader/tasks" element={<Tasks role="leader"/>}/>
               <Route path="/leader/leaderboard" element={<Leaderboard role="leader"/>}/>
               <Route path="/leader/reviews" element={<Reviews />}/>
