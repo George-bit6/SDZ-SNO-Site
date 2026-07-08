@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import FormData from "form-data";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,41 +9,74 @@ import heroEmblem from "@/assets/stDemetriosIcon.png";
 import { useI18n } from "@/i18n/I18nProvider";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import supabase from '../../supabase.js'
 const Login = () => {
   const navigate = useNavigate();
   const [role, setRole] = useState("member");
   const { t } = useI18n();
-  const submit = (e) => {
+
+  async function login(email, password) {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+    if(error){
+      console.error("Login error:", error.message);
+    }
+    console.log("Login data:", data.user);
+
+  }
+
+  async function submit(e) {
     e.preventDefault();
     navigate(role === "member" ? "/member" : "/leader");
+
+    const formData = new FormData(e.target);
+
+    const email = formData.get("email");
+    const password = formData.get("password");
+
+    console.log("Email:", email);
+    console.log("Password:", password);
+  
+    await login(email, password);
   };
+  
+  
+
   return (
-    <div className="min-h-screen bg-gradient-dark flex items-center justify-center px-4 py-12 relative overflow-hidden">
+    <div className=" min-h-screen flex items-center justify-center px-4 py-12 relative overflow-hidden">
       <div
-        className="absolute inset-0 opacity-[0.06] pointer-events-none"
+        className=" absolute inset-0 opacity-[0.06] pointer-events-none"
         style={{
           backgroundImage: `url(${heroEmblem})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background/80" />
+      <div className="absolute inset-0 from-background/40 via-transparent to-background/80" />
 
       <div className="absolute top-4 end-4 flex items-center gap-1 z-10">
         <LanguageToggle />
         <ThemeToggle />
       </div>
 
-      <div className="relative w-full max-w-md">
+      <div className=" relative w-full max-w-md">
         <Link
           to="/"
-          className="block text-center text-xs uppercase tracking-[0.3em] text-muted-foreground hover:text-gold transition-colors mb-6"
+          className="mb-16 block text-center text-xs uppercase tracking-[0.3em] text-muted-foreground hover:text-gold transition-colors mb-6"
         >
           {t("login.back")}
         </Link>
 
         <div className="relative">
           <div className="absolute -top-10 inset-x-0 flex justify-center">
+            <div className="size-20 rounded-full bg-gradient-gold flex items-center justify-center shadow-glow border-4 border-background">
+              <Shield
+                className="size-9 text-primary-foreground"
+                strokeWidth={1.5}
+              />
+            </div>
             <div className="size-20 rounded-full bg-gradient-gold flex items-center justify-center shadow-glow border-4 border-background">
               <Shield
                 className="size-9 text-primary-foreground"
@@ -59,7 +93,7 @@ const Login = () => {
               </p>
               <div className="gold-divider w-16 mx-auto mt-4" />
             </div>
-
+            
             <form onSubmit={submit} className="space-y-5">
               <div className="space-y-2">
                 <Label
@@ -71,8 +105,9 @@ const Login = () => {
                 <Input
                   id="email"
                   type="email"
+                  name="email"
                   required
-                  placeholder="scout@antiochscouts.org"
+                  placeholder="Enter Your Email"
                   className="bg-background border-border focus-visible:ring-gold focus-visible:border-gold h-11"
                 />
               </div>
@@ -86,6 +121,7 @@ const Login = () => {
                 </Label>
                 <Input
                   id="password"
+                  name="password"
                   type="password"
                   required
                   placeholder="••••••••"

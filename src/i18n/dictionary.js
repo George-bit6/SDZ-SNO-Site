@@ -1,7 +1,7 @@
 export const dictionary = {
   en: {
     // Brand
-    "brand.name": "Antioch",
+    "brand.name": "SDZ",
     "brand.tagline": "Scout Group",
     "brand.portal": "Scout Portal",
 
@@ -56,7 +56,7 @@ export const dictionary = {
     "footer.location": "© {year} · Beirut, Lebanon · contact@antiochscouts.org",
 
     // Login
-    "login.back": "← Antioch Scout Group",
+    "login.back": "Home Page",
     "login.title": "Welcome back",
     "login.subtitle": "Sign in to your portal",
     "login.email": "Email",

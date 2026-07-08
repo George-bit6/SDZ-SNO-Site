@@ -11,10 +11,7 @@ import MemberDashboard from "./pages/MemberDashboard.jsx";
 import LeaderDashboard from "./pages/LeaderDashboard.jsx";
 import Tasks from "./pages/Tasks.jsx";
 import Leaderboard from "./pages/Leaderboard.jsx";
-import Reviews from "./pages/Reviews.jsx";
 import Members from "./pages/Members.jsx";
-import Programs from "./pages/Programs.jsx";
-import Inventory from "./pages/Inventory.jsx";
 import Settings from "./pages/Settings.jsx";
 import NotFound from "./pages/NotFound.jsx";
 const queryClient = new QueryClient();
@@ -36,10 +33,7 @@ const App = () => (<ThemeProvider>
               <Route path="/leader/:leaderId" element={<LeaderDashboard />}/>
               <Route path="/leader/tasks" element={<Tasks role="leader"/>}/>
               <Route path="/leader/leaderboard" element={<Leaderboard role="leader"/>}/>
-              <Route path="/leader/reviews" element={<Reviews />}/>
               <Route path="/leader/members" element={<Members />}/>
-              <Route path="/leader/programs" element={<Programs />}/>
-              <Route path="/leader/inventory" element={<Inventory />}/>
               <Route path="/settings" element={<Settings />}/>
               <Route path="*" element={<NotFound />}/>
             </Routes>

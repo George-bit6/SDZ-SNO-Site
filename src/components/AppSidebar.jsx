@@ -7,8 +7,6 @@ const memberNav = [
     { to: "/member", icon: LayoutDashboard, key: "side.dashboard" },
     { to: "/member/tasks", icon: ClipboardList, key: "side.tasks" },
     { to: "/member/leaderboard", icon: Trophy, key: "side.leaderboard" },
-    { to: "/member/badges", icon: Award, key: "side.badges" },
-    { to: "/member/events", icon: CalendarDays, key: "side.events" },
     { to: "/settings", icon: Settings, key: "side.settings" },
 ];
 const leaderNav = [
@@ -16,17 +14,14 @@ const leaderNav = [
     { to: "/leader/members", icon: Users, key: "side.members" },
     { to: "/leader/tasks", icon: ClipboardList, key: "side.allTasks" },
     { to: "/leader/leaderboard", icon: Trophy, key: "side.leaderboard" },
-    { to: "/leader/programs", icon: CalendarRange, key: "side.programs" },
-    { to: "/leader/inventory", icon: Boxes, key: "side.inventory" },
-    { to: "/leader/reviews", icon: Shield, key: "side.reviews" },
     { to: "/settings", icon: Settings, key: "side.settings" },
 ];
 export const AppSidebar = ({ role }) => {
     const items = role === "member" ? memberNav : leaderNav;
     const location = useLocation();
     const { t, dir } = useI18n();
-    return (<aside className="hidden md:flex w-64 shrink-0 flex-col border-e border-sidebar-border bg-sidebar text-sidebar-foreground">
-      <div className="flex items-center gap-3 px-5 h-16 border-b border-sidebar-border">
+    return (<aside className="border-black/15 hidden md:flex w-64 shrink-0 flex-col border-e border-sidebar-border bg-sidebar text-sidebar-foreground">
+      <div className=" flex items-center gap-3 px-5 h-16 border-b border-sidebar-border border-black/15">
         <Logo className="size-10"/>
         <div className="leading-tight">
           <p className="font-serif text-lg text-gold">{t("brand.name")}</p>
@@ -34,7 +29,7 @@ export const AppSidebar = ({ role }) => {
         </div>
       </div>
 
-      <nav className="flex-1 px-3 py-6 space-y-1">
+      <nav className=" flex-1 px-3 py-6 space-y-1">
         <p className="px-3 mb-2 text-[10px] uppercase tracking-[0.25em] text-sidebar-foreground/50">
           {role === "member" ? t("side.scout") : t("side.leadership")}
         </p>
@@ -50,7 +45,7 @@ export const AppSidebar = ({ role }) => {
         })}
       </nav>
 
-      <div className="m-3 rounded-lg border border-sidebar-border bg-sidebar-accent/40 p-4">
+      <div className=" m-3 rounded-2xl border-black/5 border shadow-[0_0_6px_rgba(0,0,0,0.1)] border-sidebar-border bg-sidebar-accent/40 p-4">
         <p className="text-[10px] uppercase tracking-[0.25em] text-gold mb-2">{t("side.oathTitle")}</p>
         <p className="text-xs text-sidebar-foreground/70 leading-relaxed">
           {t("side.oathBody")}

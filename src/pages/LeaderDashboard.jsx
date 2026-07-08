@@ -151,40 +151,7 @@ const LeaderDashboard = () => {
                         </section>
 
                         <div className="space-y-6">
-                            {/* Heatmap section showing activity range for selected members. */}
-                            <section className="rounded-lg border border-border bg-card shadow-card p-6">
-                                <h3 className="font-serif text-lg mb-1">{t("ld.heatmap")}</h3>
-                                <p className="text-xs text-muted-foreground mb-4">{t("ld.heatmap.note")}</p>
-                                <div className="space-y-2">
-                                    {members.slice(0, 6).map((m) => (
-                                        <div key={m.name} className="flex items-center gap-2">
-                                            <span className="text-xs w-16 truncate text-muted-foreground">{m.initials}</span>
-                                            <div className="flex gap-1 flex-1">
-                                                {Array.from({ length: 7 }).map((_, i) => {
-                                                    const intensity = (m.progress + i * 7) % 100;
-                                                    return (
-                                                        <div
-                                                            key={i}
-                                                            className={`h-5 flex-1 rounded-sm ${heatColor(intensity)} opacity-${intensity > 50 ? "100" : "70"}`}
-                                                            title={`Week ${i + 1}: ${intensity}%`}
-                                                        />
-                                                    );
-                                                })}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                                <div className="flex items-center justify-between mt-4 pt-4 border-t border-border text-[10px] uppercase tracking-wider text-muted-foreground">
-                                    <span>{t("ld.less")}</span>
-                                    <div className="flex gap-1">
-                                        <span className="size-3 rounded-sm bg-crimson/30" />
-                                        <span className="size-3 rounded-sm bg-gold/30" />
-                                        <span className="size-3 rounded-sm bg-secondary" />
-                                    </div>
-                                    <span>{t("ld.more")}</span>
-                                </div>
-                            </section>
-
+                        
                             {/* Pending review list with approve / request change buttons. */}
                             <section className="rounded-lg border border-border bg-card shadow-card p-6">
                                 <div className="flex items-center justify-between mb-4">

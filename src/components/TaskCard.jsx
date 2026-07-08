@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useI18n } from "@/i18n/I18nProvider";
 export const TaskCard = ({ id, title, subgroup, dueDate, status }) => {
     const { t } = useI18n();
-    return (<article className="group relative overflow-hidden rounded-lg border border-border bg-card p-5 shadow-card glow-hover">
+    return (<article className="group relative overflow-hidden rounded-2xl border-black/5 border shadow-[0_0_6px_rgba(0,0,0,0.1)] border-border bg-card p-5 glow-hover">
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent"/>
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1 min-w-0">

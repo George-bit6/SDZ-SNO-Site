@@ -69,7 +69,7 @@ const MemberDashboard = () => {
     const taskList = tasks.map(task => ({
         id: task.id ?? task.task_id,
         titleKey: normalizeTaskTitleKey(task.task_id ?? task.titleKey ?? task.taskKey),
-        status: task.task_status ?? task.status ?? "not-started"
+        status: task.task_status ?? "not-started"
     }));
         
       const badges = [
@@ -130,21 +130,21 @@ const MemberDashboard = () => {
               </section>
 
               <section>
-                <div className="flex items-baseline justify-between mb-5">
+                <div className=" flex items-baseline justify-between mb-5">
                   <h2 className="font-serif text-2xl">{t("mem.missions")}</h2>
                   <a href="#" className="text-xs uppercase tracking-wider text-gold hover:underline">{t("mem.viewAll")}</a>
                 </div>
-                <div className="grid sm:grid-cols-2 gap-4">
+                <div className=" grid sm:grid-cols-2 gap-4">
                   {taskList.map((tk) => (<TaskCard key={tk.id} id={tk.id} title={t(tk.titleKey)} status={tk.status} subgroup={t("groups.scouts.name")}/>))}
                 </div>
               </section>
 
               <section>
-                <div className="flex items-baseline justify-between mb-5">
+                <div className=" flex items-baseline justify-between mb-5">
                   <h2 className="font-serif text-2xl">{t("mem.medallions")}</h2>
                   <span className="text-xs text-muted-foreground">{t("mem.medallions.note")}</span>
                 </div>
-                <div className="rounded-lg border border-border bg-card p-6 shadow-card">
+                <div className="rounded-2xl border-black/5 border shadow-[0_0_6px_rgba(0,0,0,0.1)] border-border bg-card p-6 ">
                   <div className="flex gap-6 overflow-x-auto pb-2 -mx-2 px-2">
                     {badges.map((b) => (<div key={b.key} className="shrink-0">
                         <BadgeMedallion icon={b.icon} label={t(b.key)} earned={"earned" in b ? b.earned : true}/>
@@ -169,7 +169,7 @@ const MemberDashboard = () => {
             </div>
 
             <aside className="space-y-6">
-              <div className="rounded-lg border border-border bg-card shadow-card p-6">
+              <div className="rounded-lg border border-border bg-card  border-black/5  shadow-[0_0_6px_rgba(0,0,0,0.1)] p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <Calendar className="size-4 text-gold"/>
                   <h3 className="font-serif text-lg">{t("mem.upcoming")}</h3>
@@ -189,7 +189,7 @@ const MemberDashboard = () => {
                 <Button variant="gold-outline" size="sm" className="w-full mt-4">{t("mem.viewCalendar")}</Button>
               </div>
 
-              <div className="relative rounded-lg border border-gold/30 bg-gradient-to-br from-secondary/40 to-card p-6 overflow-hidden">
+              <div className="relative rounded-lg border border-gold/30 bg-gradient-to-br from-secondary/40 to-card p-6 overflow-hidden  border-black/5  shadow-[0_0_6px_rgba(0,0,0,0.1)]">
                 <div className="ornament-border py-4">
                   <p className="text-[10px] uppercase tracking-[0.3em] text-gold mb-3 text-center">{t("side.oathTitle")}</p>
                   <p className="text-sm text-center leading-relaxed text-foreground/90">

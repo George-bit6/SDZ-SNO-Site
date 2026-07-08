@@ -6,11 +6,8 @@ import { LanguageToggle } from "./LanguageToggle";
 import { useI18n } from "@/i18n/I18nProvider";
 export const Topbar = ({ name, rank, subgroup, initials }) => {
     const { t } = useI18n();
-    return (<header className="h-16 shrink-0 border-b border-border bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-card/30 px-4 md:px-8 flex items-center justify-between">
-      <div className="flex items-center gap-3 text-sm text-muted-foreground">
-        <Search className="size-4"/>
-        <span className="hidden sm:inline">{t("top.search")}</span>
-      </div>
+    return (<header className="flex align-items h-16 shrink-0 border-b border-border  border-black/15 bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-card/30 px-4 md:px-8 flex items-center justify-between">
+      
 
       <div className="flex items-center gap-3">
         <span className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-gold/30 bg-gold/5 px-3 py-1 text-xs">
