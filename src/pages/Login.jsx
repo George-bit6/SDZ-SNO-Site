@@ -1,5 +1,4 @@
 import { Link, useNavigate } from "react-router-dom";
-import FormData from "form-data";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,40 +8,26 @@ import heroEmblem from "@/assets/stDemetriosIcon.png";
 import { useI18n } from "@/i18n/I18nProvider";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import supabase from '../../supabase.js'
+import submit from "@/processes/auth";
+
 const Login = () => {
-  const navigate = useNavigate();
   const [role, setRole] = useState("member");
   const { t } = useI18n();
+  const navigate = useNavigate();
 
-  async function login(email, password) {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    });
-    if(error){
-      console.error("Login error:", error.message);
-    }
-    console.log("Login data:", data.user);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  }
-
-  async function submit(e) {
-    e.preventDefault();
-    navigate(role === "member" ? "/member" : "/leader");
-
-    const formData = new FormData(e.target);
-
+    const formData = new FormData(event.currentTarget);
     const email = formData.get("email");
     const password = formData.get("password");
 
-    console.log("Email:", email);
-    console.log("Password:", password);
-  
-    await login(email, password);
+    const success = await submit(email, password);
+
+    if (success) {
+      navigate(role === "member" ? "/member" : "/leader");
+    }
   };
-  
-  
 
   return (
     <div className=" min-h-screen flex items-center justify-center px-4 py-12 relative overflow-hidden">
@@ -94,7 +79,7 @@ const Login = () => {
               <div className="gold-divider w-16 mx-auto mt-4" />
             </div>
             
-            <form onSubmit={submit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-2">
                 <Label
                   htmlFor="email"
@@ -131,27 +116,29 @@ const Login = () => {
 
               <div className="flex items-center justify-between text-xs">
                 <div className="flex gap-1 rounded-md border border-border p-0.5">
-                  <button
+                  <Button
                     type="button"
+                    name="memberSetterButton"
                     onClick={() => setRole("member")}
                     className={`px-3 py-1 rounded text-xs transition-colors ${role === "member" ? "bg-gold text-primary-foreground" : "text-muted-foreground"}`}
                   >
                     {t("login.role.scout")}
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     type="button"
+                    name="leaderSetterButton"
                     onClick={() => setRole("leader")}
                     className={`px-3 py-1 rounded text-xs transition-colors ${role === "leader" ? "bg-gold text-primary-foreground" : "text-muted-foreground"}`}
                   >
                     {t("login.role.leader")}
-                  </button>
+                  </Button>
                 </div>
                 <a href="#" className="text-muted-foreground hover:text-gold">
                   {t("login.forgot")}
                 </a>
               </div>
 
-              <Button type="submit" variant="hero" className="w-full h-11">
+              <Button type="submit" variant="hero" className=" w-full h-11">
                 {t("login.submit")} <ArrowRight className="rtl-flip" />
               </Button>
             </form>
