@@ -3,8 +3,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowRight, Shield } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import heroEmblem from "@/assets/stDemetriosIcon.png";
+import stDemetriosLogo from "@/assets/stDemetriosLogo 1.png";
+import snoLogo from "@/assets/sno-logo 1.png";
 import { useI18n } from "@/i18n/I18nProvider";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -55,17 +57,19 @@ const Login = () => {
         </Link>
 
         <div className="relative">
-          <div className="absolute -top-10 inset-x-0 flex justify-center">
-            <div className="size-20 rounded-full bg-gradient-gold flex items-center justify-center shadow-glow border-4 border-background">
-              <Shield
-                className="size-9 text-primary-foreground"
-                strokeWidth={1.5}
+          <div className="absolute -top-10 inset-x-0 flex justify-center gap-3">
+            <div className="size-21  rounded-full bg-background/90 flex items-center justify-center border-background overflow-hidden p-2">
+              <img
+                src={stDemetriosLogo}
+                alt="St. Demetrios logo"
+                className="h-full w-full object-contain"
               />
             </div>
-            <div className="size-20 rounded-full bg-gradient-gold flex items-center justify-center shadow-glow border-4 border-background">
-              <Shield
-                className="size-9 text-primary-foreground"
-                strokeWidth={1.5}
+            <div className="size-21  rounded-full bg-background/90 flex items-center justify-center border-background overflow-hidden p-2">
+              <img
+                src={snoLogo}
+                alt="SNO logo"
+                className="h-full w-full object-contain"
               />
             </div>
           </div>
@@ -115,12 +119,16 @@ const Login = () => {
               </div>
 
               <div className="flex items-center justify-between text-xs">
-                <div className="flex gap-1 rounded-md border border-border p-0.5">
+                <div className="flex gap-1 rounded-md border border-border bg-background/70 p-0.5 shadow-sm">
                   <Button
                     type="button"
                     name="memberSetterButton"
                     onClick={() => setRole("member")}
-                    className={`px-3 py-1 rounded text-xs transition-colors ${role === "member" ? "bg-gold text-primary-foreground" : "text-muted-foreground"}`}
+                    className={`px-3 py-1 rounded text-xs font-medium transition-all duration-200 ${
+                      role === "member"
+                        ? "bg-gold text-primary-foreground shadow-sm scale-[1.15]"
+                        : "text-muted-foreground hover:bg-gold/10 hover:text-gold hover:shadow-sm"
+                    }`}
                   >
                     {t("login.role.scout")}
                   </Button>
@@ -128,7 +136,11 @@ const Login = () => {
                     type="button"
                     name="leaderSetterButton"
                     onClick={() => setRole("leader")}
-                    className={`px-3 py-1 rounded text-xs transition-colors ${role === "leader" ? "bg-gold text-primary-foreground" : "text-muted-foreground"}`}
+                    className={`px-3 py-1 rounded text-xs font-medium transition-all duration-200 ${
+                      role === "leader"
+                        ? "bg-gold text-primary-foreground shadow-sm scale-[1.15]"
+                        : "text-muted-foreground hover:bg-gold/10 hover:text-gold hover:shadow-sm"
+                    }`}
                   >
                     {t("login.role.leader")}
                   </Button>
@@ -138,7 +150,7 @@ const Login = () => {
                 </a>
               </div>
 
-              <Button type="submit" variant="hero" className=" w-full h-11">
+              <Button type="submit" variant="hero" className="text-mist-100 w-full opacity-90  h-11">
                 {t("login.submit")} <ArrowRight className="rtl-flip" />
               </Button>
             </form>
