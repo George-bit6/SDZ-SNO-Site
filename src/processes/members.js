@@ -93,5 +93,9 @@ export default class ScoutMember {
 
     }
 
+    getMemberName(){
+        return `${this.Fname} ${this.Lname}`;
+    }
+
 
 }

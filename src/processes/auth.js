@@ -1,10 +1,23 @@
 import supabase from "../../supabase";
 
-async function submit(email, password) {
+export async function getUserId() {
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  if (error) {
+    console.error("Get user id error:", error.message);
+    return null;
+  }
+  return user?.id ?? null;
+}
+
+export async function submit(email, password) {
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
-  });
+  })
 
   if (error) {
     console.error("Login error:", error.message);
@@ -12,7 +25,7 @@ async function submit(email, password) {
   }
 
   console.log("Login data:", data?.user);
+
   return true;
 }
 
-export default submit;

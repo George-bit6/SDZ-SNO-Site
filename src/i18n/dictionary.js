@@ -100,6 +100,10 @@ export const dictionary = {
     "mem.activity": "Recent Activity",
     "mem.upcoming": "Upcoming",
     "mem.viewCalendar": "View Calendar",
+    "mem.emptyMissions": "You do not have any missions right now.",
+    "mem.emptyBadges": "You have not earned any badges yet.",
+    "mem.emptyActivity": "There is no recent activity to show.",
+    "mem.emptyEvents": "There are no upcoming events right now.",
     "mem.oathBody":
       "On my honor, I will do my best to do my duty to God and my country — to help other people at all times.",
 

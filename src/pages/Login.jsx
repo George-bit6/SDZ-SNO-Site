@@ -10,7 +10,7 @@ import snoLogo from "@/assets/sno-logo 1.png";
 import { useI18n } from "@/i18n/I18nProvider";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import submit from "@/processes/auth";
+import {getUserId, submit} from "@/processes/auth";
 
 const Login = () => {
   const [role, setRole] = useState("member");
@@ -19,15 +19,17 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    const formData = new FormData(event.currentTarget);
+    
+       const formData = new FormData(event.currentTarget);
     const email = formData.get("email");
     const password = formData.get("password");
 
     const success = await submit(email, password);
 
     if (success) {
-      navigate(role === "member" ? "/member" : "/leader");
+      const userId = await getUserId(); 
+      console.log("User ID:", userId); // Log the user ID for debugging
+      navigate(role === "member" ? `/member/${userId}` : `/leader/${userId}`);  
     }
   };
 
