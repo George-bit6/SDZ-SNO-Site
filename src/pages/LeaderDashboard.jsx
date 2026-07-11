@@ -5,8 +5,9 @@ import { Crest } from "@/components/Crest";
 import { StatusPill } from "@/components/StatusPill";
 import { Check, Clock, MoreHorizontal, Plus, Users } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
+import TaskForm from "../components/TaskForm";
 import Leader from "@/processes/leaders";
 import ScoutMember from "@/processes/members";
 
@@ -23,32 +24,16 @@ const heatColor = (p) => {
 const LeaderDashboard = () => {
     const { t } = useI18n();
     const { leaderId } = useParams();
-
+    const [isTaskFormOpen, setIsTaskFormOpen] = useState(false);
     // Summary statistics shown in the top cards.
-    const stats = [
-        { label: t("ld.stat.total"), value: "24", delta: t("ld.stat.totalDelta") },
-        { label: t("ld.stat.assigned"), value: "187", delta: t("ld.stat.assignedDelta") },
-        { label: t("ld.stat.rate"), value: "78%", delta: t("ld.stat.rateDelta") },
-        { label: t("ld.stat.pending"), value: "9", delta: t("ld.stat.pendingDelta") },
-    ];
+    const stats = [];
 
     // Member rows for the team table.
     // Each member has a name, initials badge, rank, task progress, and last activity timestamp.
-    const members = [
-        { name: "Elias Khoury", initials: "EK", rank: t("rank.senior"), assigned: 12, done: 9, progress: 75, last: t("act.t.2h") },
-        { name: "Maya Saliba", initials: "MS", rank: t("rank.patrol"), assigned: 14, done: 13, progress: 93, last: "1h" },
-        { name: "Anton Haddad", initials: "AH", rank: t("rank.scout"), assigned: 10, done: 4, progress: 40, last: t("act.t.3d") },
-        { name: "Nour Tannous", initials: "NT", rank: t("rank.senior"), assigned: 11, done: 8, progress: 73, last: t("act.t.1d") },
-        { name: "Sami Boutros", initials: "SB", rank: t("rank.scout"), assigned: 9, done: 2, progress: 22, last: "1w" },
-        { name: "Lara Chaoul", initials: "LC", rank: t("rank.patrol"), assigned: 13, done: 11, progress: 85, last: "5h" },
-    ];
+    const members = [];
 
     // Pending review items shown in the right column.
-    const reviews = [
-        { name: "Elias Khoury", task: t("task.t4"), time: t("act.t.1d") },
-        { name: "Lara Chaoul", task: t("task.t3"), time: t("act.t.3d") },
-        { name: "Anton Haddad", task: t("task.t1"), time: t("act.t.3d") },
-    ];
+    const reviews = [];
 
     return (
         <div className="min-h-screen flex bg-background">
@@ -69,7 +54,7 @@ const LeaderDashboard = () => {
                         </div>
                         <div className="flex gap-2">
                             <Button variant="gold-outline" size="sm">{t("ld.export")}</Button>
-                            <Button variant="hero" size="sm">
+                            <Button variant="hero" size="sm" onClick={() => setIsTaskFormOpen(true)}>
                                 <Plus /> {t("ld.assign")}
                             </Button>
                         </div>
@@ -77,14 +62,20 @@ const LeaderDashboard = () => {
 
                     {/* Top statistic cards showing totals, assignments, completion rate, and pending items. */}
                     <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-                        {stats.map((s) => (
-                            <div key={s.label} className="relative rounded-lg border border-border bg-card p-5 shadow-card overflow-hidden">
-                                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent" />
-                                <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">{s.label}</p>
-                                <p className="font-serif text-4xl gold-text mt-2">{s.value}</p>
-                                <p className="text-xs text-muted-foreground/80 mt-2">{s.delta}</p>
+                        {stats.length > 0 ? (
+                            stats.map((s) => (
+                                <div key={s.label} className="relative rounded-lg border border-border bg-card p-5 shadow-card overflow-hidden">
+                                    <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent" />
+                                    <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">{s.label}</p>
+                                    <p className="font-serif text-4xl gold-text mt-2">{s.value}</p>
+                                    <p className="text-xs text-muted-foreground/80 mt-2">{s.delta}</p>
+                                </div>
+                            ))
+                        ) : (
+                            <div className="lg:col-span-4 rounded-2xl border border-dashed border-border bg-background/60 p-6 text-center text-sm text-muted-foreground">
+                                {t("ld.emptyStats")}
                             </div>
-                        ))}
+                        )}
                     </section>
 
                     <div className="grid lg:grid-cols-[1fr_360px] gap-6">
@@ -161,32 +152,40 @@ const LeaderDashboard = () => {
                                     </h3>
                                     <span className="text-xs px-2 py-0.5 rounded-full bg-crimson/20 text-crimson">{reviews.length}</span>
                                 </div>
-                                <ul className="space-y-3">
-                                    {reviews.map((r) => (
-                                        <li key={r.name + r.task} className="rounded-md border border-border bg-background p-3">
-                                            <div className="flex items-start justify-between gap-2 mb-2">
-                                                <div className="min-w-0">
-                                                    <p className="text-sm font-medium leading-tight">{r.task}</p>
-                                                    <p className="text-xs text-muted-foreground mt-0.5">{r.name} · {r.time}</p>
-                                                </div>
-                                                <StatusPill status="pending" />
-                                            </div>
-                                            <div className="flex gap-2 mt-3">
-                                                <Button size="sm" variant="gold" className="h-7 px-3 text-xs flex-1">
-                                                    <Check className="size-3" /> {t("ld.approve")}
-                                                </Button>
-                                                <Button size="sm" variant="ghost" className="h-7 px-3 text-xs">
-                                                    {t("ld.requestChanges")}
-                                                </Button>
-                                            </div>
-                                        </li>
-                                    ))}
-                                </ul>
+                                {reviews.length > 0 ? (
+                  <ul className="space-y-3">
+                    {reviews.map((r) => (
+                      <li key={r.name + r.task} className="rounded-md border border-border bg-background p-3">
+                        <div className="flex items-start justify-between gap-2 mb-2">
+                          <div className="min-w-0">
+                            <p className="text-sm font-medium leading-tight">{r.task}</p>
+                            <p className="text-xs text-muted-foreground mt-0.5">{r.name} · {r.time}</p>
+                          </div>
+                          <StatusPill status="pending" />
+                        </div>
+                        <div className="flex gap-2 mt-3">
+                          <Button size="sm" variant="gold" className="h-7 px-3 text-xs flex-1">
+                            <Check className="size-3" /> {t("ld.approve")}
+                          </Button>
+                          <Button size="sm" variant="ghost" className="h-7 px-3 text-xs">
+                            {t("ld.requestChanges")}
+                          </Button>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <div className="rounded-2xl border border-dashed border-border bg-background/60 p-6 text-center text-sm text-muted-foreground">
+                    {t("ld.emptyReviews")}
+                  </div>
+                )}
                             </section>
                         </div>
                     </div>
                 </main>
             </div>
+
+            <TaskForm open={isTaskFormOpen} onClose={() => setIsTaskFormOpen(false)} />
         </div>
     );
 };

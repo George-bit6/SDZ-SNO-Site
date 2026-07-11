@@ -9,14 +9,7 @@ const TasksPage = ({ role }) => {
     const { t } = useI18n();
     const [filter, setFilter] = useState("all");
     const [query, setQuery] = useState("");
-    const allTasks = useMemo(() => [
-        { id: "1", titleKey: "task.t1", assignee: "Elias Khoury", dueDate: "May 5", status: "in-progress" },
-        { id: "2", titleKey: "task.t2", assignee: "Maya Saliba", dueDate: "May 10", status: "not-started" },
-        { id: "3", titleKey: "task.t3", assignee: "Anton Haddad", dueDate: "Apr 28", status: "pending" },
-        { id: "4", titleKey: "task.t4", assignee: "Nour Tannous", dueDate: "May 14", status: "complete" },
-        { id: "5", titleKey: "task.t1", assignee: "Lara Chaoul", dueDate: "May 18", status: "verified" },
-        { id: "6", titleKey: "task.t2", assignee: "Sami Boutros", dueDate: "May 22", status: "not-started" },
-    ], []);
+    const allTasks = useMemo(() => [], []);
     const filters = [
         { key: "all", labelKey: "tasks.filter.all" },
         { key: "not-started", labelKey: "status.not-started" },
@@ -90,9 +83,13 @@ const TasksPage = ({ role }) => {
           </div>
 
           <section className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
-            {visible.length === 0 ? (<p className="text-muted-foreground text-sm col-span-full text-center py-12">
-                {t("tasks.empty")}
-              </p>) : (visible.map((tk) => (<TaskCard key={tk.id} id={tk.id} title={t(tk.titleKey)} dueDate={tk.dueDate} status={tk.status} subgroup={role === "leader" ? tk.assignee : t("groups.scouts.name")}/>)))}
+            {visible.length === 0 ? (
+              <div className="sm:col-span-2 xl:col-span-3 rounded-2xl border border-dashed border-border bg-background/60 p-6 text-center text-sm text-muted-foreground">
+                {t("tasks.emptyTasks")}
+              </div>
+            ) : (
+              visible.map((tk) => (<TaskCard key={tk.id} id={tk.id} title={t(tk.titleKey)} dueDate={tk.dueDate} status={tk.status} subgroup={role === "leader" ? tk.assignee : t("groups.scouts.name")}/>
+            )))}
           </section>
         </main>
       </div>

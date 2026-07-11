@@ -5,16 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Mail, MoreHorizontal, Plus, Search, Users } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useState } from "react";
-const MEMBERS = [
-    { name: "Maya Saliba", initials: "MS", rank: "rank.patrol", group: "groups.scouts.name", email: "maya@antiochscouts.org", honor: 942, badges: 14, hours: 96, progress: 93, status: "active" },
-    { name: "Elias Khoury", initials: "EK", rank: "rank.senior", group: "groups.scouts.name", email: "elias@antiochscouts.org", honor: 878, badges: 12, hours: 84, progress: 75, status: "active" },
-    { name: "Lara Chaoul", initials: "LC", rank: "rank.patrol", group: "groups.guides.name", email: "lara@antiochscouts.org", honor: 845, badges: 11, hours: 79, progress: 85, status: "active" },
-    { name: "Nour Tannous", initials: "NT", rank: "rank.senior", group: "groups.pioneers.name", email: "nour@antiochscouts.org", honor: 802, badges: 10, hours: 71, progress: 73, status: "active" },
-    { name: "Anton Haddad", initials: "AH", rank: "rank.scout", group: "groups.scouts.name", email: "anton@antiochscouts.org", honor: 690, badges: 8, hours: 58, progress: 40, status: "inactive" },
-    { name: "Sami Boutros", initials: "SB", rank: "rank.scout", group: "groups.cubs.name", email: "sami@antiochscouts.org", honor: 612, badges: 7, hours: 49, progress: 22, status: "active" },
-    { name: "Rita Azar", initials: "RA", rank: "rank.scout", group: "groups.guides.name", email: "rita@antiochscouts.org", honor: 578, badges: 6, hours: 42, progress: 55, status: "active" },
-    { name: "Joseph Saade", initials: "JS", rank: "rank.scout", group: "groups.cubs.name", email: "joseph@antiochscouts.org", honor: 540, badges: 6, hours: 38, progress: 48, status: "active" },
-];
+const MEMBERS = [];
 const GROUPS = ["all", "groups.cubs.name", "groups.scouts.name", "groups.guides.name", "groups.pioneers.name"];
 const Members = () => {
     const { t } = useI18n();

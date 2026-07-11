@@ -3,16 +3,8 @@ import { Topbar } from "@/components/Topbar";
 import { Crest } from "@/components/Crest";
 import { Award, Crown, Medal, Trophy } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
-const ROWS = [
-    { name: "Maya Saliba", initials: "MS", rank: "rank.patrol", honor: 942, badges: 14, hours: 96, group: "groups.scouts.name" },
-    { name: "Elias Khoury", initials: "EK", rank: "rank.senior", honor: 878, badges: 12, hours: 84, group: "groups.scouts.name" },
-    { name: "Lara Chaoul", initials: "LC", rank: "rank.patrol", honor: 845, badges: 11, hours: 79, group: "groups.guides.name" },
-    { name: "Nour Tannous", initials: "NT", rank: "rank.senior", honor: 802, badges: 10, hours: 71, group: "groups.pioneers.name" },
-    { name: "Anton Haddad", initials: "AH", rank: "rank.scout", honor: 690, badges: 8, hours: 58, group: "groups.scouts.name" },
-    { name: "Sami Boutros", initials: "SB", rank: "rank.scout", honor: 612, badges: 7, hours: 49, group: "groups.cubs.name" },
-    { name: "Rita Azar", initials: "RA", rank: "rank.scout", honor: 578, badges: 6, hours: 42, group: "groups.guides.name" },
-    { name: "Joseph Saade", initials: "JS", rank: "rank.scout", honor: 540, badges: 6, hours: 38, group: "groups.cubs.name" },
-];
+import TaskForm from "../components/TaskForm";
+const ROWS = [];
 const podiumIcon = [Crown, Trophy, Medal];
 const podiumColor = ["text-gold", "text-foreground/80", "text-crimson"];
 const LeaderboardPage = ({ role }) => {
@@ -36,22 +28,28 @@ const LeaderboardPage = ({ role }) => {
           </div>
 
           <section className="grid md:grid-cols-3 gap-4 mb-10">
-            {top3.map((m, i) => {
-            const Icon = podiumIcon[i];
-            const order = i === 0 ? "md:order-2" : i === 1 ? "md:order-1" : "md:order-3";
-            const scale = i === 0 ? "md:scale-105" : "";
-            return (<article key={m.name} className={`relative rounded-lg border border-border bg-card p-6 shadow-card text-center overflow-hidden ${order} ${scale}`}>
-                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/60 to-transparent"/>
-                  <div className={`mx-auto mb-3 flex items-center justify-center size-10 rounded-full bg-background border border-border ${podiumColor[i]}`}>
-                    <Icon className="size-5"/>
-                  </div>
-                  <Crest initials={m.initials} className="size-16 mx-auto mb-3"/>
-                  <p className="font-serif text-lg leading-tight">{m.name}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{t(m.rank)} · {t(m.group)}</p>
-                  <p className="font-serif text-4xl gold-text mt-4">{m.honor}</p>
-                  <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground mt-1">{t("lb.honor")}</p>
-                </article>);
-        })}
+            {top3.length > 0 ? (
+              top3.map((m, i) => {
+              const Icon = podiumIcon[i];
+              const order = i === 0 ? "md:order-2" : i === 1 ? "md:order-1" : "md:order-3";
+              const scale = i === 0 ? "md:scale-105" : "";
+              return (<article key={m.name} className={`relative rounded-lg border border-border bg-card p-6 shadow-card text-center overflow-hidden ${order} ${scale}`}>
+                    <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/60 to-transparent"/>
+                    <div className={`mx-auto mb-3 flex items-center justify-center size-10 rounded-full bg-background border border-border ${podiumColor[i]}`}>
+                      <Icon className="size-5"/>
+                    </div>
+                    <Crest initials={m.initials} className="size-16 mx-auto mb-3"/>
+                    <p className="font-serif text-lg leading-tight">{m.name}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">{t(m.rank)} · {t(m.group)}</p>
+                    <p className="font-serif text-4xl gold-text mt-4">{m.honor}</p>
+                    <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground mt-1">{t("lb.honor")}</p>
+                  </article>);
+              })
+            ) : (
+              <div className="md:col-span-3 rounded-2xl border border-dashed border-border bg-background/60 p-6 text-center text-sm text-muted-foreground">
+                {t("lb.emptyLeaderboard")}
+              </div>
+            )}
           </section>
 
           <section className="rounded-lg border border-border bg-card shadow-card overflow-hidden">

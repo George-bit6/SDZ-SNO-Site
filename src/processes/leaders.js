@@ -1,4 +1,5 @@
 import supabase from '../../supabase.js'
+import Task from './tasks.js'
 
 export default class Leader {
 
@@ -51,6 +52,28 @@ export default class Leader {
         );
     }
 
-    
+    getSubgrpId() {
+        return this.subgrp_id;
+    }
 
+    getLeaderTitles() {
+        return this.leader_titles;
+    }
+
+    getDateOfRoleAcquisition() {
+        return this.date_of_role_acquisition;
+    }
+
+    async getLeaderTasks(){
+        
+        const taskInstance = new Task();
+        const tasks = await taskInstance.getTasksBySubgroup(this.getSubgrpId());
+        return tasks;
+
+    }
+
+    async addTask(task_name, level_name, task_desc, points, task_type) {
+        const taskInstance = new Task(task_name, this.getSubgrpId(), level_name, task_desc, points, task_type);
+        await taskInstance.addTask();
+    }
 }
