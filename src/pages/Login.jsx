@@ -14,11 +14,13 @@ import {getUserId, submit} from "@/processes/auth";
 
 const Login = () => {
   const [role, setRole] = useState("member");
+  const [error, setError] = useState("");
   const { t } = useI18n();
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setError("");
     
        const formData = new FormData(event.currentTarget);
     const email = formData.get("email");
@@ -30,8 +32,12 @@ const Login = () => {
       const userId = await getUserId(); 
       console.log("User ID:", userId); // Log the user ID for debugging
       navigate(role === "member" ? `/member/${userId}` : `/leader/${userId}`);  
+    } else {
+      setError(t("login.error") || "Invalid email or password");
     }
   };
+
+  const clearError = () => setError("");
 
   return (
     <div className=" min-h-screen flex items-center justify-center px-4 py-12 relative overflow-hidden">
@@ -84,6 +90,12 @@ const Login = () => {
               </p>
               <div className="gold-divider w-16 mx-auto mt-4" />
             </div>
+
+            {error && (
+              <div className="mb-6 p-4 bg-destructive/10 border border-destructive text-destructive text-sm rounded-md">
+                {error}
+              </div>
+            )}
             
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-2">
@@ -98,6 +110,7 @@ const Login = () => {
                   type="email"
                   name="email"
                   required
+                  onChange={clearError}
                   placeholder="Enter Your Email"
                   className="bg-background border-border focus-visible:ring-gold focus-visible:border-gold h-11"
                 />
@@ -115,6 +128,7 @@ const Login = () => {
                   name="password"
                   type="password"
                   required
+                  onChange={clearError}
                   placeholder="••••••••"
                   className="bg-background border-border focus-visible:ring-gold focus-visible:border-gold h-11"
                 />

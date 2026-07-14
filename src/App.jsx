@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { I18nProvider } from "@/i18n/I18nProvider";
 import Index from "./pages/Index.jsx";
+import Donations from "./pages/Donations.jsx";
 import Login from "./pages/Login.jsx";
 import MemberDashboard from "./pages/MemberDashboard.jsx";
 import LeaderDashboard from "./pages/LeaderDashboard.jsx";
@@ -24,6 +25,7 @@ const App = () => (<ThemeProvider>
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />}/>
+              <Route path="/donations" element={<Donations />}/>
               <Route path="/login" element={<Login />}/>
               <Route path="/member" element={<MemberDashboard />}/>
               <Route path="/member/:memberId" element={<MemberDashboard />}/>
