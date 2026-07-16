@@ -24,7 +24,7 @@ export default class Leader {
     async getLeaderById(leader_id) {
         // Ask Supabase for every record that matches this leader ID.
         const { data, error } = await supabase
-            .from('leaders')
+            .from('Leaders')
             .select('*')
             .eq('leader_id', leader_id);
 
@@ -52,8 +52,19 @@ export default class Leader {
         );
     }
 
-    getSubgrpId() {
-        return this.subgrp_id;
+    async getSubgrpId() {
+       const {data, error} = await supabase
+       .from('Subgrp_Leaders')
+       .select('subgrp_id')
+       .eq('leader_id', this.leader_id)
+
+       if(error){
+        console.error('Supabase Error:' + error);
+        return
+       }
+       else{
+        return data[0].subgrp_id;
+       }
     }
 
     getLeaderTitles() {
@@ -73,7 +84,8 @@ export default class Leader {
     }
 
     async addTask(task_name, level_name, task_desc, points, task_type) {
-        const taskInstance = new Task(task_name, this.getSubgrpId(), level_name, task_desc, points, task_type);
-        await taskInstance.addTask();
+        console.log(await this.getSubgrpId())
+        const taskInstance = new Task(task_name,await this.getSubgrpId(), level_name, task_desc, points, task_type);
+        await taskInstance.addTaskToDatabase();
     }
 }

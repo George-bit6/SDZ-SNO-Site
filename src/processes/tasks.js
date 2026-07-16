@@ -155,18 +155,47 @@ class Task {
         return this.task_type;
     }
 
-    addTaskToDatabase() {
-        return supabase
+    async addTaskToDatabase() {
+    try {
+        const { data, error } = await supabase
             .from('Tasks')
-            .insert([{
-                task_name: this.task_name,
-                subgrp_id: this.subgrp_id,
-                level_name: this.level_name,
-                task_desc: this.task_desc,
-                points: this.points,
-                task_type: this.task_type
-            }]);
+            .insert([
+                {
+                    task_name: this.task_name,
+                    subgrp_id: this.subgrp_id,
+                    level_name: this.level_name,
+                    task_desc: this.task_desc,
+                    points: this.points,
+                    task_type: this.task_type
+                }
+            ])
+            
+
+        if (error) {
+            console.error("Supabase Error:", error);
+            return {
+                success: false,
+                message: error.message,
+                details: error.details,
+                hint: error.hint,
+                code: error.code
+            };
+        }
+
+        return {
+            success: true,
+            data
+        };
+
+    } catch (err) {
+        console.error("Unexpected Error:", err);
+
+        return {
+            success: false,
+            message: err.message || "An unexpected error occurred."
+        };
     }
+}
 }
 
 export default Task;

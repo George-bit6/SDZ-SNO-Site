@@ -185,7 +185,7 @@ const LeaderDashboard = () => {
                 </main>
             </div>
 
-            <TaskForm open={isTaskFormOpen} onClose={() => setIsTaskFormOpen(false)} />
+            <TaskForm open={isTaskFormOpen} onClose={() => setIsTaskFormOpen(false)} leaderId={leaderId} />
         </div>
     );
 };

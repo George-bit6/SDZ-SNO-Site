@@ -2,7 +2,7 @@ import Modal from './Modal';
 import { useState } from 'react';
 import Leader from '@/processes/leaders';
 
-export default function TaskForm({ open, onClose }) {
+export default function TaskForm({ open, onClose, leaderId}) {
   const [taskName, setTaskName] = useState('');
   const [levelName, setLevelName] = useState('');
   const [taskDesc, setTaskDesc] = useState('');
@@ -27,8 +27,11 @@ export default function TaskForm({ open, onClose }) {
 
     setSubmitting(true);
     try {
-      const leader = new Leader();
+      const leaderInstance = new Leader();
+      const leader = await leaderInstance.getLeaderById(leaderId)
       await leader.addTask(taskName.trim(), levelName.trim(), taskDesc.trim(), Number(points) || 0, taskType.trim());
+      console.log(taskName.trim(), levelName.trim(), taskDesc.trim(), Number(points), taskType.trim());
+      
       reset();
       onClose();
       // optional: emit an event or callback to refresh task list
