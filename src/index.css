@@ -70,6 +70,21 @@
     --sidebar-accent-foreground: 44 53% 84%;
     --sidebar-border: 145 20% 18%;
     --sidebar-ring: 44 53% 54%;
+
+    /* Design System Colors from JSON spec */
+    --design-deep-navy: 218 34% 7%;
+    --design-charcoal-black: 0 0% 4%;
+    --design-button-black: 0 0% 7%;
+    --design-dark-slate: 215 27% 13%;
+    --design-muted-navy: 218 23% 12%;
+    --design-white: 0 0% 100%;
+    --design-off-white: 40 10% 98%;
+    --design-border-light: 215 15% 90%;
+    --design-text-dark-primary: 220 35% 7%;
+    --design-text-dark-secondary: 220 10% 41%;
+    --design-text-light-primary: 0 0% 100%;
+    --design-text-light-secondary: 215 10% 75%;
+    --design-warm-highlight: 35 40% 70%;
   }
 
   .dark {
@@ -210,6 +225,34 @@
   .text-gold { color: hsl(var(--gold)); }
   .border-gold { border-color: hsl(var(--gold)); }
   .bg-crimson { background-color: hsl(var(--crimson)); }
+
+  /* Design System Utility Classes */
+  .bg-design-deep-navy { background-color: hsl(var(--design-deep-navy)); }
+  .bg-design-charcoal-black { background-color: hsl(var(--design-charcoal-black)); }
+  .bg-design-button-black { background-color: hsl(var(--design-button-black)); }
+  .bg-design-dark-slate { background-color: hsl(var(--design-dark-slate)); }
+  .bg-design-muted-navy { background-color: hsl(var(--design-muted-navy)); }
+  .bg-design-white { background-color: hsl(var(--design-white)); }
+  .bg-design-off-white { background-color: hsl(var(--design-off-white)); }
+  
+  .text-design-text-dark-primary { color: hsl(var(--design-text-dark-primary)); }
+  .text-design-text-dark-secondary { color: hsl(var(--design-text-dark-secondary)); }
+  .text-design-text-light-primary { color: hsl(var(--design-text-light-primary)); }
+  .text-design-text-light-secondary { color: hsl(var(--design-text-light-secondary)); }
+  .text-design-warm-highlight { color: hsl(var(--design-warm-highlight)); }
+  
+  .border-design-border-light { border-color: hsl(var(--design-border-light)); }
+  
+  /* Gradient overlays from spec */
+  .bg-hero-scrim {
+    background: linear-gradient(180deg, rgba(13,20,32,0.15) 0%, rgba(13,20,32,0.9) 100%);
+  }
+  .bg-image-card-scrim {
+    background: linear-gradient(0deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0) 55%);
+  }
+  .bg-cta-banner-scrim {
+    background: linear-gradient(90deg, rgba(10,10,10,0.85) 20%, rgba(10,10,10,0.2) 80%);
+  }
 
   /* Editorial italic serif accent — used for emphasized words in display headings */
   .font-italic-serif {

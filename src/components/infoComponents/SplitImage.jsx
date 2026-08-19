@@ -5,10 +5,11 @@ export default function SplitImage(props){
 
     return (<section id="why" className="container pb-24">
         <div className="relative rounded-[2rem] overflow-hidden bg-secondary text-secondary-foreground">
+          
           <div className="grid lg:grid-cols-2">
             <div className="relative min-h-[420px]">
               <img src={props.image} alt="Scouts by the church" 
-              className="absolute inset-0 w-full h-full object-scale-down" loading="lazy" />
+              className="drop-shadow-[-4px_4px_4px_rgba(0,0,0,0.4)] absolute inset-0 w-full h-full object-scale-down" loading="lazy" />
               <div className="absolute inset-0 bg-gradient-to-r from-transparent to-secondary/80" />
           
             </div>

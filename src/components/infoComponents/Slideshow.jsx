@@ -32,7 +32,7 @@ useEffect(() => {
    return ( 
 <section id="gallery" className="container pb-24">
         <div className="flex items-end justify-between  gap-6 mb-8">
-          <div>
+          <div className="ml-8">
             <p className="text-[11px] uppercase tracking-[0.28em] text-crimson mb-3">{props.title}</p>
             <h2 className="text-3xl md:text-4xl tracking-[-0.03em] font-semibold">
               {props.text}{" "}

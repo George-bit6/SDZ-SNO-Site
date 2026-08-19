@@ -9,7 +9,6 @@ import stDemetriosLogo from "@/assets/stDemetriosLogo 1.png";
 import snoLogo from "@/assets/sno-logo 1.png";
 import { useI18n } from "@/i18n/I18nProvider";
 import { LanguageToggle } from "@/components/LanguageToggle";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import {getUserId, submit} from "@/processes/auth";
 
 const Login = () => {
@@ -53,27 +52,26 @@ const Login = () => {
 
       <div className="absolute top-4 end-4 flex items-center gap-1 z-10">
         <LanguageToggle />
-        <ThemeToggle />
       </div>
 
       <div className=" relative w-full max-w-md">
         <Link
           to="/"
-          className="mb-16 block text-center text-xs uppercase tracking-[0.3em] text-muted-foreground hover:text-gold transition-colors mb-6"
+          className="mb-8 block text-center text-xs uppercase tracking-[0.3em] text-muted-foreground hover:text-gold transition-colors"
         >
           {t("login.back")}
         </Link>
 
         <div className="relative">
           <div className="absolute -top-10 inset-x-0 flex justify-center gap-3">
-            <div className="size-21  rounded-full bg-background/90 flex items-center justify-center border-background overflow-hidden p-2">
+            <div className="size-20 rounded-full bg-background/90 flex items-center justify-center border-background overflow-hidden p-2">
               <img
                 src={stDemetriosLogo}
                 alt="St. Demetrios logo"
                 className="h-full w-full object-contain"
               />
             </div>
-            <div className="size-21  rounded-full bg-background/90 flex items-center justify-center border-background overflow-hidden p-2">
+            <div className="size-20 rounded-full bg-background/90 flex items-center justify-center border-background overflow-hidden p-2">
               <img
                 src={snoLogo}
                 alt="SNO logo"
@@ -82,9 +80,9 @@ const Login = () => {
             </div>
           </div>
 
-          <div className="rounded-lg border border-border bg-card shadow-card pt-16 pb-8 px-8">
+          <div className="rounded-lg border border-border bg-card shadow-card pt-16 pb-8 px-6 sm:px-8">
             <div className="text-center mb-8">
-              <h1 className="font-serif text-3xl mb-1">{t("login.title")}</h1>
+              <h1 className="font-serif text-2xl sm:text-3xl mb-1">{t("login.title")}</h1>
               <p className="text-sm text-muted-foreground">
                 {t("login.subtitle")}
               </p>
@@ -134,7 +132,7 @@ const Login = () => {
                 />
               </div>
 
-              <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center justify-between text-xs flex-wrap gap-2">
                 <div className="flex gap-1 rounded-md border border-border bg-background/70 p-0.5 shadow-sm">
                   <Button
                     type="button"

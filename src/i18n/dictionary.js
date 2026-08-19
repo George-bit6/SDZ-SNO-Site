@@ -254,9 +254,8 @@ export const dictionary = {
     // Settings
     "set.kicker": "Account · Preferences",
     "set.title": "Settings",
-    "set.intro": "Manage your profile, appearance, and notifications.",
+    "set.intro": "Manage your profile and notifications.",
     "set.section.profile": "Profile",
-    "set.section.appearance": "Appearance",
     "set.section.notifications": "Notifications",
     "set.section.security": "Security",
     "set.changePhoto": "Change Photo",
@@ -265,7 +264,6 @@ export const dictionary = {
     "set.field.rank": "Rank",
     "set.save": "Save Changes",
     "set.language": "Language",
-    "set.theme": "Dark Mode",
     "set.notif.tasks": "New tasks assigned",
     "set.notif.reviews": "Review decisions",
     "set.notif.events": "Upcoming events",
@@ -278,8 +276,6 @@ export const dictionary = {
 
     // Toggles
     "toggle.lang": "العربية",
-    "toggle.theme.toLight": "Switch to light mode",
-    "toggle.theme.toDark": "Switch to dark mode",
 
     // Programs
     "side.programs": "Programs",
@@ -612,9 +608,8 @@ export const dictionary = {
 
     "set.kicker": "الحساب · التفضيلات",
     "set.title": "الإعدادات",
-    "set.intro": "أدر ملفك الشخصي والمظهر والإشعارات.",
+    "set.intro": "أدر ملفك الشخصي والإشعارات.",
     "set.section.profile": "الملف الشخصي",
-    "set.section.appearance": "المظهر",
     "set.section.notifications": "الإشعارات",
     "set.section.security": "الأمان",
     "set.changePhoto": "تغيير الصورة",
@@ -623,7 +618,6 @@ export const dictionary = {
     "set.field.rank": "الرتبة",
     "set.save": "حفظ التغييرات",
     "set.language": "اللغة",
-    "set.theme": "الوضع الداكن",
     "set.notif.tasks": "مهام جديدة مُسندة",
     "set.notif.reviews": "قرارات المراجعة",
     "set.notif.events": "الفعاليات القادمة",
@@ -635,8 +629,6 @@ export const dictionary = {
     "set.signout.note": "إنهاء الجلسة على هذا الجهاز",
 
     "toggle.lang": "English",
-    "toggle.theme.toLight": "التبديل إلى الوضع الفاتح",
-    "toggle.theme.toDark": "التبديل إلى الوضع الداكن",
 
     "side.programs": "البرامج",
     "prog.kicker": "التقويم · الخطط والبرامج",

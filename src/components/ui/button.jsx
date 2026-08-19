@@ -16,17 +16,25 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        hero: "bg-gradient-gold text-primary-foreground font-semibold tracking-wide shadow-glow hover:opacity-95 hover:scale-[1.02] transition-all duration-200",
+        hero: "bg-black-100 text-primary-foreground font-semibold tracking-wide shadow-glow hover:opacity-95 hover:scale-[1.02] transition-all duration-200",
         gold: "bg-gold text-primary-foreground hover:bg-gold/90 hover:shadow-glow font-medium",
         "gold-outline":
           "border border-gold/60 bg-transparent text-gold hover:bg-gold/10 hover:border-gold transition-colors",
         crimson: "bg-crimson text-primary-foreground hover:bg-crimson/90",
+        /* Design System Variants */
+        primary: "bg-[#0A0A0A] text-white rounded-full px-7 py-3.5 font-medium hover:shadow-[0_6px_16px_rgba(0,0,0,0.18)] transition-shadow",
+        secondary: "bg-white text-[#0A0A0A] rounded-full px-6 py-3 font-medium hover:bg-white/90",
+        "light-pill": "bg-white text-[#0A0A0A] rounded-full px-6 py-3 font-medium",
       },
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
+        /* Design System Sizes */
+        "design-sm": "h-9 px-4 text-sm",
+        "design-md": "h-11 px-6 text-sm",
+        "design-lg": "h-12 px-8 text-base",
       },
     },
     defaultVariants: {

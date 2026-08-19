@@ -5,7 +5,6 @@ import { Menu, X, Heart } from "lucide-react";
 
 import { Button } from "../ui/button";
 import {Logo} from "../Logo";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageToggle } from "@/components/LanguageToggle";
 
 const navLinks = [
@@ -43,12 +42,7 @@ export default function Navigation() {
             </nav>
 
             <div className="flex items-center gap-1 md:gap-2">
-              
-              {/*
               <LanguageToggle className="text-white/80 hover:text-gold hidden sm:inline-flex" />
-              <ThemeToggle className="text-white/80 hover:text-gold hidden sm:inline-flex" />
-              */
-            }      
               <Button asChild size="sm" className="rounded-full bg-crimson hover:bg-crimson/90 text-white hidden sm:inline-flex">
                 <a href="#donate">
                   <Heart className="size-3.5" /> Donate

@@ -2,9 +2,8 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { Topbar } from "@/components/Topbar";
 import { Crest } from "@/components/Crest";
 import { Button } from "@/components/ui/button";
-import { Bell, Globe, Lock, LogOut, Moon, Settings as SettingsIcon, ShieldCheck, Sun, User } from "lucide-react";
+import { Bell, Lock, LogOut, ShieldCheck, User, Settings as SettingsIcon } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
-import { useTheme } from "@/components/ThemeProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 const Toggle = ({ on, onChange }) => (<button onClick={onChange} className={`relative h-6 w-11 rounded-full transition-colors ${on ? "bg-gold" : "bg-muted"}`} aria-pressed={on}>
@@ -12,7 +11,6 @@ const Toggle = ({ on, onChange }) => (<button onClick={onChange} className={`rel
   </button>);
 const Settings = () => {
     const { t, lang, setLang } = useI18n();
-    const { theme, toggleTheme } = useTheme();
     const navigate = useNavigate();
     const location = useLocation();
     const role = location.state?.role === "leader" ? "leader" : "member";
@@ -43,7 +41,6 @@ const Settings = () => {
             <aside className="space-y-3 hidden lg:block">
               {[
             { icon: User, label: t("set.section.profile"), id: "profile" },
-            { icon: Globe, label: t("set.section.appearance"), id: "appearance" },
             { icon: Bell, label: t("set.section.notifications"), id: "notifications" },
             { icon: ShieldCheck, label: t("set.section.security"), id: "security" },
         ].map((s) => (<a key={s.id} href={`#${s.id}`} className="flex items-center gap-3 px-4 py-2.5 rounded-md text-sm text-muted-foreground hover:bg-card hover:text-foreground border border-transparent hover:border-border transition-colors">
@@ -103,14 +100,14 @@ const Settings = () => {
                 </div>
               </section>
 
-              {/* Appearance */}
-              <section id="appearance" className="rounded-lg border border-border bg-card shadow-card p-6">
+              {/* Notifications */}
+              <section id="notifications" className="rounded-lg border border-border bg-card shadow-card p-6">
                 <div className="flex items-center gap-2 mb-5">
-                  <Globe className="size-4 text-gold"/>
-                  <h2 className="font-serif text-xl">{t("set.section.appearance")}</h2>
+                  <Bell className="size-4 text-gold"/>
+                  <h2 className="font-serif text-xl">{t("set.section.notifications")}</h2>
                 </div>
 
-                <div className="space-y-5">
+                <div className="space-y-4">
                   <div>
                     <p className="text-sm font-medium mb-3">{t("set.language")}</p>
                     <div className="flex gap-2">
@@ -122,29 +119,6 @@ const Settings = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between pt-5 border-t border-border">
-                    <div>
-                      <p className="text-sm font-medium flex items-center gap-2">
-                        {theme === "dark" ? <Moon className="size-4"/> : <Sun className="size-4"/>}
-                        {t("set.theme")}
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        {theme === "dark" ? t("toggle.theme.toLight") : t("toggle.theme.toDark")}
-                      </p>
-                    </div>
-                    <Toggle on={theme === "dark"} onChange={toggleTheme}/>
-                  </div>
-                </div>
-              </section>
-
-              {/* Notifications */}
-              <section id="notifications" className="rounded-lg border border-border bg-card shadow-card p-6">
-                <div className="flex items-center gap-2 mb-5">
-                  <Bell className="size-4 text-gold"/>
-                  <h2 className="font-serif text-xl">{t("set.section.notifications")}</h2>
-                </div>
-
-                <div className="space-y-4">
                   {[
             { label: t("set.notif.tasks"), on: notifTasks, set: setNotifTasks },
             { label: t("set.notif.reviews"), on: notifReviews, set: setNotifReviews },
