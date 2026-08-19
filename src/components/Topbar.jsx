@@ -16,25 +16,25 @@ export const Topbar = ({ name, rank, subgroup, initials, accentColor = "#D4AF37"
     return (
         <header className="flex h-16 shrink-0 border-b border-border border-black/15 bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-card/30 px-4 md:px-8 items-center justify-between">
             <div className="flex items-center gap-3">
-                {/* Mobile menu button */}
+                {/* Menu button - visible on all screen sizes */}
                 <button
                     onClick={toggleMobileMenu}
-                    className="md:hidden p-2 rounded-lg hover:bg-gray-100 text-gray-700"
+                    className="p-2 rounded-lg hover:bg-gray-100 text-gray-700"
                     aria-label="Toggle menu"
                 >
                     <Menu className="size-5" />
                 </button>
 
-                <span 
+                <span
                     className="hidden md:inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs border"
-                    style={{ 
+                    style={{
                         borderColor: `${accentColor}4D`, // Adds 30% opacity (Hex 4D)
                         backgroundColor: `${accentColor}1A`, // Adds 10% opacity (Hex 1A)
-                        color: accentColor 
+                        color: accentColor
                     }}
                 >
-                    <span 
-                        className="size-1.5 rounded-full" 
+                    <span
+                        className="size-1.5 rounded-full"
                         style={{ backgroundColor: accentColor }}
                     />
                     <span className="tracking-wide">
@@ -42,7 +42,7 @@ export const Topbar = ({ name, rank, subgroup, initials, accentColor = "#D4AF37"
                     </span>
                 </span>
 
-                <LanguageToggle />
+                <LanguageToggle className="hidden md:inline-flex" />
 
                 <Button variant="ghost" size="icon" className="relative">
                     <Bell className="size-4"/>

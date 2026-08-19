@@ -3,7 +3,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -25,6 +25,10 @@ const buttonVariants = cva(
         primary: "bg-[#0A0A0A] text-white rounded-full px-7 py-3.5 font-medium hover:shadow-[0_6px_16px_rgba(0,0,0,0.18)] transition-shadow",
         secondary: "bg-white text-[#0A0A0A] rounded-full px-6 py-3 font-medium hover:bg-white/90",
         "light-pill": "bg-white text-[#0A0A0A] rounded-full px-6 py-3 font-medium",
+        /* New Dashboard Design System Variants */
+        "ds-primary": "bg-[#4A7DFF] text-white rounded-xl px-5 py-2.5 font-bold hover:bg-[#3D68E0] transition-colors",
+        "ds-secondary": "bg-white border border-[#E8ECF4] text-[#1E2A45] rounded-xl px-4 py-2 font-semibold hover:bg-[#F4F6FB] transition-colors",
+        "ds-icon": "w-10 h-10 rounded-full bg-[#F4F6FB] flex items-center justify-center hover:bg-[#E8ECF4] transition-colors p-0",
       },
       size: {
         default: "h-10 px-4 py-2",

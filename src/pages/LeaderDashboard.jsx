@@ -30,8 +30,13 @@ const LeaderDashboard = () => {
     const { leaderId } = useParams();
     const [isTaskFormOpen, setIsTaskFormOpen] = useState(false);
     // Summary statistics shown in the top cards.
-    const stats = [];
-    const accentColor = 'green'
+    const stats = [
+        { label: "Total Members", value: "24", delta: "+3 this month", color: "#4A7DFF" },
+        { label: "Active Tasks", value: "18", delta: "12 pending", color: "#FFC107" },
+        { label: "Completion Rate", value: "87%", delta: "+5% from last week", color: "#34D399", progress: 87 },
+        { label: "Pending Reviews", value: "5", delta: "Requires attention", color: "#FF5C5C" },
+    ];
+    const accentColor = '#4A7DFF';
     const leaderFullName = 'George Jabbour';
     const subgrp = 'Saint David Scouts';
     const leaderRank = 'Leader'
@@ -46,7 +51,7 @@ const LeaderDashboard = () => {
 
 
     return (
-        <div className="min-h-screen flex bg-background">
+        <div className="min-h-screen flex bg-[#F4F6FB]">
             {/* Left navigation panel for leader roles. */}
             <AppSidebar role="leader" accentColor={accentColor}/>
 
@@ -57,7 +62,7 @@ const LeaderDashboard = () => {
                 <main className="flex-1 overflow-y-auto px-4 md:px-8 py-8">
                     
                     <DashboardPageTitle title={leaderFullName} subtitle={subgrp} accentColor={accentColor}>
-                            <Button variant="outline" size="sm" onClick={() => setIsTaskFormOpen(true)}>
+                            <Button variant="ds-primary" size="sm" onClick={() => setIsTaskFormOpen(true)}>
                                 <Plus /> {t("ld.assign")}
                             </Button>
                     </DashboardPageTitle>

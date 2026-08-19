@@ -9,6 +9,8 @@ import { useI18n } from "@/i18n/I18nProvider";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ScoutMember from "../processes/members";
+import DashboardPageTitle from "../components/dashboardComponents/DashboardPageTitle";
+import StatisticCards from "../components/dashboardComponents/StatisticCards";
 
 const fallbackTasks = [];
 
@@ -67,7 +69,15 @@ const MemberDashboard = () => {
         titleKey: normalizeTaskTitleKey(task.task_id ?? task.titleKey ?? task.taskKey),
         status: task.task_status ?? "not-started"
     }));
-        
+
+    // Sample stats for the design system
+    const stats = [
+        { label: "Badges Earned", value: "12", delta: "+2 this month", color: "#FFC107" },
+        { label: "Tasks Completed", value: "47", delta: "8 remaining", color: "#4A7DFF" },
+        { label: "Service Hours", value: "84", delta: "+12 this season", color: "#34D399" },
+        { label: "Honor Points", value: "99", delta: "Top 10%", color: "#FF5C5C", progress: 99 },
+    ];
+
     /*  const badges = [
         { icon: Flame, key: "badge.firekeeper" },
         { icon: HandHeart, key: "badge.service" },
@@ -92,27 +102,25 @@ const MemberDashboard = () => {
     const events = [];
     const activity = [];
 
-    return (<div className="min-h-screen flex bg-background">
+    return (<div className="min-h-screen flex bg-[#F4F6FB]">
       <AppSidebar role="member"/>
 
       <div className="flex-1 flex flex-col min-w-0">
         <Topbar name={member?.getMemberName() || "Unknown"} rank={t("rank.senior")} subgroup={t("groups.scouts.name")} initials="EK"/>
 
         <main className="flex-1 overflow-y-auto px-4 md:px-8 py-8">
-          <div className="mb-10 animate-fade-up">
-            <p className="text-xs uppercase tracking-[0.3em] text-gold mb-2">{t("mem.kicker")}</p>
-            <h1 className="font-serif text-4xl md:text-5xl">
-              {t("mem.welcome", { name: member?.getMemberName()  || "Unknown" })}
-            </h1>
-            <p className="text-muted-foreground mt-2">
-              {memberId ? `${t("mem.intro")} (ID: ${memberId})` : t("mem.intro")}
-            </p>
-          </div>
+          <DashboardPageTitle
+            title={t("mem.welcome", { name: member?.getMemberName() || "Unknown" })}
+            subtitle={t("mem.kicker")}
+            accentColor="#4A7DFF"
+          />
+
+          <StatisticCards stats={stats} accentColor="#4A7DFF" />
 
           <div className="grid lg:grid-cols-[1fr_320px] gap-8">
             <div className="space-y-10">
-              <section className="rounded-2xl border-black/5 border shadow-[0_0_6px_rgba(0,0,0,0.1)]  border-border bg-card overflow-hidden ">
-                <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent"/>
+              <section className="rounded-[20px] border border-[#E8ECF4] bg-white shadow-[0_4px_12px_rgba(0,0,0,0.06)] overflow-hidden ">
+                <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#4A7DFF]/20 to-transparent"/>
                 <div className="grid md:grid-cols-[auto_1fr] gap-8 p-8 items-center ">
                   <ProgressRing value={99} label={t("mem.honor")}/>
                   <div className="grid grid-cols-3 gap-4 ">
@@ -120,9 +128,9 @@ const MemberDashboard = () => {
             { label: t("mem.stat.badges"), value: "12" },
             { label: t("mem.stat.tasks"), value: "47" },
             { label: t("mem.stat.hours"), value: "84" },
-        ].map((s) => (<div key={s.label} className="rounded-xl border-black/10 border shadow-[0_0_4px_rgba(0,0,0,0.1)]  bg-background border-border  p-4">
-                        <p className="font-serif text-3xl text-green-700">{s.value}</p>
-                        <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mt-1">
+        ].map((s) => (<div key={s.label} className="rounded-xl border border-[#E8ECF4] bg-[#F4F6FB] p-4">
+                        <p className="text-[20px] font-bold text-[#4A7DFF]">{s.value}</p>
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-[#8A94A6] mt-1">
                           {s.label}
                         </p>
                       </div>))}
@@ -132,8 +140,8 @@ const MemberDashboard = () => {
 
               <section>
                 <div className=" flex items-baseline justify-between mb-5">
-                  <h2 className="font-serif text-2xl">{t("mem.missions")}</h2>
-                  <a href="#" className="text-xs uppercase tracking-wider text-gold hover:underline">{t("mem.viewAll")}</a>
+                  <h2 className="text-[22px] font-semibold text-[#253858]">{t("mem.missions")}</h2>
+                  <a href="#" className="text-xs uppercase tracking-wider text-[#4A7DFF] hover:underline">{t("mem.viewAll")}</a>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   {taskList.length > 0 ? (
@@ -147,7 +155,7 @@ const MemberDashboard = () => {
                       />
                     ))
                   ) : (
-                    <div className="sm:col-span-2 rounded-2xl border border-dashed border-border bg-background/60 p-6 text-center text-sm text-muted-foreground">
+                    <div className="sm:col-span-2 rounded-[20px] border border-dashed border-[#E8ECF4] bg-[#F4F6FB]/60 p-6 text-center text-sm text-[#8A94A6]">
                       {t("mem.emptyMissions")}
                     </div>
                   )}
@@ -156,10 +164,10 @@ const MemberDashboard = () => {
 
               <section>
                 <div className=" flex items-baseline justify-between mb-5">
-                  <h2 className="font-serif text-2xl">{t("mem.medallions")}</h2>
-                  <span className="text-xs text-muted-foreground">{t("mem.medallions.note")}</span>
+                  <h2 className="text-[22px] font-semibold text-[#253858]">{t("mem.medallions")}</h2>
+                  <span className="text-xs text-[#8A94A6]">{t("mem.medallions.note")}</span>
                 </div>
-                <div className="rounded-2xl border-black/5 border shadow-[0_0_6px_rgba(0,0,0,0.1)] border-border bg-card p-6 ">
+                <div className="rounded-[20px] border border-[#E8ECF4] bg-white shadow-[0_4px_12px_rgba(0,0,0,0.06)] p-6 ">
                   {badges.length > 0 ? (
                     <div className="flex gap-6 overflow-x-auto pb-2 -mx-2 px-2">
                       {badges.map((b) => (
@@ -169,7 +177,7 @@ const MemberDashboard = () => {
                       ))}
                     </div>
                   ) : (
-                    <div className="rounded-2xl border border-dashed border-border bg-background/60 p-6 text-center text-sm text-muted-foreground">
+                    <div className="rounded-[20px] border border-dashed border-[#E8ECF4] bg-[#F4F6FB]/60 p-6 text-center text-sm text-[#8A94A6]">
                       {t("mem.emptyBadges")}
                     </div>
                   )}
@@ -177,22 +185,22 @@ const MemberDashboard = () => {
               </section>
 
               <section>
-                <h2 className="font-serif text-2xl mb-5">{t("mem.activity")}</h2>
+                <h2 className="text-[22px] font-semibold text-[#253858] mb-5">{t("mem.activity")}</h2>
                 {activity.length > 0 ? (
-                  <ol className="relative border-s border-border ms-2 space-y-5">
+                  <ol className="relative border-s border-[#E8ECF4] ms-2 space-y-5">
                     {activity.map((a, i) => (
                       <li key={i} className="ps-6 relative">
-                        <span className="absolute -start-[5px] top-1.5 size-2.5 rounded-full bg-gold shadow-glow" />
+                        <span className="absolute -start-[5px] top-1.5 size-2.5 rounded-full bg-[#4A7DFF] shadow-glow" />
                         <p className="text-sm">
-                          <span className="font-medium text-gold">{t(a.whoKey)}</span>{" "}
-                          <span className="text-muted-foreground">{t(a.whatKey)}</span>
+                          <span className="font-medium text-[#4A7DFF]">{t(a.whoKey)}</span>{" "}
+                          <span className="text-[#8A94A6]">{t(a.whatKey)}</span>
                         </p>
-                        <p className="text-xs text-muted-foreground/70 mt-0.5">{t(a.whenKey)}</p>
+                        <p className="text-xs text-[#8A94A6]/70 mt-0.5">{t(a.whenKey)}</p>
                       </li>
                     ))}
                   </ol>
                 ) : (
-                  <div className="rounded-2xl border border-dashed border-border bg-background/60 p-6 text-center text-sm text-muted-foreground">
+                  <div className="rounded-[20px] border border-dashed border-[#E8ECF4] bg-[#F4F6FB]/60 p-6 text-center text-sm text-[#8A94A6]">
                     {t("mem.emptyActivity")}
                   </div>
                 )}
@@ -200,38 +208,38 @@ const MemberDashboard = () => {
             </div>
 
             <aside className="space-y-6">
-              <div className="rounded-lg border border-border bg-card  border-black/5  shadow-[0_0_6px_rgba(0,0,0,0.1)] p-6">
+              <div className="rounded-[20px] border border-[#E8ECF4] bg-white shadow-[0_4px_12px_rgba(0,0,0,0.06)] p-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <Calendar className="size-4 text-gold"/>
-                  <h3 className="font-serif text-lg">{t("mem.upcoming")}</h3>
+                  <Calendar className="size-4 text-[#4A7DFF]"/>
+                  <h3 className="text-[18px] font-semibold text-[#253858]">{t("mem.upcoming")}</h3>
                 </div>
                 {events.length > 0 ? (
                   <ul className="space-y-3">
                     {events.map((e) => (
-                      <li key={e.titleKey} className="flex items-start gap-3 pb-3 border-b border-border last:border-0 last:pb-0">
+                      <li key={e.titleKey} className="flex items-start gap-3 pb-3 border-b border-[#E8ECF4] last:border-0 last:pb-0">
                         <div className="shrink-0 text-center w-12">
-                          <p className="font-serif text-lg leading-none gold-text">{e.day}</p>
-                          <p className="text-[10px] uppercase tracking-wider text-muted-foreground mt-0.5">{t(e.monthKey)}</p>
+                          <p className="text-[18px] font-bold leading-none text-[#4A7DFF]">{e.day}</p>
+                          <p className="text-[10px] uppercase tracking-wider text-[#8A94A6] mt-0.5">{t(e.monthKey)}</p>
                         </div>
                         <div className="min-w-0">
-                          <p className="text-sm font-medium leading-tight">{t(e.titleKey)}</p>
-                          <p className="text-xs text-muted-foreground mt-0.5">{t(e.timeKey)}</p>
+                          <p className="text-sm font-semibold leading-tight text-[#1E2A45]">{t(e.titleKey)}</p>
+                          <p className="text-xs text-[#8A94A6] mt-0.5">{t(e.timeKey)}</p>
                         </div>
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <div className="rounded-2xl border border-dashed border-border bg-background/60 p-6 text-center text-sm text-muted-foreground">
+                  <div className="rounded-[20px] border border-dashed border-[#E8ECF4] bg-[#F4F6FB]/60 p-6 text-center text-sm text-[#8A94A6]">
                     {t("mem.emptyEvents")}
                   </div>
                 )}
-                <Button variant="gold-outline" size="sm" className="w-full mt-4">{t("mem.viewCalendar")}</Button>
+                <Button variant="ds-secondary" size="sm" className="w-full mt-4">{t("mem.viewCalendar")}</Button>
               </div>
 
-              <div className="relative rounded-lg border border-gold/30 bg-gradient-to-br from-secondary/40 to-card p-6 overflow-hidden  border-black/5  shadow-[0_0_6px_rgba(0,0,0,0.1)]">
+              <div className="relative rounded-[20px] border border-[#E8ECF4] bg-gradient-to-br from-[#EAF1FF]/40 to-white p-6 overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.06)]">
                 <div className="ornament-border py-4">
-                  <p className="text-[10px] uppercase tracking-[0.3em] text-gold mb-3 text-center">{t("side.oathTitle")}</p>
-                  <p className="text-sm text-center leading-relaxed text-foreground/90">
+                  <p className="text-[10px] uppercase tracking-[0.3em] text-[#4A7DFF] mb-3 text-center">{t("side.oathTitle")}</p>
+                  <p className="text-sm text-center leading-relaxed text-[#1E2A45]/90">
                     {t("mem.oathBody")}
                   </p>
                 </div>
