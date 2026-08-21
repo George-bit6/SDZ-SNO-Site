@@ -1,0 +1,127 @@
+# LeaderDashboard Tailwind CSS Classes
+
+This file lists all Tailwind CSS class names found in `src/pages/LeaderDashboard.jsx`, along with a brief explanation of what each utility does.
+
+- `absolute` — positions the element relative to its nearest positioned ancestor.
+- `bg-background` — sets the background color to the theme’s background color.
+- `bg-background/50` — sets background color with 50% opacity.
+- `bg-card` — sets background to the card surface color.
+- `bg-crimson/20` — sets crimson background at 20% opacity.
+- `bg-crimson/30` — sets crimson background at 30% opacity.
+- `bg-gold/30` — sets gold background at 30% opacity.
+- `bg-gradient-gold` — applies a custom gold gradient background color.
+- `bg-gradient-to-r` — creates a gradient background that flows left-to-right.
+- `bg-muted` — sets background to the muted theme color.
+- `bg-secondary` — sets background to the secondary theme color.
+- `border` — applies a 1px solid border.
+- `border-b` — applies a bottom border only.
+- `border-border` — uses the theme’s border color.
+- `border-t` — applies a top border only.
+- `famil` — custom class, probably adjusts serif font family or display style.
+- `flex` — makes the element a flex container.
+- `flex-1` — makes the element grow to fill available space.
+- `flex-col` — stacks flex children vertically.
+- `flex-wrap` — allows flex items to wrap onto multiple lines.
+- `focus:border-gold` — changes border color to gold on focus.
+- `focus:outline-none` — removes the default focus outline.
+- `focus:ring-1` — adds a 1px focus ring when focused.
+- `focus:ring-gold/40` — gives the focus ring a translucent gold color.
+- `font-medium` — applies medium font weight.
+- `font-serif` — uses the serif font family.
+- `from-transparent` — starts a gradient from transparent.
+- `gap-1` — sets a small gap between flex/grid items.
+- `gap-2` — sets a slightly larger gap.
+- `gap-3` — sets a medium gap.
+- `gap-4` — sets a larger gap.
+- `gap-6` — sets an even larger gap.
+- `gold-text` — custom class, likely sets text color to gold.
+- `grid` — makes the element a CSS grid container.
+- `grid-cols-2` — creates two equal grid columns.
+- `h-1.5` — sets height to 0.375rem.
+- `h-5` — sets height to 1.25rem.
+- `h-7` — sets height to 1.75rem.
+- `h-full` — makes height fill the parent.
+- `h-px` — sets height to 1px.
+- `hover:bg-background/40` — changes background to a translucent background color on hover.
+- `hover:bg-gold/10` — changes background to light gold on hover.
+- `hover:text-gold` — changes text color to gold on hover.
+- `inset-x-0` — sets left and right to 0 for an absolutely positioned element.
+- `items-center` — vertically centers flex items.
+- `items-end` — aligns flex items to the bottom.
+- `items-start` — aligns flex items to the top.
+- `justify-between` — places space between flex items.
+- `leading-tight` — reduces line height for tighter text spacing.
+- `lg:grid-cols-4` — creates four columns on large screens.
+- `lg:grid-cols-[1fr_360px]` — creates a responsive layout with a flexible main column and a fixed 360px sidebar on large screens.
+- `mb-1` — adds 0.25rem bottom margin.
+- `mb-10` — adds 2.5rem bottom margin.
+- `mb-2` — adds 0.5rem bottom margin.
+- `mb-4` — adds 1rem bottom margin.
+- `mb-8` — adds 2rem bottom margin.
+- `md:px-8` — adds 2rem horizontal padding on medium screens and up.
+- `md:text-5xl` — increases font size on medium screens and up.
+- `min-h-screen` — makes the element at least the full viewport height.
+- `min-w-0` — allows the element to shrink below its content width when needed.
+- `min-w-[160px]` — enforces a minimum width of 160px.
+- `mt-0.5` — adds 0.125rem top margin.
+- `mt-2` — adds 0.5rem top margin.
+- `mt-3` — adds 0.75rem top margin.
+- `mt-4` — adds 1rem top margin.
+- `opacity-50` — sets opacity to 50%.
+- `overflow-hidden` — hides content that overflows the element’s box.
+- `overflow-x-auto` — enables horizontal scrolling when content overflows.
+- `overflow-y-auto` — enables vertical scrolling when content overflows.
+- `p-3` — applies 0.75rem padding on all sides.
+- `p-5` — applies 1.25rem padding on all sides.
+- `p-6` — applies 1.5rem padding on all sides.
+- `pt-4` — applies 1rem top padding.
+- `px-2` — applies 0.5rem horizontal padding.
+- `px-3` — applies 0.75rem horizontal padding.
+- `px-4` — applies 1rem horizontal padding.
+- `px-6` — applies 1.5rem horizontal padding.
+- `py-0.5` — applies 0.125rem vertical padding.
+- `py-1.5` — applies 0.375rem vertical padding.
+- `py-3` — applies 0.75rem vertical padding.
+- `py-4` — applies 1rem vertical padding.
+- `py-8` — applies 2rem vertical padding.
+- `relative` — positions the element relative to its normal flow.
+- `rounded-full` — makes the element fully circular.
+- `rounded-lg` — gives the element large rounded corners.
+- `rounded-md` — gives the element medium rounded corners.
+- `rounded-sm` — gives the element small rounded corners.
+- `shadow-card` — custom class for a card-style drop shadow.
+- `size-3` — custom size utility, likely sets width/height to a fixed smaller size.
+- `size-4` — custom size utility for a slightly larger square.
+- `size-8` — custom size utility for an icon button.
+- `size-9` — custom size utility for a larger avatar or badge.
+- `space-y-2` — adds vertical spacing between stacked children.
+- `space-y-3` — adds slightly larger vertical spacing between stacked children.
+- `space-y-6` — adds even larger vertical spacing between stacked children.
+- `text-4xl` — makes text very large.
+- `text-[10px]` — sets text size to 10px explicitly.
+- `text-crimson` — sets text color to crimson.
+- `text-end` — aligns text to the right.
+- `text-gold` — sets text color to gold.
+- `text-lg` — sets text size to large.
+- `text-muted-foreground` — custom class for subdued text color.
+- `text-muted-foreground/80` — muted text with 80% opacity.
+- `text-sm` — sets text to small size.
+- `text-start` — aligns text to the left.
+- `text-xl` — sets text to extra-large size.
+- `text-xs` — sets text to extra-small size.
+- `to-transparent` — ends a gradient with transparent.
+- `top-0` — positions the top edge at 0.
+- `tracking-[0.25em]` — sets letter spacing to 0.25em.
+- `tracking-[0.2em]` — sets letter spacing to 0.2em.
+- `tracking-[0.3em]` — sets letter spacing to 0.3em.
+- `tracking-wider` — increases letter spacing.
+- `transition-colors` — animates color changes smoothly.
+- `truncate` — truncates overflow text with an ellipsis.
+- `uppercase` — converts text to uppercase.
+- `via-gold/40` — places a semi-transparent gold color in the middle of a gradient.
+- `w-16` — sets width to 4rem.
+- `w-48` — sets width to 12rem.
+- `w-9` — sets width to 2.25rem.
+- `w-full` — sets width to 100%.
+
+> Note: The component also builds dynamic classes at runtime, such as the opacity value and the `heatColor(intensity)` helper, which are not fixed literal class names in the source file.
