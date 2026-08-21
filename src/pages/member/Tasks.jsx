@@ -1,18 +1,69 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AppSidebar } from "@/components/AppSidebar";
 import { Topbar } from "@/components/Topbar";
 import { TaskCard } from "@/components/TaskCard";
 import { Button } from "@/components/ui/button";
 import { ClipboardList, Filter, Plus, Search } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
-import DashboardPageTitle from "../components/dashboardComponents/DashboardPageTitle";
-import StatisticCards from "../components/dashboardComponents/StatisticCards";
+import { useParams } from "react-router-dom";
+import { memberDataService } from "@/services/memberDataService";
+import { taskDataService } from "@/services/taskDataService";
+import DashboardPageTitle from "@/components/dashboardComponents/DashboardPageTitle";
+import StatisticCards from "@/components/dashboardComponents/StatisticCards";
 
 const TasksPage = ({ role }) => {
     const { t } = useI18n();
+    const { memberId } = useParams();
     const [filter, setFilter] = useState("all");
     const [query, setQuery] = useState("");
-    const allTasks = useMemo(() => [], []);
+    const [allTasks, setAllTasks] = useState([]);
+    const [member, setMember] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const loadTasksData = async () => {
+            if (!memberId) {
+                setAllTasks([]);
+                setMember(null);
+                setLoading(false);
+                return;
+            }
+
+            try {
+                setLoading(true);
+                
+                // Load member data
+                const memberData = await memberDataService.getMemberById(memberId);
+                if (isMounted && memberData) {
+                    setMember(memberDataService.formatMemberData(memberData));
+                }
+
+                // Load member tasks
+                const tasks = await memberDataService.getMemberTasks(memberId);
+                if (isMounted) {
+                    setAllTasks(Array.isArray(tasks) ? tasks : []);
+                }
+            } catch (error) {
+                console.error("Error loading tasks data:", error);
+                if (isMounted) {
+                    setAllTasks([]);
+                    setMember(null);
+                }
+            } finally {
+                if (isMounted) {
+                    setLoading(false);
+                }
+            }
+        };
+
+        loadTasksData();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [memberId]);
 
     const filters = [
         { key: "all", labelKey: "tasks.filter.all" },
@@ -24,18 +75,20 @@ const TasksPage = ({ role }) => {
     ];
 
     const visible = allTasks.filter((tk) => {
-        if (filter !== "all" && tk.status !== filter)
+        const taskStatus = tk.task_status || tk.status || "not-started";
+        if (filter !== "all" && taskStatus !== filter)
             return false;
-        if (query && !t(tk.titleKey).toLowerCase().includes(query.toLowerCase()))
+        const taskName = tk.task_name || tk.titleKey || tk.taskKey || "";
+        if (query && !taskName.toLowerCase().includes(query.toLowerCase()))
             return false;
         return true;
     });
 
     const counts = {
         total: allTasks.length,
-        open: allTasks.filter((t) => t.status === "not-started" || t.status === "in-progress").length,
-        pending: allTasks.filter((t) => t.status === "pending").length,
-        done: allTasks.filter((t) => t.status === "complete" || t.status === "verified").length,
+        open: allTasks.filter((t) => (t.task_status || t.status) === "not-started" || (t.task_status || t.status) === "in-progress").length,
+        pending: allTasks.filter((t) => (t.task_status || t.status) === "pending").length,
+        done: allTasks.filter((t) => (t.task_status || t.status) === "complete" || (t.task_status || t.status) === "verified").length,
     };
 
     const stats = [
@@ -50,7 +103,12 @@ const TasksPage = ({ role }) => {
             <AppSidebar role={role}/>
 
             <div className="flex-1 flex flex-col min-w-0">
-                <Topbar name={role === "leader" ? "Tony Maalouf" : "Elias Khoury"} rank={role === "leader" ? t("rank.subleader") : t("rank.senior")} subgroup={t("groups.scouts.name")} initials={role === "leader" ? "TM" : "EK"}/>
+                <Topbar 
+                    name={member?.fullName || "Loading..."} 
+                    rank={t("rank.senior")} 
+                    subgroup={member?.unitName || t("groups.scouts.name")} 
+                    initials={member?.initials || "UK"}
+                />
 
                 <main className="flex-1 overflow-y-auto px-4 md:px-8 py-8">
                     <DashboardPageTitle
@@ -103,12 +161,12 @@ const TasksPage = ({ role }) => {
                         ) : (
                             visible.map((tk) => (
                                 <TaskCard
-                                    key={tk.id}
-                                    id={tk.id}
-                                    title={t(tk.titleKey)}
+                                    key={tk.id || tk.task_id}
+                                    id={tk.id || tk.task_id}
+                                    title={tk.task_name || t(tk.titleKey)}
                                     dueDate={tk.dueDate}
-                                    status={tk.status}
-                                    subgroup={role === "leader" ? tk.assignee : t("groups.scouts.name")}
+                                    status={tk.task_status || tk.status}
+                                    subgroup={member?.unitName || t("groups.scouts.name")}
                                 />
                             ))
                         )}

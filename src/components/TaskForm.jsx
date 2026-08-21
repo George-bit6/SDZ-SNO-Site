@@ -1,6 +1,7 @@
 import Modal from './Modal';
 import { useState } from 'react';
-import Leader from '@/processes/leaders';
+import { leaderDataService } from '@/services/leaderDataService';
+import { taskDataService } from '@/services/taskDataService';
 
 export default function TaskForm({ open, onClose, leaderId}) {
   const [taskName, setTaskName] = useState('');
@@ -27,11 +28,30 @@ export default function TaskForm({ open, onClose, leaderId}) {
 
     setSubmitting(true);
     try {
-      const leaderInstance = new Leader();
-      const leader = await leaderInstance.getLeaderById(leaderId)
-      await leader.addTask(taskName.trim(), levelName.trim(), taskDesc.trim(), Number(points) || 0, taskType.trim());
-      console.log(taskName.trim(), levelName.trim(), taskDesc.trim(), Number(points), taskType.trim());
+      // Get the leader's subgroup ID
+      const subgroupId = await leaderDataService.getLeaderSubgroupId(leaderId);
       
+      if (!subgroupId) {
+        alert('Could not find subgroup for this leader');
+        return;
+      }
+
+      // Add the task using the task service
+      const result = await taskDataService.addTask({
+        taskName: taskName.trim(),
+        subgroupId: subgroupId,
+        levelName: levelName.trim(),
+        taskDesc: taskDesc.trim(),
+        points: Number(points) || 0,
+        taskType: taskType.trim()
+      });
+
+      if (!result.success) {
+        alert(`Failed to add task: ${result.message}`);
+        return;
+      }
+      
+      console.log('Task added successfully:', result.data);
       reset();
       onClose();
       // optional: emit an event or callback to refresh task list

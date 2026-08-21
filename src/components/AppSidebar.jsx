@@ -1,30 +1,31 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { LayoutDashboard, ClipboardList, Award, Users, CalendarDays, Settings, Shield, Trophy, CalendarRange, Boxes, X } from "lucide-react";
+import { LayoutDashboard, ClipboardList, Users, Settings, Trophy } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Logo } from "./Logo";
 import { useI18n } from "@/i18n/I18nProvider";
-import { useState } from "react";
+import { useParams } from "react-router-dom";
 
 const memberNav = [
     { to: "/member", icon: LayoutDashboard, key: "side.dashboard" },
     { to: "/member/tasks", icon: ClipboardList, key: "side.tasks" },
     { to: "/member/leaderboard", icon: Trophy, key: "side.leaderboard" },
-    { to: "/settings", icon: Settings, key: "side.settings" },
+    { to: "/member/settings", icon: Settings, key: "side.settings" },
 ];
 
 const leaderNav = [
     { to: "/leader", icon: LayoutDashboard, key: "side.overview" },
     { to: "/leader/members", icon: Users, key: "side.members" },
     { to: "/leader/tasks", icon: ClipboardList, key: "side.allTasks" },
-    { to: "/leader/leaderboard", icon: Trophy, key: "side.leaderboard" },
-    { to: "/settings", icon: Settings, key: "side.settings" },
+    {to: "/leader/leaderboard", icon: Trophy, key: "side.leaderboard" },
+    { to: "/leader/settings", icon: Settings, key: "side.settings" },
 ];
 
 export const AppSidebar = ({ role, accentColor }) => {
-    const [isOpen, setIsOpen] = useState(false);
     const items = role === "member" ? memberNav : leaderNav;
     const location = useLocation();
     const { t, dir } = useI18n();
+    const { memberId, leaderId } = useParams();
+    const userId = memberId || leaderId;
 
     // Custom inline style overrides if an accentColor is provided
     const customActiveStyle = accentColor ? {
@@ -32,27 +33,27 @@ export const AppSidebar = ({ role, accentColor }) => {
         backgroundColor: "var(--sidebar-accent, hsl(var(--accent) / 0.15))",
     } : undefined;
 
-    // Export the mobile menu toggle for use in Topbar
-    if (typeof window !== 'undefined') {
-        window.toggleMobileMenu = () => setIsOpen(prev => !prev);
-    }
+    // Function to add ID to navigation paths
+    const getPathWithId = (path) => {
+        if (userId && (path.includes('/member') || path.includes('/leader'))) {
+            const parts = path.split('/');
+            if (parts.length === 2) {
+                return `${path}/${userId}`;
+            } else if (parts.length === 3) {
+                return `/${parts[1]}/${userId}/${parts[2]}`;
+            }
+        }
+        return path;
+    };
 
     return (
         <>
-            {/* Overlay - visible on all screen sizes when sidebar is open */}
-            {isOpen && (
-                <div
-                    className="fixed inset-0 bg-black/60 z-40"
-                    onClick={() => setIsOpen(false)}
-                />
-            )}
-
-            {/* Sidebar - toggleable on all screen sizes */}
+            {/* Desktop Sidebar - always visible on larger screens */}
             <aside className={cn(
-                "fixed inset-y-0 left-0 z-50 flex flex-col border-e border-gray-200 text-gray-800 transition-transform duration-300 bg-white",
-                isOpen ? "translate-x-0" : "-translate-x-full"
+                "hidden lg:flex flex-col border-e border-gray-200 text-gray-800 bg-white w-64 h-screen sticky top-0",
+                dir === "rtl" ? "border-e" : "border-e"
             )}>
-                <div className="flex items-center justify-between px-5 h-16 border-b border-gray-200">
+                <div className="flex items-center px-5 h-16 border-b border-gray-200">
                     <div className="flex items-center gap-3">
                         <Logo className="size-10"/>
                         <div className="leading-tight">
@@ -66,12 +67,6 @@ export const AppSidebar = ({ role, accentColor }) => {
                             <p className="text-[10px] uppercase tracking-[0.25em] text-gray-500">{t("brand.portal")}</p>
                         </div>
                     </div>
-                    <button
-                        onClick={() => setIsOpen(false)}
-                        className="p-2 rounded-lg hover:bg-gray-100 text-gray-700"
-                    >
-                        <X className="size-5" />
-                    </button>
                 </div>
 
                 <nav className="flex-1 px-3 py-6 space-y-1">
@@ -79,12 +74,12 @@ export const AppSidebar = ({ role, accentColor }) => {
                         {role === "member" ? t("side.scout") : t("side.leadership")}
                     </p>
                     {items.map((item) => {
-                        const active = location.pathname === item.to;
+                        const pathWithId = getPathWithId(item.to);
+                        const active = location.pathname === pathWithId;
                         return (
                             <NavLink
                                 key={item.to}
-                                to={item.to}
-                                onClick={() => setIsOpen(false)}
+                                to={pathWithId}
                                 style={active && accentColor ? customActiveStyle : undefined}
                                 className={cn(
                                     "relative flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-colors",
@@ -99,7 +94,7 @@ export const AppSidebar = ({ role, accentColor }) => {
                                         style={accentColor ? { backgroundColor: accentColor } : { backgroundColor: "var(--gold)" }}
                                     />
                                 )}
-                                <item.icon className="size-4" strokeWidth={1.75}/>
+                                <item.icon className="size-5" strokeWidth={1.75}/>
                                 {t(item.key)}
                             </NavLink>
                         );

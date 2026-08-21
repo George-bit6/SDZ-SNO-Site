@@ -8,9 +8,9 @@ import { Button } from "@/components/ui/button";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import ScoutMember from "../processes/members";
-import DashboardPageTitle from "../components/dashboardComponents/DashboardPageTitle";
-import StatisticCards from "../components/dashboardComponents/StatisticCards";
+import { memberDataService } from "@/services/memberDataService";
+import DashboardPageTitle from "@/components/dashboardComponents/DashboardPageTitle";
+import StatisticCards from "@/components/dashboardComponents/StatisticCards";
 
 const fallbackTasks = [];
 
@@ -27,37 +27,59 @@ const MemberDashboard = () => {
     const { memberId } = useParams();
     const [member, setMember] = useState(null);
     const [tasks, setTasks] = useState(fallbackTasks);
+    const [stats, setStats] = useState([]);
 
     useEffect(() => {
         let isMounted = true;
 
-        const loadMember = async () => {
+        const loadMemberData = async () => {
             if (!memberId) {
                 setMember(null);
                 setTasks(fallbackTasks);
+                setStats([]);
                 return;
             }
 
-            const memberInstance = new ScoutMember();
-            const memberData = await memberInstance.getMemberById(memberId);
-            console.log("MemberDashboard memberData:", memberData);
+            try {
+                // Load member data
+                const memberData = await memberDataService.getMemberById(memberId);
+                console.log("MemberDashboard memberData:", memberData);
 
-            if (!isMounted) {
-                return;
-            }
+                if (!isMounted) return;
 
-            setMember(memberData);
+                if (memberData) {
+                    const formattedMember = memberDataService.formatMemberData(memberData);
+                    setMember(formattedMember);
 
-            if (memberData) {
-                const memberTasks = await memberData.getTasks();
-                console.log("MemberDashboard tasks:", memberTasks);
-                setTasks(Array.isArray(memberTasks) && memberTasks.length > 0 ? memberTasks : fallbackTasks);
-            } else {
-                setTasks(fallbackTasks);
+                    // Load member tasks
+                    const memberTasks = await memberDataService.getMemberTasks(memberId);
+                    console.log("MemberDashboard tasks:", memberTasks);
+                    setTasks(Array.isArray(memberTasks) && memberTasks.length > 0 ? memberTasks : fallbackTasks);
+
+                    // Load member stats
+                    const memberStats = await memberDataService.getMemberStats(memberId);
+                    setStats([
+                        { label: "Badges Earned", value: memberStats.badges.toString(), delta: "", color: "#FFC107" },
+                        { label: "Tasks Completed", value: memberStats.completedTasks.toString(), delta: `${memberStats.totalTasks - memberStats.completedTasks} remaining`, color: "#4A7DFF" },
+                        { label: "Service Hours", value: memberStats.hours.toString(), delta: "", color: "#34D399" },
+                        { label: "Honor Points", value: memberStats.totalPoints.toString(), delta: "", color: "#FF5C5C", progress: memberStats.totalPoints },
+                    ]);
+                } else {
+                    setMember(null);
+                    setTasks(fallbackTasks);
+                    setStats([]);
+                }
+            } catch (error) {
+                console.error("Error loading member data:", error);
+                if (isMounted) {
+                    setMember(null);
+                    setTasks(fallbackTasks);
+                    setStats([]);
+                }
             }
         };
 
-        loadMember();
+        loadMemberData();
 
         return () => {
             isMounted = false;
@@ -69,14 +91,6 @@ const MemberDashboard = () => {
         titleKey: normalizeTaskTitleKey(task.task_id ?? task.titleKey ?? task.taskKey),
         status: task.task_status ?? "not-started"
     }));
-
-    // Sample stats for the design system
-    const stats = [
-        { label: "Badges Earned", value: "12", delta: "+2 this month", color: "#FFC107" },
-        { label: "Tasks Completed", value: "47", delta: "8 remaining", color: "#4A7DFF" },
-        { label: "Service Hours", value: "84", delta: "+12 this season", color: "#34D399" },
-        { label: "Honor Points", value: "99", delta: "Top 10%", color: "#FF5C5C", progress: 99 },
-    ];
 
     /*  const badges = [
         { icon: Flame, key: "badge.firekeeper" },
@@ -106,11 +120,11 @@ const MemberDashboard = () => {
       <AppSidebar role="member"/>
 
       <div className="flex-1 flex flex-col min-w-0">
-        <Topbar name={member?.getMemberName() || "Unknown"} rank={t("rank.senior")} subgroup={t("groups.scouts.name")} initials="EK"/>
+        <Topbar name={member?.fullName || "Unknown"} rank={t("rank.senior")} subgroup={member?.unitName || t("groups.scouts.name")} initials={member?.initials || "UK"}/>
 
         <main className="flex-1 overflow-y-auto px-4 md:px-8 py-8">
           <DashboardPageTitle
-            title={t("mem.welcome", { name: member?.getMemberName() || "Unknown" })}
+            title={t("mem.welcome", { name: member?.fullName || "Unknown" })}
             subtitle={t("mem.kicker")}
             accentColor="#4A7DFF"
           />

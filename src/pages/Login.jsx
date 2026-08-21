@@ -3,16 +3,15 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowRight } from "lucide-react";
-import heroEmblem from "@/assets/stDemetriosIcon.png";
+import { ArrowRight, Heart } from "lucide-react";
 import stDemetriosLogo from "@/assets/stDemetriosLogo 1.png";
 import snoLogo from "@/assets/sno-logo 1.png";
 import { useI18n } from "@/i18n/I18nProvider";
 import { LanguageToggle } from "@/components/LanguageToggle";
-import {getUserId, submit} from "@/processes/auth";
+import { Logo } from "@/components/Logo";
+import { authService } from "@/services/authService";
 
 const Login = () => {
-  const [role, setRole] = useState("member");
   const [error, setError] = useState("");
   const { t } = useI18n();
   const navigate = useNavigate();
@@ -21,76 +20,101 @@ const Login = () => {
     event.preventDefault();
     setError("");
     
-       const formData = new FormData(event.currentTarget);
+    const formData = new FormData(event.currentTarget);
     const email = formData.get("email");
     const password = formData.get("password");
 
-    const success = await submit(email, password);
+    const result = await authService.signIn(email, password);
 
-    if (success) {
-      const userId = await getUserId(); 
+    if (result.success) {
+      const userId = await authService.getUserId();
       console.log("User ID:", userId); // Log the user ID for debugging
-      navigate(role === "member" ? `/member/${userId}` : `/leader/${userId}`);  
+      
+      // Determine user role from database
+      const userRole = await authService.getUserRole(userId);
+      console.log("User Role:", userRole);
+      
+      if (userRole === 'leader') {
+        navigate(`/leader/${userId}`);
+      } else if (userRole === 'member') {
+        navigate(`/member/${userId}`);
+      } else {
+        setError("User role not found in database. Please contact administrator.");
+      }
     } else {
-      setError(t("login.error") || "Invalid email or password");
+      setError(result.error || t("login.error") || "Invalid email or password");
     }
   };
 
   const clearError = () => setError("");
 
   return (
-    <div className=" min-h-screen flex items-center justify-center px-4 py-12 relative overflow-hidden">
-      <div
-        className=" absolute inset-0 opacity-[0.06] pointer-events-none"
-        style={{
-          backgroundImage: `url(${heroEmblem})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
-      <div className="absolute inset-0 from-background/40 via-transparent to-background/80" />
+    <div className="min-h-screen flex flex-col relative overflow-hidden" style={{
+      backgroundColor: '#ffffff',
+      background: 'radial-gradient(circle, transparent 20%, #ffffff 20%, #ffffff 80%, transparent 80%, transparent), radial-gradient(circle, transparent 20%, #ffffff 20%, #ffffff 80%, transparent 80%, transparent) 20px 20px, linear-gradient(#d8b98a 1.6px, transparent 1.6px) 0 -0.8px, linear-gradient(90deg, #d8b98a 1.6px, #ffffff 1.6px) -0.8px 0',
+      backgroundSize: '40px 40px, 40px 40px, 20px 20px, 20px 20px'
+    }}>
+      {/* Navigation - Simplified for login page */}
+      <header className="relative z-20 bg-white/80 backdrop-blur-sm border-b border-gray-200">
+        <div className="container mx-auto px-6 lg:px-16 py-4">
+          <div className="flex items-center justify-between">
+            {/* Logo Left */}
+            <Link to="/" className="flex items-center gap-3">
+              <Logo className="size-8 text-gray-900" />
+              <div className="leading-tight">
+                <p className="font-medium text-gray-900 text-sm">Saint Demetrios</p>
+                <p className="text-[10px] uppercase tracking-[0.28em] text-gray-500">
+                  Orthodox Church
+                </p>
+              </div>
+            </Link>
 
-      <div className="absolute top-4 end-4 flex items-center gap-1 z-10">
-        <LanguageToggle />
-      </div>
-
-      <div className=" relative w-full max-w-md">
-        <Link
-          to="/"
-          className="mb-8 block text-center text-xs uppercase tracking-[0.3em] text-muted-foreground hover:text-gold transition-colors"
-        >
-          {t("login.back")}
-        </Link>
-
-        <div className="relative">
-          <div className="absolute -top-10 inset-x-0 flex justify-center gap-3">
-            <div className="size-20 rounded-full bg-background/90 flex items-center justify-center border-background overflow-hidden p-2">
-              <img
-                src={stDemetriosLogo}
-                alt="St. Demetrios logo"
-                className="h-full w-full object-contain"
-              />
-            </div>
-            <div className="size-20 rounded-full bg-background/90 flex items-center justify-center border-background overflow-hidden p-2">
-              <img
-                src={snoLogo}
-                alt="SNO logo"
-                className="h-full w-full object-contain"
-              />
+            {/* CTA Button Right */}
+            <div className="flex items-center gap-4">
+              <LanguageToggle className="text-gray-600 hover:text-gray-900" />
+              <Button asChild size="sm" className="rounded-full bg-crimson hover:bg-crimson/90 text-white hidden sm:inline-flex">
+                <a href="#donate">
+                  <Heart className="size-3.5" /> Donate
+                </a>
+              </Button>
             </div>
           </div>
+        </div>
+      </header>
 
-          <div className="rounded-lg border border-border bg-card shadow-card pt-16 pb-8 px-6 sm:px-8">
+      {/* Login Content */}
+      <div className="relative z-10 flex-1 flex items-center justify-center px-6 lg:px-16 py-20">
+        <div className="container mx-auto max-w-md">
+          <div className="bg-white rounded-2xl p-8 sm:p-10 shadow-lg border border-gray-200">
+            {/* Logos */}
+            <div className="flex justify-center gap-4 mb-8">
+              <div className="size-20 rounded-full bg-white flex items-center justify-center border-2 border-gray-200 overflow-hidden p-2 shadow-md">
+                <img
+                  src={stDemetriosLogo}
+                  alt="St. Demetrios logo"
+                  className="h-full w-full object-contain"
+                />
+              </div>
+              <div className="size-20 rounded-full bg-white flex items-center justify-center border-2 border-gray-200 overflow-hidden p-2 shadow-md">
+                <img
+                  src={snoLogo}
+                  alt="SNO logo"
+                  className="h-full w-full object-contain"
+                />
+              </div>
+            </div>
+
             <div className="text-center mb-8">
-              <h1 className="font-serif text-2xl sm:text-3xl mb-1">{t("login.title")}</h1>
-              <p className="text-sm text-muted-foreground">
+              <h1 className="text-[32px] sm:text-[36px] font-medium leading-[1.15] tracking-[-0.01em] text-gray-900 mb-2">
+                {t("login.title")}
+              </h1>
+              <p className="text-[16px] leading-[1.6] text-gray-600">
                 {t("login.subtitle")}
               </p>
-              <div className="gold-divider w-16 mx-auto mt-4" />
             </div>
 
             {error && (
-              <div className="mb-6 p-4 bg-destructive/10 border border-destructive text-destructive text-sm rounded-md">
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-600 text-sm rounded-lg">
                 {error}
               </div>
             )}
@@ -99,7 +123,7 @@ const Login = () => {
               <div className="space-y-2">
                 <Label
                   htmlFor="email"
-                  className="text-xs uppercase tracking-wider text-muted-foreground"
+                  className="text-xs uppercase tracking-wider text-gray-600"
                 >
                   {t("login.email")}
                 </Label>
@@ -110,14 +134,14 @@ const Login = () => {
                   required
                   onChange={clearError}
                   placeholder="Enter Your Email"
-                  className="bg-background border-border focus-visible:ring-gold focus-visible:border-gold h-11"
+                  className="bg-gray-50 border-gray-200 text-gray-900 placeholder:text-gray-400 focus-visible:ring-gray-400 focus-visible:border-gray-400 h-11"
                 />
               </div>
 
               <div className="space-y-2">
                 <Label
                   htmlFor="password"
-                  className="text-xs uppercase tracking-wider text-muted-foreground"
+                  className="text-xs uppercase tracking-wider text-gray-600"
                 >
                   {t("login.password")}
                 </Label>
@@ -128,47 +152,41 @@ const Login = () => {
                   required
                   onChange={clearError}
                   placeholder="••••••••"
-                  className="bg-background border-border focus-visible:ring-gold focus-visible:border-gold h-11"
+                  className="bg-gray-50 border-gray-200 text-gray-900 placeholder:text-gray-400 focus-visible:ring-gray-400 focus-visible:border-gray-400 h-11"
                 />
               </div>
 
-              <div className="flex items-center justify-between text-xs flex-wrap gap-2">
-                <div className="flex gap-1 rounded-md border border-border bg-background/70 p-0.5 shadow-sm">
-                  <Button
-                    type="button"
-                    name="memberSetterButton"
-                    onClick={() => setRole("member")}
-                    className={`px-3 py-1 rounded text-xs font-medium transition-all duration-200 ${
-                      role === "member"
-                        ? "bg-gold text-primary-foreground shadow-sm scale-[1.15]"
-                        : "text-muted-foreground hover:bg-gold/10 hover:text-gold hover:shadow-sm"
-                    }`}
-                  >
-                    {t("login.role.scout")}
-                  </Button>
-                  <Button
-                    type="button"
-                    name="leaderSetterButton"
-                    onClick={() => setRole("leader")}
-                    className={`px-3 py-1 rounded text-xs font-medium transition-all duration-200 ${
-                      role === "leader"
-                        ? "bg-gold text-primary-foreground shadow-sm scale-[1.15]"
-                        : "text-muted-foreground hover:bg-gold/10 hover:text-gold hover:shadow-sm"
-                    }`}
-                  >
-                    {t("login.role.leader")}
-                  </Button>
-                </div>
-                <a href="#" className="text-muted-foreground hover:text-gold">
+              <div className="flex items-center justify-end text-xs">
+                <a href="#" className="text-gray-500 hover:text-gray-900 transition-colors">
                   {t("login.forgot")}
                 </a>
               </div>
 
-              <Button type="submit" variant="hero" className="text-mist-100 w-full opacity-90  h-11">
-                {t("login.submit")} <ArrowRight className="rtl-flip" />
+              <Button type="submit" className="bg-gray-900 text-white rounded-full px-7 py-3.5 font-medium hover:shadow-[0_6px_16px_rgba(0,0,0,0.18)] transition-shadow w-full h-12 text-base">
+                {t("login.submit")} <ArrowRight className="size-5 ml-2" />
               </Button>
             </form>
+
+            {/* Sign Up Link */}
+            <div className="mt-6 text-center">
+              <p className="text-gray-600 text-sm mb-3">
+                Don't have an account?
+              </p>
+              <Button asChild variant="outline" className="rounded-full px-6 py-3 font-medium hover:bg-gray-50 w-full h-11 border-gray-300 text-gray-900">
+                <Link to="/signup">
+                  Sign Up
+                </Link>
+              </Button>
+            </div>
           </div>
+
+          {/* Back to Home */}
+          <Link
+            to="/"
+            className="mt-6 block text-center text-xs uppercase tracking-[0.3em] text-gray-500 hover:text-gray-900 transition-colors"
+          >
+            {t("login.back")}
+          </Link>
         </div>
       </div>
     </div>

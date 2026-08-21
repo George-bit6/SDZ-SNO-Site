@@ -4,9 +4,12 @@ import { Crest } from "@/components/Crest";
 import { Button } from "@/components/ui/button";
 import { Bell, Lock, LogOut, ShieldCheck, User, Settings as SettingsIcon } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import DashboardPageTitle from "../components/dashboardComponents/DashboardPageTitle";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { memberDataService } from "@/services/memberDataService";
+import { authService } from "@/services/authService";
+import DashboardPageTitle from "@/components/dashboardComponents/DashboardPageTitle";
 
 const Toggle = ({ on, onChange }) => (
     <button
@@ -18,20 +21,66 @@ const Toggle = ({ on, onChange }) => (
     </button>
 );
 
-const Settings = () => {
+const Settings = ({ role }) => {
     const { t, lang, setLang } = useI18n();
     const navigate = useNavigate();
-    const location = useLocation();
-    const role = location.state?.role === "leader" ? "leader" : "member";
+    const { memberId } = useParams();
     const [notifTasks, setNotifTasks] = useState(true);
     const [notifReviews, setNotifReviews] = useState(true);
     const [notifEvents, setNotifEvents] = useState(false);
     const [notifEmail, setNotifEmail] = useState(true);
-    const isLeader = role === "leader";
+    const [member, setMember] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    const profile = isLeader
-        ? { name: "Tony Maalouf", initials: "TM", rank: t("rank.subleader"), email: "tony@antiochscouts.org" }
-        : { name: "Elias Khoury", initials: "EK", rank: t("rank.senior"), email: "elias@antiochscouts.org" };
+    useEffect(() => {
+        let isMounted = true;
+
+        const loadMemberData = async () => {
+            if (!memberId) {
+                setMember(null);
+                setLoading(false);
+                return;
+            }
+
+            try {
+                setLoading(true);
+                const memberData = await memberDataService.getMemberById(memberId);
+                
+                if (isMounted && memberData) {
+                    setMember(memberDataService.formatMemberData(memberData));
+                }
+            } catch (error) {
+                console.error("Error loading member data:", error);
+                if (isMounted) {
+                    setMember(null);
+                }
+            } finally {
+                if (isMounted) {
+                    setLoading(false);
+                }
+            }
+        };
+
+        loadMemberData();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [memberId]);
+
+    const profile = member || { 
+        name: "Loading...", 
+        initials: "LD", 
+        rank: t("rank.senior"), 
+        email: "",
+        unitName: t("groups.scouts.name"),
+        unitTitle: "Scout"
+    };
+
+    const handleSignOut = async () => {
+        await authService.signOut();
+        navigate("/");
+    };
 
     return (
         <div className="min-h-screen flex bg-[#F4F6FB]">
@@ -75,8 +124,8 @@ const Settings = () => {
                                 <div className="flex items-center gap-5 mb-6">
                                     <Crest initials={profile.initials} className="size-20"/>
                                     <div>
-                                        <p className="text-[22px] font-bold text-[#1E2A45]">{profile.name}</p>
-                                        <p className="text-xs uppercase tracking-[0.25em] text-[#4A7DFF] mt-1">{profile.rank}</p>
+                                        <p className="text-[22px] font-bold text-[#1E2A45]">{profile.fullName || profile.name}</p>
+                                        <p className="text-xs uppercase tracking-[0.25em] text-[#4A7DFF] mt-1">{profile.unitTitle || profile.rank}</p>
                                         <Button variant="ds-secondary" size="sm" className="mt-3">
                                             {t("set.changePhoto")}
                                         </Button>
@@ -89,7 +138,7 @@ const Settings = () => {
                                             {t("set.field.name")}
                                         </label>
                                         <input
-                                            defaultValue={profile.name}
+                                            defaultValue={profile.fullName || profile.name}
                                             className="mt-1.5 w-full bg-[#F4F6FB] border border-[#E8ECF4] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#4A7DFF] focus:ring-1 focus:ring-[#4A7DFF]/40"
                                         />
                                     </div>
@@ -107,7 +156,7 @@ const Settings = () => {
                                             {t("set.field.subgroup")}
                                         </label>
                                         <input
-                                            defaultValue={t("groups.scouts.name")}
+                                            defaultValue={profile.unitName || t("groups.scouts.name")}
                                             readOnly
                                             className="mt-1.5 w-full bg-[#F4F6FB]/40 border border-[#E8ECF4] rounded-xl px-3 py-2 text-sm text-[#8A94A6]"
                                         />
@@ -117,7 +166,7 @@ const Settings = () => {
                                             {t("set.field.rank")}
                                         </label>
                                         <input
-                                            defaultValue={profile.rank}
+                                            defaultValue={profile.unitTitle || profile.rank}
                                             readOnly
                                             className="mt-1.5 w-full bg-[#F4F6FB]/40 border border-[#E8ECF4] rounded-xl px-3 py-2 text-sm text-[#8A94A6]"
                                         />
@@ -190,7 +239,7 @@ const Settings = () => {
                                     </button>
 
                                     <button
-                                        onClick={() => navigate("/")}
+                                        onClick={handleSignOut}
                                         className="w-full flex items-center justify-between p-4 rounded-xl border border-[#E8ECF4] hover:bg-[#FF5C5C]/5 hover:border-[#FF5C5C]/40 transition-colors text-start"
                                     >
                                         <div className="flex items-center gap-3">

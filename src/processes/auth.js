@@ -1,31 +1,12 @@
-import supabase from "../../supabase";
+import { authService } from "../services/authService";
 
+// Legacy compatibility - these functions now use the new service
 export async function getUserId() {
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
-
-  if (error) {
-    console.error("Get user id error:", error.message);
-    return null;
-  }
-  return user?.id ?? null;
+  return await authService.getUserId();
 }
 
 export async function submit(email, password) {
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  })
-
-  if (error) {
-    console.error("Login error:", error.message);
-    return false;
-  }
-
-  console.log("Login data:", data?.user);
-
-  return true;
+  const result = await authService.signIn(email, password);
+  return result.success;
 }
 
