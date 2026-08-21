@@ -8,6 +8,7 @@ import { useI18n } from "@/i18n/I18nProvider";
 import { useParams } from "react-router-dom";
 import { leaderDataService } from "@/services/leaderDataService";
 import { taskDataService } from "@/services/taskDataService";
+import { getAccentColorBySubgroupId } from "@/utils/accentColors";
 import DashboardPageTitle from "@/components/dashboardComponents/DashboardPageTitle";
 import StatisticCards from "@/components/dashboardComponents/StatisticCards";
 
@@ -19,6 +20,7 @@ const TasksPage = ({ role }) => {
     const [allTasks, setAllTasks] = useState([]);
     const [leader, setLeader] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [accentColor, setAccentColor] = useState('#4A7DFF'); // Default blue
 
     useEffect(() => {
         let isMounted = true;
@@ -28,11 +30,19 @@ const TasksPage = ({ role }) => {
                 setAllTasks([]);
                 setLeader(null);
                 setLoading(false);
+                setAccentColor('#4A7DFF');
                 return;
             }
 
             try {
                 setLoading(true);
+                
+                // Get subgroup ID first for accent color
+                const subgroupId = await leaderDataService.getLeaderSubgroupId(leaderId);
+                if (isMounted && subgroupId) {
+                    const subgroupAccentColor = getAccentColorBySubgroupId(subgroupId);
+                    setAccentColor(subgroupAccentColor);
+                }
                 
                 // Load leader data
                 const leaderData = await leaderDataService.getLeaderById(leaderId);
@@ -41,7 +51,6 @@ const TasksPage = ({ role }) => {
                 }
 
                 // Load leader's subgroup tasks
-                const subgroupId = await leaderDataService.getLeaderSubgroupId(leaderId);
                 if (isMounted && subgroupId) {
                     const tasks = await taskDataService.getTasksBySubgroup(subgroupId);
                     setAllTasks(Array.isArray(tasks) ? tasks : []);
@@ -51,6 +60,7 @@ const TasksPage = ({ role }) => {
                 if (isMounted) {
                     setAllTasks([]);
                     setLeader(null);
+                    setAccentColor('#4A7DFF');
                 }
             } finally {
                 if (isMounted) {
@@ -99,7 +109,7 @@ const TasksPage = ({ role }) => {
 
     return (
         <div className="min-h-screen flex bg-[#F4F6FB]">
-            <AppSidebar role={role}/>
+            <AppSidebar role={role} accentColor={accentColor}/>
 
             <div className="flex-1 flex flex-col min-w-0">
                 <Topbar 
@@ -107,13 +117,14 @@ const TasksPage = ({ role }) => {
                     rank={leader?.primaryTitle || t("rank.subleader")} 
                     subgroup={leader?.subgroupName || t("groups.scouts.name")} 
                     initials={leader?.initials || "LD"}
+                    accentColor={accentColor}
                 />
 
                 <main className="flex-1 overflow-y-auto px-4 md:px-8 py-8">
                     <DashboardPageTitle
                         title={role === "leader" ? t("tasks.title.leader") : t("tasks.title.member")}
                         subtitle={role === "leader" ? t("tasks.kicker.leader") : t("tasks.kicker.member")}
-                        accentColor="#4A7DFF"
+                        accentColor={accentColor}
                     >
                         {role === "leader" && (
                             <Button variant="ds-primary" size="sm">

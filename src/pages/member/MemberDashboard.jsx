@@ -9,6 +9,7 @@ import { useI18n } from "@/i18n/I18nProvider";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { memberDataService } from "@/services/memberDataService";
+import { getAccentColorBySubgroupId } from "@/utils/accentColors";
 import DashboardPageTitle from "@/components/dashboardComponents/DashboardPageTitle";
 import StatisticCards from "@/components/dashboardComponents/StatisticCards";
 
@@ -28,6 +29,7 @@ const MemberDashboard = () => {
     const [member, setMember] = useState(null);
     const [tasks, setTasks] = useState(fallbackTasks);
     const [stats, setStats] = useState([]);
+    const [accentColor, setAccentColor] = useState('#4A7DFF'); // Default blue
 
     useEffect(() => {
         let isMounted = true;
@@ -37,6 +39,7 @@ const MemberDashboard = () => {
                 setMember(null);
                 setTasks(fallbackTasks);
                 setStats([]);
+                setAccentColor('#4A7DFF');
                 return;
             }
 
@@ -48,6 +51,10 @@ const MemberDashboard = () => {
                 if (!isMounted) return;
 
                 if (memberData) {
+                    // Calculate accent color based on subgroup first
+                    const subgroupAccentColor = getAccentColorBySubgroupId(memberData.subgrp_id);
+                    setAccentColor(subgroupAccentColor);
+
                     const formattedMember = memberDataService.formatMemberData(memberData);
                     setMember(formattedMember);
 
@@ -59,7 +66,7 @@ const MemberDashboard = () => {
                     // Load member stats
                     const memberStats = await memberDataService.getMemberStats(memberId);
                     setStats([
-                        { label: "Badges Earned", value: memberStats.badges.toString(), delta: "", color: "#FFC107" },
+                        { label: "Badges Earned", value: memberStats.badges.toString(), delta: "", color: subgroupAccentColor },
                         { label: "Tasks Completed", value: memberStats.completedTasks.toString(), delta: `${memberStats.totalTasks - memberStats.completedTasks} remaining`, color: "#4A7DFF" },
                         { label: "Service Hours", value: memberStats.hours.toString(), delta: "", color: "#34D399" },
                         { label: "Honor Points", value: memberStats.totalPoints.toString(), delta: "", color: "#FF5C5C", progress: memberStats.totalPoints },
@@ -68,6 +75,7 @@ const MemberDashboard = () => {
                     setMember(null);
                     setTasks(fallbackTasks);
                     setStats([]);
+                    setAccentColor('#4A7DFF');
                 }
             } catch (error) {
                 console.error("Error loading member data:", error);
@@ -75,6 +83,7 @@ const MemberDashboard = () => {
                     setMember(null);
                     setTasks(fallbackTasks);
                     setStats([]);
+                    setAccentColor('#4A7DFF');
                 }
             }
         };
@@ -117,19 +126,19 @@ const MemberDashboard = () => {
     const activity = [];
 
     return (<div className="min-h-screen flex bg-[#F4F6FB]">
-      <AppSidebar role="member"/>
+      <AppSidebar role="member" accentColor={accentColor}/>
 
-      <div className="flex-1 flex flex-col min-w-0">
-        <Topbar name={member?.fullName || "Unknown"} rank={t("rank.senior")} subgroup={member?.unitName || t("groups.scouts.name")} initials={member?.initials || "UK"}/>
+      <div className="flex-1 flex flex-col min-w-0 transition-all duration-300 lg:ml-0">
+        <Topbar name={member?.fullName || "Unknown"} rank={t("rank.senior")} subgroup={member?.unitName || t("groups.scouts.name")} initials={member?.initials || "UK"} accentColor={accentColor}/>
 
         <main className="flex-1 overflow-y-auto px-4 md:px-8 py-8">
           <DashboardPageTitle
             title={t("mem.welcome", { name: member?.fullName || "Unknown" })}
             subtitle={t("mem.kicker")}
-            accentColor="#4A7DFF"
+            accentColor={accentColor}
           />
 
-          <StatisticCards stats={stats} accentColor="#4A7DFF" />
+          <StatisticCards stats={stats} accentColor={accentColor} />
 
           <div className="grid lg:grid-cols-[1fr_320px] gap-8">
             <div className="space-y-10">

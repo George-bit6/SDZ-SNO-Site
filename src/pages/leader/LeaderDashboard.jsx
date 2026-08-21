@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import TaskForm from "@/components/TaskForm";
 import { leaderDataService } from "@/services/leaderDataService";
 import { memberDataService } from "@/services/memberDataService";
+import { getAccentColorBySubgroupId } from "@/utils/accentColors";
 import DashboardPageTitle from "@/components/dashboardComponents/DashboardPageTitle";
 import StatisticCards from "@/components/dashboardComponents/StatisticCards";
 import MembersTable from "@/components/dashboardComponents/MembersTable";
@@ -34,7 +35,7 @@ const LeaderDashboard = () => {
     const [members, setMembers] = useState([]);
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
-    const accentColor = '#4A7DFF';
+    const [accentColor, setAccentColor] = useState('#4A7DFF'); // Default blue
 
     useEffect(() => {
         let isMounted = true;
@@ -46,11 +47,19 @@ const LeaderDashboard = () => {
                 setMembers([]);
                 setReviews([]);
                 setLoading(false);
+                setAccentColor('#4A7DFF');
                 return;
             }
 
             try {
                 setLoading(true);
+                
+                // Get subgroup ID first for accent color
+                const subgroupId = await leaderDataService.getLeaderSubgroupId(leaderId);
+                if (isMounted && subgroupId) {
+                    const subgroupAccentColor = getAccentColorBySubgroupId(subgroupId);
+                    setAccentColor(subgroupAccentColor);
+                }
                 
                 // Load leader data
                 const leaderData = await leaderDataService.getLeaderById(leaderId);
@@ -63,7 +72,7 @@ const LeaderDashboard = () => {
                 const leaderStats = await leaderDataService.getLeaderStats(leaderId);
                 if (isMounted) {
                     setStats([
-                        { label: "Total Members", value: leaderStats.totalMembers.toString(), delta: "", color: "#4A7DFF" },
+                        { label: "Total Members", value: leaderStats.totalMembers.toString(), delta: "", color: accentColor },
                         { label: "Active Members", value: leaderStats.activeMembers.toString(), delta: "", color: "#34D399" },
                         { label: "Total Honor Points", value: leaderStats.totalHonorPoints.toString(), delta: "", color: "#FFC107" },
                         { label: "Service Hours", value: leaderStats.totalServiceHours.toString(), delta: "", color: "#FF5C5C" },
@@ -88,6 +97,7 @@ const LeaderDashboard = () => {
                     setStats([]);
                     setMembers([]);
                     setReviews([]);
+                    setAccentColor('#4A7DFF');
                 }
             } finally {
                 if (isMounted) {
@@ -114,7 +124,7 @@ const LeaderDashboard = () => {
             {/* Left navigation panel for leader roles. */}
             <AppSidebar role="leader" accentColor={accentColor}/>
 
-            <div className="flex-1 flex flex-col min-w-0">
+            <div className="flex-1 flex flex-col min-w-0 transition-all duration-300 lg:ml-0">
                 {/* Top header bar with user name, rank, subgroup, and initials badge. */}
                 <Topbar name={leaderFullName} rank={leaderRank} subgroup={subgrp} initials={leader?.initials || "LD"} accentColor={accentColor} />
 

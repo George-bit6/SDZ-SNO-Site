@@ -107,7 +107,14 @@ export class LeaderDataService extends BaseDataService {
       initials: 'LN', // This would be calculated from user data
       titles: leaderData.titles,
       primaryTitle: leaderData.primaryTitle,
-      dateOfRoleAcquisition: leaderData.dateOfRoleAcquisition
+      dateOfRoleAcquisition: leaderData.dateOfRoleAcquisition,
+      // Add subgroup info for accent color determination
+      subgroupId: leaderData.subgroupId || null,
+      subgroupName: leaderData.subgroupName || 'Unknown Unit',
+      subgroupData: {
+        id: leaderData.subgroupId || null,
+        name: leaderData.subgroupName || 'Unknown Unit'
+      }
     };
   }
 }

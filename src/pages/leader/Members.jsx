@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { leaderDataService } from "@/services/leaderDataService";
 import { memberDataService } from "@/services/memberDataService";
+import { getAccentColorBySubgroupId } from "@/utils/accentColors";
 import DashboardPageTitle from "@/components/dashboardComponents/DashboardPageTitle";
 import StatisticCards from "@/components/dashboardComponents/StatisticCards";
 
@@ -23,6 +24,7 @@ const Members = () => {
     const [leader, setLeader] = useState(null);
     const [stats, setStats] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [accentColor, setAccentColor] = useState('#4A7DFF'); // Default blue
 
     useEffect(() => {
         let isMounted = true;
@@ -33,11 +35,19 @@ const Members = () => {
                 setLeader(null);
                 setStats([]);
                 setLoading(false);
+                setAccentColor('#4A7DFF');
                 return;
             }
 
             try {
                 setLoading(true);
+                
+                // Get subgroup ID first for accent color
+                const subgroupId = await leaderDataService.getLeaderSubgroupId(leaderId);
+                if (isMounted && subgroupId) {
+                    const subgroupAccentColor = getAccentColorBySubgroupId(subgroupId);
+                    setAccentColor(subgroupAccentColor);
+                }
                 
                 // Load leader data
                 const leaderData = await leaderDataService.getLeaderById(leaderId);
@@ -56,7 +66,7 @@ const Members = () => {
                 const leaderStats = await leaderDataService.getLeaderStats(leaderId);
                 if (isMounted) {
                     setStats([
-                        { label: t("mbr.stat.total"), value: leaderStats.totalMembers, color: "#4A7DFF" },
+                        { label: t("mbr.stat.total"), value: leaderStats.totalMembers, color: accentColor },
                         { label: t("mbr.stat.active"), value: leaderStats.activeMembers, color: "#34D399" },
                         { label: t("mbr.stat.honor"), value: leaderStats.totalHonorPoints, color: "#FFC107" },
                         { label: t("mbr.stat.hours"), value: leaderStats.totalServiceHours, color: "#FF9F43" },
@@ -68,6 +78,7 @@ const Members = () => {
                     setMembers([]);
                     setLeader(null);
                     setStats([]);
+                    setAccentColor('#4A7DFF');
                 }
             } finally {
                 if (isMounted) {

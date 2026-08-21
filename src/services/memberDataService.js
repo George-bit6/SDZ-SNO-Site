@@ -95,7 +95,14 @@ export class MemberDataService extends BaseDataService {
       phone: memberData.phone_nb,
       gender: memberData.gender,
       birthdate: memberData.birthdate,
-      membershipDate: memberData.date_of_membership
+      membershipDate: memberData.date_of_membership,
+      // Add subgroup info for accent color determination
+      subgroupName: memberData.unit_name || 'Unknown Unit',
+      subgroupData: {
+        id: memberData.subgrp_id,
+        name: memberData.unit_name || 'Unknown Unit',
+        title: memberData.unit_title || 'Scout'
+      }
     };
   }
 

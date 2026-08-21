@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { leaderDataService } from "@/services/leaderDataService";
 import { memberDataService } from "@/services/memberDataService";
+import { getAccentColorBySubgroupId } from "@/utils/accentColors";
 import DashboardPageTitle from "@/components/dashboardComponents/DashboardPageTitle";
 
 const ROWS = [];
@@ -19,6 +20,7 @@ const LeaderboardPage = ({ role }) => {
     const [rows, setRows] = useState([]);
     const [leader, setLeader] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [accentColor, setAccentColor] = useState('#4A7DFF'); // Default blue
 
     useEffect(() => {
         let isMounted = true;
@@ -28,6 +30,7 @@ const LeaderboardPage = ({ role }) => {
                 setRows([]);
                 setLeader(null);
                 setLoading(false);
+                setAccentColor('#4A7DFF');
                 return;
             }
 
@@ -38,6 +41,13 @@ const LeaderboardPage = ({ role }) => {
                 const leaderData = await leaderDataService.getLeaderById(leaderId);
                 if (isMounted && leaderData) {
                     setLeader(leaderDataService.formatLeaderData(leaderData));
+
+                    // Get subgroup ID for accent color
+                    const subgroupId = await leaderDataService.getLeaderSubgroupId(leaderId);
+                    if (isMounted && subgroupId) {
+                        const subgroupAccentColor = getAccentColorBySubgroupId(subgroupId);
+                        setAccentColor(subgroupAccentColor);
+                    }
                 }
 
                 // Load members from leader's subgroup for leaderboard
@@ -57,6 +67,7 @@ const LeaderboardPage = ({ role }) => {
                 if (isMounted) {
                     setRows([]);
                     setLeader(null);
+                    setAccentColor('#4A7DFF');
                 }
             } finally {
                 if (isMounted) {
@@ -77,7 +88,7 @@ const LeaderboardPage = ({ role }) => {
 
     return (
         <div className="min-h-screen flex bg-[#F4F6FB]">
-            <AppSidebar role={role}/>
+            <AppSidebar role={role} accentColor={accentColor}/>
 
             <div className="flex-1 flex flex-col min-w-0">
                 <Topbar 
@@ -85,13 +96,14 @@ const LeaderboardPage = ({ role }) => {
                     rank={leader?.primaryTitle || t("rank.subleader")} 
                     subgroup={leader?.subgroupName || t("groups.scouts.name")} 
                     initials={leader?.initials || "LD"}
+                    accentColor={accentColor}
                 />
 
                 <main className="flex-1 overflow-y-auto px-4 md:px-8 py-8">
                     <DashboardPageTitle
                         title={t("lb.title")}
                         subtitle={t("lb.kicker")}
-                        accentColor="#4A7DFF"
+                        accentColor={accentColor}
                     />
 
                     <section className="grid md:grid-cols-3 gap-4 mb-10">
@@ -102,7 +114,7 @@ const LeaderboardPage = ({ role }) => {
                                 const scale = i === 0 ? "md:scale-105" : "";
                                 return (
                                     <article key={m.id} className={`relative rounded-[20px] border border-[#E8ECF4] bg-white shadow-[0_4px_12px_rgba(0,0,0,0.06)] p-6 text-center overflow-hidden ${order} ${scale}`}>
-                                        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#4A7DFF]/20 to-transparent"/>
+                                        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#4A7DFF]/20 to-transparent" style={{background: `linear-gradient(to right, transparent, ${accentColor}33, transparent)`}}/>
                                         <div className={`mx-auto mb-3 flex items-center justify-center size-10 rounded-full bg-[#F4F6FB] border border-[#E8ECF4] ${podiumColor[i]}`}>
                                             <Icon className="size-5"/>
                                         </div>

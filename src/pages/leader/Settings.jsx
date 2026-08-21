@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { leaderDataService } from "@/services/leaderDataService";
 import { authService } from "@/services/authService";
+import { getAccentColorBySubgroupId } from "@/utils/accentColors";
 import DashboardPageTitle from "@/components/dashboardComponents/DashboardPageTitle";
 
 const Toggle = ({ on, onChange }) => (
@@ -31,6 +32,7 @@ const Settings = ({ role }) => {
     const [notifEmail, setNotifEmail] = useState(true);
     const [leader, setLeader] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [accentColor, setAccentColor] = useState('#4A7DFF'); // Default blue
 
     useEffect(() => {
         let isMounted = true;
@@ -39,6 +41,7 @@ const Settings = ({ role }) => {
             if (!leaderId) {
                 setLeader(null);
                 setLoading(false);
+                setAccentColor('#4A7DFF');
                 return;
             }
 
@@ -48,11 +51,19 @@ const Settings = ({ role }) => {
                 
                 if (isMounted && leaderData) {
                     setLeader(leaderDataService.formatLeaderData(leaderData));
+
+                    // Get subgroup ID for accent color
+                    const subgroupId = await leaderDataService.getLeaderSubgroupId(leaderId);
+                    if (isMounted && subgroupId) {
+                        const subgroupAccentColor = getAccentColorBySubgroupId(subgroupId);
+                        setAccentColor(subgroupAccentColor);
+                    }
                 }
             } catch (error) {
                 console.error("Error loading leader data:", error);
                 if (isMounted) {
                     setLeader(null);
+                    setAccentColor('#4A7DFF');
                 }
             } finally {
                 if (isMounted) {
@@ -84,15 +95,21 @@ const Settings = ({ role }) => {
 
     return (
         <div className="min-h-screen flex bg-[#F4F6FB]">
-            <AppSidebar role={role}/>
+            <AppSidebar role={role} accentColor={accentColor}/>
             <div className="flex-1 flex flex-col min-w-0">
-                <Topbar name={profile.name} rank={profile.rank} subgroup={t("groups.scouts.name")} initials={profile.initials}/>
+                <Topbar 
+                    name={profile.fullName || profile.name} 
+                    rank={profile.unitTitle || profile.rank} 
+                    subgroup={profile.unitName || t("groups.scouts.name")} 
+                    initials={profile.initials}
+                    accentColor={accentColor}
+                />
 
                 <main className="flex-1 overflow-y-auto px-4 md:px-8 py-8">
                     <DashboardPageTitle
                         title={t("set.title")}
                         subtitle={t("set.kicker")}
-                        accentColor="#4A7DFF"
+                        accentColor={accentColor}
                     />
 
                     <div className="grid lg:grid-cols-[280px_1fr] gap-6 max-w-5xl">

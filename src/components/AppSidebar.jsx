@@ -1,9 +1,10 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { LayoutDashboard, ClipboardList, Users, Settings, Trophy } from "lucide-react";
+import { LayoutDashboard, ClipboardList, Users, Settings, Trophy, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Logo } from "./Logo";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useParams } from "react-router-dom";
+import { useSidebar } from "@/App";
 
 const memberNav = [
     { to: "/member", icon: LayoutDashboard, key: "side.dashboard" },
@@ -21,6 +22,7 @@ const leaderNav = [
 ];
 
 export const AppSidebar = ({ role, accentColor }) => {
+    const { isOpen, setIsOpen, toggleSidebar, closeSidebar } = useSidebar();
     const items = role === "member" ? memberNav : leaderNav;
     const location = useLocation();
     const { t, dir } = useI18n();
@@ -32,6 +34,11 @@ export const AppSidebar = ({ role, accentColor }) => {
         color: accentColor,
         backgroundColor: "var(--sidebar-accent, hsl(var(--accent) / 0.15))",
     } : undefined;
+
+    // Export the toggle function for the Topbar (backward compatibility)
+    if (typeof window !== 'undefined') {
+        window.toggleMobileMenu = toggleSidebar;
+    }
 
     // Function to add ID to navigation paths
     const getPathWithId = (path) => {
@@ -48,12 +55,23 @@ export const AppSidebar = ({ role, accentColor }) => {
 
     return (
         <>
-            {/* Desktop Sidebar - always visible on larger screens */}
+            {/* Overlay - visible when sidebar is open on mobile/tablet */}
+            {isOpen && (
+                <div
+                    className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+                    onClick={closeSidebar}
+                />
+            )}
+
+            {/* Sidebar - responsive behavior */}
             <aside className={cn(
-                "hidden lg:flex flex-col border-e border-gray-200 text-gray-800 bg-white w-64 h-screen sticky top-0",
-                dir === "rtl" ? "border-e" : "border-e"
+                "fixed inset-y-0 left-0 z-50 flex flex-col border-e border-gray-200 text-gray-800 transition-transform duration-300 bg-white",
+                // Mobile/tablet: overlay behavior
+                "lg:w-64 w-full max-w-sm",
+                // Desktop: toggleable without overlay, push content
+                isOpen ? "translate-x-0" : "-translate-x-full"
             )}>
-                <div className="flex items-center px-5 h-16 border-b border-gray-200">
+                <div className="flex items-center justify-between px-5 h-16 border-b border-gray-200">
                     <div className="flex items-center gap-3">
                         <Logo className="size-10"/>
                         <div className="leading-tight">
@@ -67,9 +85,15 @@ export const AppSidebar = ({ role, accentColor }) => {
                             <p className="text-[10px] uppercase tracking-[0.25em] text-gray-500">{t("brand.portal")}</p>
                         </div>
                     </div>
+                    <button
+                        onClick={closeSidebar}
+                        className="p-2 rounded-lg hover:bg-gray-100 text-gray-700"
+                    >
+                        <X className="size-5" />
+                    </button>
                 </div>
 
-                <nav className="flex-1 px-3 py-6 space-y-1">
+                <nav className="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
                     <p className="px-3 mb-2 text-[10px] uppercase tracking-[0.25em] text-gray-500">
                         {role === "member" ? t("side.scout") : t("side.leadership")}
                     </p>
@@ -80,6 +104,7 @@ export const AppSidebar = ({ role, accentColor }) => {
                             <NavLink
                                 key={item.to}
                                 to={pathWithId}
+                                onClick={closeSidebar}
                                 style={active && accentColor ? customActiveStyle : undefined}
                                 className={cn(
                                     "relative flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-colors",
@@ -94,7 +119,7 @@ export const AppSidebar = ({ role, accentColor }) => {
                                         style={accentColor ? { backgroundColor: accentColor } : { backgroundColor: "var(--gold)" }}
                                     />
                                 )}
-                                <item.icon className="size-5" strokeWidth={1.75}/>
+                                <item.icon className="size-4" strokeWidth={1.75}/>
                                 {t(item.key)}
                             </NavLink>
                         );
@@ -113,6 +138,11 @@ export const AppSidebar = ({ role, accentColor }) => {
                     </p>
                 </div>
             </aside>
+
+            {/* Content margin adjustment when sidebar is open on desktop */}
+            {isOpen && (
+                <div className="hidden lg:block fixed inset-0 left-64 pointer-events-none" />
+            )}
         </>
     );
 };

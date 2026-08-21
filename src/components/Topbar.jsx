@@ -3,22 +3,18 @@ import { Crest } from "./Crest";
 import { Button } from "@/components/ui/button";
 import { LanguageToggle } from "./LanguageToggle";
 import { useI18n } from "@/i18n/I18nProvider";
+import { useSidebar } from "@/App";
 
 export const Topbar = ({ name, rank, subgroup, initials, accentColor = "#D4AF37" }) => {
     const { t } = useI18n();
-
-    const toggleMobileMenu = () => {
-        if (typeof window !== 'undefined' && window.toggleMobileMenu) {
-            window.toggleMobileMenu();
-        }
-    };
+    const { toggleSidebar } = useSidebar();
 
     return (
         <header className="flex h-16 shrink-0 border-b border-border border-black/15 bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-card/30 px-4 md:px-8 items-center justify-between">
             <div className="flex items-center gap-3">
                 {/* Menu button - visible on all screen sizes */}
                 <button
-                    onClick={toggleMobileMenu}
+                    onClick={toggleSidebar}
                     className="p-2 rounded-lg hover:bg-gray-100 text-gray-700"
                     aria-label="Toggle menu"
                 >
