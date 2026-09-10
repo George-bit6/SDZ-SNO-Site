@@ -5,9 +5,9 @@ import {useParams} from "react-router-dom";
 export const useMemberData = () => {
   const { memberId } = useParams();
 
-  const { data, isLoading, error } = useQuery(
-    ["memberData", memberId],
-    async () => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["memberData", memberId],
+    queryFn: async () => {
       const member = await memberDataService.getMemberById(memberId);
       if (!member) {
         return null;
@@ -22,10 +22,8 @@ export const useMemberData = () => {
         scores: scores || { total_points: 0, badges: 0, service_hours: 0 }
       };
     },
-    {
-      enabled: !!memberId,
-    }
-  );
+    enabled: !!memberId,
+  });
 
   return { data, isLoading, error };
 };

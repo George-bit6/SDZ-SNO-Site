@@ -269,10 +269,10 @@ export class MemberDataService extends BaseDataService {
       birthdate: memberData.birthdate,
       membershipDate: memberData.date_of_membership,
       // Add subgroup info for accent color determination
-      subgroupName: memberData.unit_name || 'Unknown Unit',
+      subgroupName: memberData.subgroupName || memberData.unit_name || 'Unknown Unit',
       subgroupData: {
         id: memberData.subgrp_id,
-        name: memberData.unit_name || 'Unknown Unit',
+        name: memberData.subgroupName || memberData.unit_name || 'Unknown Unit',
         title: memberData.unit_title || 'Scout'
       }
     };

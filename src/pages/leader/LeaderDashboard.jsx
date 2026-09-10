@@ -55,8 +55,9 @@ const LeaderDashboard = () => {
                 setLoading(true);
 
                 // Get subgroup ID first for accent color
-                const subgroupId = await leaderDataService.getLeaderSubgroupId(leaderId);
-                if (isMounted && subgroupId) {
+                const subgroupIds = await leaderDataService.getLeaderSubgroupIds(leaderId);
+                if (isMounted && subgroupIds && subgroupIds.length > 0) {
+                    const subgroupId = subgroupIds[0]; // Use first subgroup ID
                     const subgroupAccentColor = getAccentColorBySubgroupId(subgroupId);
                     setAccentColor(subgroupAccentColor);
                 }
@@ -65,24 +66,30 @@ const LeaderDashboard = () => {
                 const leaderData = await leaderDataService.getLeaderById(leaderId);
                 const userData = await leaderDataService.getLeaderUserInfo(leaderId);
                 if (isMounted && leaderData) {
-                    const formattedLeader = leaderDataService.formatLeaderData(leaderData, userData);
+                    const formattedLeader = await leaderDataService.formatLeaderDataWithSubgroup(leaderData, userData, leaderId);
                     setLeader(formattedLeader);
                 }
 
-                // Load leader statistics
-                const leaderStats = await leaderDataService.getLeaderStats(leaderId);
+                // Load leader's members from all subgroups
+                const leaderMembers = await leaderDataService.getAllLeaderMembers(leaderId);
+                console.log('Leader Dashboard - Raw Members Data:', leaderMembers);
+                
+                if (isMounted && leaderMembers) {
+                    const formattedMembers = leaderMembers.map(m => memberDataService.formatMemberData(m));
+                    console.log('Leader Dashboard - Formatted Members:', formattedMembers);
+                    setMembers(formattedMembers);
+                }
+
+                // Load leader statistics (using all members)
+                const leaderStats = {
+                    totalMembers: leaderMembers ? leaderMembers.length : 0
+                };
+                console.log('Leader Dashboard - Stats:', leaderStats);
+                
                 if (isMounted) {
                     setStats([
                         { label: "Total Members", value: leaderStats.totalMembers.toString(), delta: "", color: accentColor },
                     ]);
-                }
-
-                // Load leader's members (using first title)
-                const primaryTitle = leaderData?.titles?.[0]?.title;
-                const leaderMembers = await leaderDataService.getLeaderMembers(leaderId, primaryTitle);
-                if (isMounted && leaderMembers) {
-                    const formattedMembers = leaderMembers.map(m => memberDataService.formatMemberData(m));
-                    setMembers(formattedMembers);
                 }
 
                 // Reviews would need to be implemented in the database

@@ -80,7 +80,25 @@ export class LeaderDataService extends BaseDataService {
   async getSubgroupMembers(subgroupId) {
     let{data: Scout_members, error} = await supabase
       .from('Scout_members')
-      .select('*')
+      .select(`
+        Scout_id,
+        date_of_membership,
+        unit_title,
+        created_at,
+        subgrp_id,
+        unit_name,
+        Users!inner (
+          id,
+          Fname,
+          Lname,
+          city,
+          country,
+          phone_nb,
+          gender,
+          birthdate,
+          created_at
+        )
+      `)
       .eq('subgrp_id', subgroupId);
 
     if (error) {
@@ -88,7 +106,16 @@ export class LeaderDataService extends BaseDataService {
       return null;
     }
 
-    return Scout_members; 
+    if (!Scout_members) {
+      return [];
+    }
+
+    // Flatten the nested Users data for each member
+    return Scout_members.map(member => ({
+      ...member,
+      ...member.Users,
+      Users: undefined // Remove the nested object
+    }));
     
     }
 
@@ -108,8 +135,45 @@ export class LeaderDataService extends BaseDataService {
     return members;
   }
 
+  async getAllLeaderMembers(leaderId) {
+    const subgroupIds = await this.getLeaderSubgroupIds(leaderId);
+    console.log('All Subgroup IDs for leader:', subgroupIds);
 
-  async getLeaderStats(leaderId, leader_title) {
+    if (!subgroupIds || subgroupIds.length === 0) {
+      return [];
+    }
+
+    // Get members from all subgroups
+    const allMembers = [];
+    for (const subgroupId of subgroupIds) {
+      const members = await this.getSubgroupMembers(subgroupId);
+      console.log(`Members from subgroup ${subgroupId}:`, members);
+      
+      if (members && members.length > 0) {
+        // Add subgroup info to each member
+        const subgroupInfo = await this.getSubgroupInfo(subgroupId);
+        console.log(`Subgroup info for ${subgroupId}:`, subgroupInfo);
+        
+        const membersWithSubgroup = members.map(member => ({
+          ...member,
+          subgroupName: subgroupInfo?.subgrp_name || 'Unknown'
+        }));
+        allMembers.push(...membersWithSubgroup);
+      }
+    }
+
+    console.log('All members from all subgroups:', allMembers);
+    return allMembers;
+  }
+
+
+  async getLeaderStats(leaderId, leader_title = null) {
+    // If no leader_title provided, use the first title from leader data
+    if (!leader_title) {
+      const leaderData = await this.getLeaderById(leaderId);
+      leader_title = leaderData?.titles?.[0]?.title;
+    }
+    
     const members = await this.getLeaderMembers(leaderId, leader_title);
 
     if (!members) {
@@ -139,6 +203,45 @@ export class LeaderDataService extends BaseDataService {
     return subgroup;
   }
 
+
+  async formatLeaderDataWithSubgroup(leaderData, userData = null, leaderId = null) {
+    if (!leaderData) return null;
+
+    const firstName = userData?.Fname || 'Unknown';
+    const lastName = userData?.Lname || 'Leader';
+    const fullName = `${firstName} ${lastName}`;
+    const initials = this.getInitials(firstName, lastName);
+
+    // Get subgroup information
+    let subgroupName = 'Unknown Unit';
+    let subgroupId = null;
+    
+    if (leaderId) {
+      const subgroupIds = await this.getLeaderSubgroupIds(leaderId);
+      if (subgroupIds && subgroupIds.length > 0) {
+        subgroupId = subgroupIds[0];
+        const subgroupInfo = await this.getSubgroupInfo(subgroupId);
+        if (subgroupInfo) {
+          subgroupName = subgroupInfo.subgrp_name;
+        }
+      }
+    }
+
+    return {
+      id: leaderData.leader_id,
+      fullName: fullName,
+      initials: initials,
+      titles: leaderData.titles || [],
+      primaryTitle: leaderData.titles?.[0]?.title || null,
+      // Add subgroup info for accent color determination
+      subgroupId: subgroupId,
+      subgroupName: subgroupName,
+      subgroupData: {
+        id: subgroupId,
+        name: subgroupName
+      }
+    };
+  }
 
   formatLeaderData(leaderData, userData = null) {
     if (!leaderData) return null;
