@@ -41,22 +41,24 @@ const Members = () => {
 
             try {
                 setLoading(true);
-                
+
                 // Get subgroup ID first for accent color
                 const subgroupId = await leaderDataService.getLeaderSubgroupId(leaderId);
                 if (isMounted && subgroupId) {
                     const subgroupAccentColor = getAccentColorBySubgroupId(subgroupId);
                     setAccentColor(subgroupAccentColor);
                 }
-                
-                // Load leader data
+
+                // Load leader data with user info
                 const leaderData = await leaderDataService.getLeaderById(leaderId);
+                const userData = await leaderDataService.getLeaderUserInfo(leaderId);
                 if (isMounted && leaderData) {
-                    setLeader(leaderDataService.formatLeaderData(leaderData));
+                    setLeader(leaderDataService.formatLeaderData(leaderData, userData));
                 }
 
-                // Load leader's members
-                const leaderMembers = await leaderDataService.getLeaderMembers(leaderId);
+                // Load leader's members (using first title)
+                const primaryTitle = leaderData?.titles?.[0]?.title;
+                const leaderMembers = await leaderDataService.getLeaderMembers(leaderId, primaryTitle);
                 if (isMounted && leaderMembers) {
                     const formattedMembers = leaderMembers.map(m => memberDataService.formatMemberData(m));
                     setMembers(formattedMembers);
@@ -67,9 +69,6 @@ const Members = () => {
                 if (isMounted) {
                     setStats([
                         { label: t("mbr.stat.total"), value: leaderStats.totalMembers, color: accentColor },
-                        { label: t("mbr.stat.active"), value: leaderStats.activeMembers, color: "#34D399" },
-                        { label: t("mbr.stat.honor"), value: leaderStats.totalHonorPoints, color: "#FFC107" },
-                        { label: t("mbr.stat.hours"), value: leaderStats.totalServiceHours, color: "#FF9F43" },
                     ]);
                 }
             } catch (error) {
@@ -142,21 +141,7 @@ const Members = () => {
                                         className="bg-[#F4F6FB] border border-[#E8ECF4] rounded-xl ps-8 pe-3 py-2 text-xs w-56 focus:outline-none focus:border-[#4A7DFF] focus:ring-1 focus:ring-[#4A7DFF]/40"
                                     />
                                 </div>
-                                <div className="flex gap-1">
-                                    {GROUPS.map((g) => (
-                                        <button
-                                            key={g}
-                                            onClick={() => setGroup(g)}
-                                            className={`text-[10px] uppercase tracking-wider px-2.5 py-1.5 rounded-xl border transition-colors ${
-                                                group === g
-                                                    ? "border-[#4A7DFF] text-[#4A7DFF] bg-[#EAF1FF]"
-                                                    : "border-[#E8ECF4] text-[#8A94A6] hover:text-[#1E2A45]"
-                                            }`}
-                                        >
-                                            {g === "all" ? t("tasks.filter.all") : t(g)}
-                                        </button>
-                                    ))}
-                                </div>
+                               
                             </div>
                         </header>
 

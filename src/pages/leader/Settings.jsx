@@ -48,9 +48,10 @@ const Settings = ({ role }) => {
             try {
                 setLoading(true);
                 const leaderData = await leaderDataService.getLeaderById(leaderId);
-                
+                const userData = await leaderDataService.getLeaderUserInfo(leaderId);
+
                 if (isMounted && leaderData) {
-                    setLeader(leaderDataService.formatLeaderData(leaderData));
+                    setLeader(leaderDataService.formatLeaderData(leaderData, userData));
 
                     // Get subgroup ID for accent color
                     const subgroupId = await leaderDataService.getLeaderSubgroupId(leaderId);

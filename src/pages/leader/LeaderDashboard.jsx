@@ -53,18 +53,19 @@ const LeaderDashboard = () => {
 
             try {
                 setLoading(true);
-                
+
                 // Get subgroup ID first for accent color
                 const subgroupId = await leaderDataService.getLeaderSubgroupId(leaderId);
                 if (isMounted && subgroupId) {
                     const subgroupAccentColor = getAccentColorBySubgroupId(subgroupId);
                     setAccentColor(subgroupAccentColor);
                 }
-                
-                // Load leader data
+
+                // Load leader data with user info
                 const leaderData = await leaderDataService.getLeaderById(leaderId);
+                const userData = await leaderDataService.getLeaderUserInfo(leaderId);
                 if (isMounted && leaderData) {
-                    const formattedLeader = leaderDataService.formatLeaderData(leaderData);
+                    const formattedLeader = leaderDataService.formatLeaderData(leaderData, userData);
                     setLeader(formattedLeader);
                 }
 
@@ -73,14 +74,12 @@ const LeaderDashboard = () => {
                 if (isMounted) {
                     setStats([
                         { label: "Total Members", value: leaderStats.totalMembers.toString(), delta: "", color: accentColor },
-                        { label: "Active Members", value: leaderStats.activeMembers.toString(), delta: "", color: "#34D399" },
-                        { label: "Total Honor Points", value: leaderStats.totalHonorPoints.toString(), delta: "", color: "#FFC107" },
-                        { label: "Service Hours", value: leaderStats.totalServiceHours.toString(), delta: "", color: "#FF5C5C" },
                     ]);
                 }
 
-                // Load leader's members
-                const leaderMembers = await leaderDataService.getLeaderMembers(leaderId);
+                // Load leader's members (using first title)
+                const primaryTitle = leaderData?.titles?.[0]?.title;
+                const leaderMembers = await leaderDataService.getLeaderMembers(leaderId, primaryTitle);
                 if (isMounted && leaderMembers) {
                     const formattedMembers = leaderMembers.map(m => memberDataService.formatMemberData(m));
                     setMembers(formattedMembers);

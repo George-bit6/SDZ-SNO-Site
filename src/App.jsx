@@ -73,81 +73,49 @@ const App = () => (<I18nProvider>
                   <MemberDashboard />
                 </SidebarProvider>
               }/>
-              <Route path="/member/tasks" element={
-                <SidebarProvider>
-                  <MemberTasks role="member"/>
-                </SidebarProvider>
-              }/>
+              
               <Route path="/member/:memberId/tasks" element={
                 <SidebarProvider>
                   <MemberTasks role="member"/>
                 </SidebarProvider>
               }/>
-              <Route path="/member/leaderboard" element={
-                <SidebarProvider>
-                  <MemberLeaderboard role="member"/>
-                </SidebarProvider>
-              }/>
+              
               <Route path="/member/:memberId/leaderboard" element={
                 <SidebarProvider>
                   <MemberLeaderboard role="member"/>
                 </SidebarProvider>
               }/>
-              <Route path="/member/settings" element={
-                <SidebarProvider>
-                  <MemberSettings role="member"/>
-                </SidebarProvider>
-              }/>
+              
               <Route path="/member/:memberId/settings" element={
                 <SidebarProvider>
                   <MemberSettings role="member"/>
                 </SidebarProvider>
               }/>
-              <Route path="/leader" element={
-                <SidebarProvider>
-                  <LeaderDashboard />
-                </SidebarProvider>
-              }/>
+              
               <Route path="/leader/:leaderId" element={
                 <SidebarProvider>
                   <LeaderDashboard />
                 </SidebarProvider>
               }/>
-              <Route path="/leader/tasks" element={
-                <SidebarProvider>
-                  <LeaderTasks role="leader"/>
-                </SidebarProvider>
-              }/>
+              
               <Route path="/leader/:leaderId/tasks" element={
                 <SidebarProvider>
                   <LeaderTasks role="leader"/>
                 </SidebarProvider>
               }/>
-              <Route path="/leader/leaderboard" element={
-                <SidebarProvider>
-                  <LeaderLeaderboard role="leader"/>
-                </SidebarProvider>
-              }/>
+              
               <Route path="/leader/:leaderId/leaderboard" element={
                 <SidebarProvider>
                   <LeaderLeaderboard role="leader"/>
                 </SidebarProvider>
               }/>
-              <Route path="/leader/members" element={
-                <SidebarProvider>
-                  <Members />
-                </SidebarProvider>
-              }/>
+              
               <Route path="/leader/:leaderId/members" element={
                 <SidebarProvider>
                   <Members />
                 </SidebarProvider>
               }/>
-              <Route path="/leader/settings" element={
-                <SidebarProvider>
-                  <LeaderSettings role="leader"/>
-                </SidebarProvider>
-              }/>
+             
               <Route path="/leader/:leaderId/settings" element={
                 <SidebarProvider>
                   <LeaderSettings role="leader"/>

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { AppSidebar } from "@/components/AppSidebar";
 import { Topbar } from "@/components/Topbar";
 import { TaskCard } from "@/components/TaskCard";
@@ -6,75 +6,32 @@ import { Button } from "@/components/ui/button";
 import { ClipboardList, Filter, Plus, Search } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useParams } from "react-router-dom";
-import { leaderDataService } from "@/services/leaderDataService";
-import { taskDataService } from "@/services/taskDataService";
+import { useLeaderData } from "@/hooks/useLeaderData";
+import { useTasksBySubgroup } from "@/hooks/useTaskData";
 import { getAccentColorBySubgroupId } from "@/utils/accentColors";
 import DashboardPageTitle from "@/components/dashboardComponents/DashboardPageTitle";
 import StatisticCards from "@/components/dashboardComponents/StatisticCards";
 
 const TasksPage = ({ role }) => {
     const { t } = useI18n();
-    const { leaderId } = useParams();
+    const { data: leaderData, isLoading, error } = useLeaderData();
     const [filter, setFilter] = useState("all");
     const [query, setQuery] = useState("");
-    const [allTasks, setAllTasks] = useState([]);
-    const [leader, setLeader] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [accentColor, setAccentColor] = useState('#4A7DFF'); // Default blue
 
-    useEffect(() => {
-        let isMounted = true;
+    // Get leader's subgroup ID for tasks
+    const subgroupId = leaderData?.subgroupId || null;
+    const { data: taskData, isLoading: tasksLoading } = useTasksBySubgroup(subgroupId);
+    const allTasks = taskData?.tasks || [];
+    const taskStats = taskData?.stats || { total: 0, notStarted: 0, inProgress: 0, pending: 0, complete: 0, verified: 0 };
 
-        const loadTasksData = async () => {
-            if (!leaderId) {
-                setAllTasks([]);
-                setLeader(null);
-                setLoading(false);
-                setAccentColor('#4A7DFF');
-                return;
-            }
-
-            try {
-                setLoading(true);
-                
-                // Get subgroup ID first for accent color
-                const subgroupId = await leaderDataService.getLeaderSubgroupId(leaderId);
-                if (isMounted && subgroupId) {
-                    const subgroupAccentColor = getAccentColorBySubgroupId(subgroupId);
-                    setAccentColor(subgroupAccentColor);
-                }
-                
-                // Load leader data
-                const leaderData = await leaderDataService.getLeaderById(leaderId);
-                if (isMounted && leaderData) {
-                    setLeader(leaderDataService.formatLeaderData(leaderData));
-                }
-
-                // Load leader's subgroup tasks
-                if (isMounted && subgroupId) {
-                    const tasks = await taskDataService.getTasksBySubgroup(subgroupId);
-                    setAllTasks(Array.isArray(tasks) ? tasks : []);
-                }
-            } catch (error) {
-                console.error("Error loading tasks data:", error);
-                if (isMounted) {
-                    setAllTasks([]);
-                    setLeader(null);
-                    setAccentColor('#4A7DFF');
-                }
-            } finally {
-                if (isMounted) {
-                    setLoading(false);
-                }
-            }
-        };
-
-        loadTasksData();
-
-        return () => {
-            isMounted = false;
-        };
-    }, [leaderId]);
+    // Update accent color when leader data changes
+    useMemo(() => {
+        if (leaderData?.subgroupId) {
+            const subgroupAccentColor = getAccentColorBySubgroupId(leaderData.subgroupId);
+            setAccentColor(subgroupAccentColor);
+        }
+    }, [leaderData?.subgroupId]);
 
     const filters = [
         { key: "all", labelKey: "tasks.filter.all" },
@@ -86,18 +43,19 @@ const TasksPage = ({ role }) => {
     ];
 
     const visible = allTasks.filter((tk) => {
-        if (filter !== "all" && tk.status !== filter)
+        const taskStatus = tk.task_status || "not-started";
+        if (filter !== "all" && taskStatus !== filter)
             return false;
-        if (query && !t(tk.titleKey).toLowerCase().includes(query.toLowerCase()))
+        if (query && !tk.task_name.toLowerCase().includes(query.toLowerCase()))
             return false;
         return true;
     });
 
     const counts = {
-        total: allTasks.length,
-        open: allTasks.filter((t) => t.status === "not-started" || t.status === "in-progress").length,
-        pending: allTasks.filter((t) => t.status === "pending").length,
-        done: allTasks.filter((t) => t.status === "complete" || t.status === "verified").length,
+        total: taskStats.total,
+        open: taskStats.notStarted + taskStats.inProgress,
+        pending: taskStats.pending,
+        done: taskStats.complete + taskStats.verified,
     };
 
     const stats = [
@@ -112,11 +70,11 @@ const TasksPage = ({ role }) => {
             <AppSidebar role={role} accentColor={accentColor}/>
 
             <div className="flex-1 flex flex-col min-w-0">
-                <Topbar 
-                    name={leader?.fullName || "Loading..."} 
-                    rank={leader?.primaryTitle || t("rank.subleader")} 
-                    subgroup={leader?.subgroupName || t("groups.scouts.name")} 
-                    initials={leader?.initials || "LD"}
+                <Topbar
+                    name={leaderData?.fullName || "Loading..."}
+                    rank={leaderData?.primaryTitle || t("rank.subleader")}
+                    subgroup={leaderData?.subgroupName || t("groups.scouts.name")}
+                    initials={leaderData?.initials || "LD"}
                     accentColor={accentColor}
                 />
 
@@ -171,12 +129,12 @@ const TasksPage = ({ role }) => {
                         ) : (
                             visible.map((tk) => (
                                 <TaskCard
-                                    key={tk.id}
-                                    id={tk.id}
-                                    title={t(tk.titleKey)}
-                                    dueDate={tk.dueDate}
-                                    status={tk.status}
-                                    subgroup={role === "leader" ? tk.assignee : t("groups.scouts.name")}
+                                    key={`${tk.subgrp_id}-${tk.level_name}-${tk.task_name}`}
+                                    id={`${tk.subgrp_id}-${tk.level_name}-${tk.task_name}`}
+                                    title={tk.task_name}
+                                    dueDate={tk.created_at}
+                                    status={tk.task_status || "not-started"}
+                                    subgroup={role === "leader" ? tk.level_name : t("groups.scouts.name")}
                                 />
                             ))
                         )}
