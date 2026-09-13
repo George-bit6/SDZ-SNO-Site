@@ -38,7 +38,7 @@ export default function CTASection({
   title = "Support Our Church",
   description = "Your gift supports the price of the Church land and the building of the Church at Saint Demetrios Zouk.",
   ctaText = "Donate Now",
-  ctaLink = "#donate-link",
+  ctaLink = "/donations",
   subtitle = "Tax-deductible · Secure via parish account",
   className,
   id = "donate",
@@ -71,7 +71,7 @@ export default function CTASection({
             </div>
             <div className="flex flex-col gap-3 md:items-end">
               <PrimaryButton asChild>
-                <a href={ctaLink} target="_blank" rel="noreferrer">
+                <a href={ctaLink}>
                   <Heart className="size-5 mr-2" /> {ctaText}
                 </a>
               </PrimaryButton>

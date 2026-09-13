@@ -22,7 +22,7 @@ const LeaderboardPage = ({ role }) => {
     useEffect(() => {
         if (memberData?.subgroupId) {
             const subgroupAccentColor = getAccentColorBySubgroupId(memberData.subgroupId);
-            setAccentColor(subgroupAccentColor);
+            setAccentColor(subgroupAccentColor || '#4A7DFF');
 
             // Load members from same subgroup for leaderboard
             memberDataService.getMembersBySubgroup(memberData.subgroupId)

@@ -137,7 +137,7 @@ export default function DesignHero({
               </a>
             </PrimaryButton>
             <SecondaryButton asChild>
-              <a href="#donate">
+              <a href="/donations">
                 Donate
               </a>
             </SecondaryButton>

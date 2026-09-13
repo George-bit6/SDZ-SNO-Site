@@ -21,7 +21,7 @@ const TasksPage = ({ role }) => {
     useMemo(() => {
         if (memberData?.subgroupId) {
             const subgroupAccentColor = getAccentColorBySubgroupId(memberData.subgroupId);
-            setAccentColor(subgroupAccentColor);
+            setAccentColor(subgroupAccentColor || '#4A7DFF');
         }
     }, [memberData?.subgroupId]);
 

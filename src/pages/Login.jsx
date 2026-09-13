@@ -73,7 +73,7 @@ const Login = () => {
             <div className="flex items-center gap-4">
               <LanguageToggle className="text-gray-600 hover:text-gray-900" />
               <Button asChild size="sm" className="rounded-full bg-crimson hover:bg-crimson/90 text-white hidden sm:inline-flex">
-                <a href="#donate">
+                <a href="/donations">
                   <Heart className="size-3.5" /> Donate
                 </a>
               </Button>

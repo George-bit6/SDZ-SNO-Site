@@ -33,7 +33,7 @@ export default function DesignFooter({
   ],
   column3Links = [
     { label: "Contact", href: "#contact" },
-    { label: "Donate", href: "#donate" },
+    { label: "Donate", href: "/donations" },
     { label: "Volunteer", href: "#volunteer" },
     { label: "Newsletter", href: "#newsletter" },
   ],

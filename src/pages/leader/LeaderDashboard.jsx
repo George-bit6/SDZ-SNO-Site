@@ -55,10 +55,13 @@ const LeaderDashboard = () => {
 
                 // Get subgroup ID first for accent color
                 const subgroupIds = await leaderDataService.getLeaderSubgroupIds(leaderId);
-                if (isMounted && subgroupIds && subgroupIds.length > 0) {
+                let subgroupAccentColor = '#4A7DFF'; // Default
+                if (subgroupIds && subgroupIds.length > 0) {
                     const subgroupId = subgroupIds[0]; // Use first subgroup ID
-                    const subgroupAccentColor = getAccentColorBySubgroupId(subgroupId);
-                    setAccentColor(subgroupAccentColor);
+                    subgroupAccentColor = getAccentColorBySubgroupId(subgroupId);
+                    if (isMounted) {
+                        setAccentColor(subgroupAccentColor);
+                    }
                 }
 
                 // Load leader data with user info
@@ -87,7 +90,7 @@ const LeaderDashboard = () => {
                 
                 if (isMounted) {
                     setStats([
-                        { label: "Total Members", value: leaderStats.totalMembers.toString(), delta: "", color: accentColor },
+                        { label: "Total Members", value: leaderStats.totalMembers.toString(), delta: "", color: subgroupAccentColor },
                     ]);
                 }
 

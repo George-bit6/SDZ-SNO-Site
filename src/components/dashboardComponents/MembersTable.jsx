@@ -23,14 +23,14 @@ const formatDate = (dateString) => {
 };
 
 export default function MembersTable(props){
-
     const {t} = useI18n();
+    const accentColor = props.accentColor || '#4A7DFF';
 
     return (
         <section className="rounded-[20px] border border-[#E8ECF4] bg-white shadow-[0_4px_12px_rgba(0,0,0,0.06)] overflow-hidden">
                             <header className="px-6 py-4 border-b border-[#E8ECF4] flex items-center justify-between flex-wrap gap-3">
                                 <div className="flex items-center gap-2">
-                                    <Users className="size-4 text-[#4A7DFF]"/>
+                                    <Users className="size-4" style={{color: accentColor}}/>
                                     <h2 className="text-[18px] font-semibold text-[#253858]">{t("ld.members")}</h2>
                                     <span className="text-xs text-[#8A94A6]">· {props.members.length}</span>
                                 </div>

@@ -44,7 +44,7 @@ export default function Navigation() {
             <div className="flex items-center gap-1 md:gap-2">
               <LanguageToggle className="text-white/80 hover:text-gold hidden sm:inline-flex" />
               <Button asChild size="sm" className="rounded-full bg-crimson hover:bg-crimson/90 text-white hidden sm:inline-flex">
-                <a href="#donate">
+                <a href="/donations">
                   <Heart className="size-3.5" /> Donate
                 </a>
               </Button>
@@ -82,7 +82,7 @@ export default function Navigation() {
               </nav>
               <div className="mt-4 flex flex-col gap-2 sm:hidden">
                 <Button asChild size="sm" className="rounded-full bg-crimson hover:bg-crimson/90 text-white w-full">
-                  <a href="#donate" onClick={() => setMenuOpen(false)}>
+                  <a href="/donations" onClick={() => setMenuOpen(false)}>
                     <Heart className="size-3.5" /> Donate
                   </a>
                 </Button>

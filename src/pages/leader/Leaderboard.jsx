@@ -41,7 +41,7 @@ const LeaderboardPage = ({ role }) => {
                 const subgroupId = await leaderDataService.getLeaderSubgroupId(leaderId);
                 if (isMounted && subgroupId) {
                     const subgroupAccentColor = getAccentColorBySubgroupId(subgroupId);
-                    setAccentColor(subgroupAccentColor);
+                    setAccentColor(subgroupAccentColor || '#4A7DFF');
                 }
 
                 // Load leader data with user info

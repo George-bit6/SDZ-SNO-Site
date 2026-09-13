@@ -57,7 +57,7 @@ const Settings = ({ role }) => {
                     const subgroupId = await leaderDataService.getLeaderSubgroupId(leaderId);
                     if (isMounted && subgroupId) {
                         const subgroupAccentColor = getAccentColorBySubgroupId(subgroupId);
-                        setAccentColor(subgroupAccentColor);
+                        setAccentColor(subgroupAccentColor || '#4A7DFF');
                     }
                 }
             } catch (error) {

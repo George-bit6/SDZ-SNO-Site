@@ -72,7 +72,7 @@ const Members = () => {
                     const subgroupId = subgroupIds[0]; // Use first subgroup ID
                     console.log('Selected Subgroup ID:', subgroupId);
                     const subgroupAccentColor = getAccentColorBySubgroupId(subgroupId);
-                    setAccentColor(subgroupAccentColor);
+                    setAccentColor(subgroupAccentColor || '#4A7DFF');
                 }
 
                 // Load leader data with user info

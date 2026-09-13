@@ -28,12 +28,12 @@ const MemberDashboard = () => {
     useEffect(() => {
         if (memberData?.subgroupId) {
             const subgroupAccentColor = getAccentColorBySubgroupId(memberData.subgroupId);
-            setAccentColor(subgroupAccentColor);
+            setAccentColor(subgroupAccentColor || '#4A7DFF');
         }
     }, [memberData?.subgroupId]);
 
     const stats = memberData ? [
-        { label: "Badges Earned", value: memberData.scores.badges.toString(), delta: "", color: accentColor },
+        { label: "Badges Earned", value: memberData.scores.badges.toString(), delta: "", color: accentColor || '#4A7DFF' },
         { label: "Tasks Completed", value: memberData.tasks.filter(t => t.task_status === 'complete' || t.task_status === 'verified').length.toString(), delta: `${memberData.tasks.length - memberData.tasks.filter(t => t.task_status === 'complete' || t.task_status === 'verified').length} remaining`, color: "#4A7DFF" },
         { label: "Service Hours", value: memberData.scores.service_hours.toString(), delta: "", color: "#34D399" },
         { label: "Honor Points", value: memberData.scores.total_points.toString(), delta: "", color: "#FF5C5C", progress: memberData.scores.total_points },
