@@ -3,10 +3,7 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { Topbar } from "@/components/Topbar";
 import { TaskCard } from "@/components/TaskCard";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import TaskFormDialog from "@/components/TaskFormDialog";
 import { Filter, Plus, Search, X } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useParams } from "react-router-dom";
@@ -33,98 +30,13 @@ const TasksPage = ({ role }) => {
         levelName: '',
         subgroupId: '',
         description: '',
-        points: 10,
-        taskType: 'skill'
+        points: 0,
+        taskType: 'scout'
     });
-
-    // Load tasks for all leader subgroups and member progress
-    useEffect(() => {
-        const loadTasksData = async () => {
-            if (!leaderId) {
-                setSubgroupsTasks([]);
-                setMembersProgress({});
-                setLoading(false);
-                return;
-            }
-
-            try {
-                setLoading(true);
-                console.log('Loading tasks data for leader:', leaderId);
-
-                // Get all subgroups for the leader
-                const subgroupIds = await leaderDataService.getLeaderSubgroupIds(leaderId);
-                console.log('Leader subgroups:', subgroupIds);
-
-                if (!subgroupIds || subgroupIds.length === 0) {
-                    setSubgroupsTasks([]);
-                    setMembersProgress([]);
-                    setLoading(false);
-                    return;
-                }
-
-                // Fetch tasks and members for each subgroup
-                const subgroupsData = [];
-                const allMembersProgress = {};
-
-                for (const subgroupId of subgroupIds) {
-                    // Get subgroup info
-                    const subgroupInfo = await leaderDataService.getSubgroupInfo(subgroupId);
-                    console.log('Subgroup info:', subgroupInfo);
-
-                    // Get tasks for this subgroup
-                    const taskData = await fetchTasksForSubgroup(subgroupId);
-                    console.log('Tasks for subgroup:', subgroupId, taskData);
-
-                    // Get members for this subgroup
-                    const members = await leaderDataService.getSubgroupMembers(subgroupId);
-                    console.log('Members for subgroup:', subgroupId, members);
-
-                    // Get task progress for each member
-                    const membersWithProgress = [];
-                    for (const member of members || []) {
-                        const memberProgress = await memberDataService.getMemberTaskProgress(member.Scout_id);
-                        const memberScores = await memberDataService.getMemberTaskScore(member.Scout_id);
-                        
-                        membersWithProgress.push({
-                            ...member,
-                            taskProgress: memberProgress || [],
-                            scores: memberScores || { total_points: 0, badges: 0, service_hours: 0 }
-                        });
-                    }
-
-                    allMembersProgress[subgroupId] = membersWithProgress;
-
-                    subgroupsData.push({
-                        subgroupId,
-                        subgroupName: subgroupInfo?.subgrp_name || 'Unknown',
-                        tasks: taskData || [],
-                        members: membersWithProgress
-                    });
-                }
-
-                console.log('All subgroups data:', subgroupsData);
-                console.log('All members progress:', allMembersProgress);
-
-                setSubgroupsTasks(subgroupsData);
-                setMembersProgress(allMembersProgress);
-            } catch (error) {
-                console.error('Error loading tasks data:', error);
-                setSubgroupsTasks([]);
-                setMembersProgress({});
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        loadTasksData();
-    }, [leaderId]);
 
     // Helper function to fetch tasks for a subgroup
     const fetchTasksForSubgroup = async (subgroupId) => {
         try {
-            // This would use the taskDataService to get tasks for the subgroup
-            // For now, returning empty array as placeholder
-            const { taskDataService } = await import('@/services/taskDataService');
             const tasks = await taskDataService.getTasksBySubgroup(subgroupId);
             return tasks || [];
         } catch (error) {
@@ -132,6 +44,88 @@ const TasksPage = ({ role }) => {
             return [];
         }
     };
+
+    // Load tasks for all leader subgroups and member progress
+    const loadTasksData = async () => {
+        if (!leaderId) {
+            setSubgroupsTasks([]);
+            setMembersProgress({});
+            setLoading(false);
+            return;
+        }
+
+        try {
+            setLoading(true);
+            console.log('Loading tasks data for leader:', leaderId);
+
+            // Get all subgroups for the leader
+            const subgroupIds = await leaderDataService.getLeaderSubgroupIds(leaderId);
+            console.log('Leader subgroups:', subgroupIds);
+
+            if (!subgroupIds || subgroupIds.length === 0) {
+                setSubgroupsTasks([]);
+                setMembersProgress([]);
+                setLoading(false);
+                return;
+            }
+
+            // Fetch tasks and members for each subgroup
+            const subgroupsData = [];
+            const allMembersProgress = {};
+
+            for (const subgroupId of subgroupIds) {
+                // Get subgroup info
+                const subgroupInfo = await leaderDataService.getSubgroupInfo(subgroupId);
+                console.log('Subgroup info:', subgroupInfo);
+
+                // Get tasks for this subgroup
+                const taskData = await fetchTasksForSubgroup(subgroupId);
+                console.log('Tasks for subgroup:', subgroupId, taskData);
+
+                // Get members for this subgroup
+                const members = await leaderDataService.getSubgroupMembers(subgroupId);
+                console.log('Members for subgroup:', subgroupId, members);
+
+                // Get task progress for each member
+                const membersWithProgress = [];
+                for (const member of members || []) {
+                    const memberProgress = await memberDataService.getMemberTaskProgress(member.Scout_id);
+                    const memberScores = await memberDataService.getMemberTaskScore(member.Scout_id);
+                    
+                    membersWithProgress.push({
+                        ...member,
+                        taskProgress: memberProgress || [],
+                        scores: memberScores || { total_points: 0, badges: 0, service_hours: 0 }
+                    });
+                }
+
+                allMembersProgress[subgroupId] = membersWithProgress;
+
+                subgroupsData.push({
+                    subgroupId,
+                    subgroupName: subgroupInfo?.subgrp_name || 'Unknown',
+                    tasks: taskData || [],
+                    members: membersWithProgress
+                });
+            }
+
+            console.log('All subgroups data:', subgroupsData);
+            console.log('All members progress:', allMembersProgress);
+
+            setSubgroupsTasks(subgroupsData);
+            setMembersProgress(allMembersProgress);
+        } catch (error) {
+            console.error('Error loading tasks data:', error);
+            setSubgroupsTasks([]);
+            setMembersProgress({});
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        loadTasksData();
+    }, [leaderId]);
 
     // Update accent color when leader data changes
     useMemo(() => {
@@ -153,8 +147,8 @@ const TasksPage = ({ role }) => {
             levelName: '',
             subgroupId: '',
             description: '',
-            points: 10,
-            taskType: 'skill'
+            points: 0,
+            taskType: 'scout'
         });
     };
 
@@ -170,21 +164,36 @@ const TasksPage = ({ role }) => {
         e.preventDefault();
         console.log('Submitting task:', taskForm);
         
-        // Here you would call your task service to create the task
-        // For now, just close the dialog
         try {
-            // Example: await taskDataService.createTask(taskForm);
-            setIsAssignDialogOpen(false);
-            setTaskForm({
-                taskName: '',
-                levelName: '',
-                subgroupId: '',
-                description: ''
+            const result = await taskDataService.addTask({
+                taskName: taskForm.taskName,
+                subgroupId: taskForm.subgroupId,
+                levelName: taskForm.levelName,
+                taskDesc: taskForm.description,
+                points: taskForm.points,
+                taskType: taskForm.taskType
             });
-            // Refresh tasks
-            // await loadTasksData();
+
+            if (result.success) {
+                console.log('Task created successfully:', result.data);
+                setIsAssignDialogOpen(false);
+                setTaskForm({
+                    taskName: '',
+                    levelName: '',
+                    subgroupId: '',
+                    description: '',
+                    points: 0,
+                    taskType: 'scout'
+                });
+                // Refresh tasks for all subgroups
+                await loadTasksData();
+            } else {
+                console.error('Error creating task:', result.message);
+                alert('Failed to create task: ' + result.message);
+            }
         } catch (error) {
             console.error('Error creating task:', error);
+            alert('Failed to create task: ' + error.message);
         }
     };
 
@@ -379,95 +388,15 @@ const TasksPage = ({ role }) => {
             </div>
 
             {/* Assign Task Dialog */}
-            <Dialog open={isAssignDialogOpen} onOpenChange={setIsAssignDialogOpen}>
-                <DialogContent className="sm:max-w-[500px] bg-white">
-                    <DialogHeader>
-                        <DialogTitle className="text-xl font-semibold text-[#253858]">Assign New Task</DialogTitle>
-                    </DialogHeader>
-                    <form onSubmit={handleSubmitTask} className="space-y-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="taskName" className="text-sm font-medium text-[#253858]">Task Name</Label>
-                            <Input
-                                id="taskName"
-                                name="taskName"
-                                value={taskForm.taskName}
-                                onChange={handleFormChange}
-                                placeholder="Enter task name"
-                                className="border-[#E8ECF4] focus:border-[#4A7DFF] focus:ring-[#4A7DFF]/20"
-                                required
-                            />
-                        </div>
-
-                        <div className="space-y-2">
-                            <Label htmlFor="levelName" className="text-sm font-medium text-[#253858]">Level Name</Label>
-                            <select
-                                id="levelName"
-                                name="levelName"
-                                value={taskForm.levelName}
-                                onChange={handleFormChange}
-                                className="w-full h-10 px-3 py-2 text-sm border border-[#E8ECF4] rounded-md focus:outline-none focus:border-[#4A7DFF] focus:ring-[#4A7DFF]/20"
-                                required
-                            >
-                                <option value="">Select a level</option>
-                                {uniqueLevelNames.map(level => (
-                                    <option key={level} value={level}>
-                                        {level}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-
-                        <div className="space-y-2">
-                            <Label htmlFor="subgroupId" className="text-sm font-medium text-[#253858]">Subgroup</Label>
-                            <select
-                                id="subgroupId"
-                                name="subgroupId"
-                                value={taskForm.subgroupId}
-                                onChange={handleFormChange}
-                                className="w-full h-10 px-3 py-2 text-sm border border-[#E8ECF4] rounded-md focus:outline-none focus:border-[#4A7DFF] focus:ring-[#4A7DFF]/20"
-                                required
-                            >
-                                <option value="">Select a subgroup</option>
-                                {subgroupsTasks.map(subgroup => (
-                                    <option key={subgroup.subgroupId} value={subgroup.subgroupId}>
-                                        {subgroup.subgroupName}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-
-                        <div className="space-y-2">
-                            <Label htmlFor="description" className="text-sm font-medium text-[#253858]">Description</Label>
-                            <Textarea
-                                id="description"
-                                name="description"
-                                value={taskForm.description}
-                                onChange={handleFormChange}
-                                placeholder="Enter task description"
-                                className="border-[#E8ECF4] focus:border-[#4A7DFF] focus:ring-[#4A7DFF]/20 min-h-[100px] resize-none"
-                                required
-                            />
-                        </div>
-
-                        <DialogFooter className="gap-2">
-                            <Button
-                                type="button"
-                                variant="outline"
-                                onClick={handleCloseDialog}
-                                className="border-[#E8ECF4] text-[#8A94A6] hover:bg-[#F4F6FB]"
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                type="submit"
-                                className="bg-[#4A7DFF] text-white hover:bg-[#3B6BDD]"
-                            >
-                                Assign Task
-                            </Button>
-                        </DialogFooter>
-                    </form>
-                </DialogContent>
-            </Dialog>
+            <TaskFormDialog
+                isOpen={isAssignDialogOpen}
+                onClose={handleCloseDialog}
+                onSubmit={handleSubmitTask}
+                taskForm={taskForm}
+                onFormChange={handleFormChange}
+                uniqueLevelNames={uniqueLevelNames}
+                subgroupsTasks={subgroupsTasks}
+            />
         </div>
     );
 };

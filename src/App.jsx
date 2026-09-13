@@ -80,11 +80,6 @@ const App = () => (<I18nProvider>
                 </SidebarProvider>
               }/>
               
-              <Route path="/member/:memberId/leaderboard" element={
-                <SidebarProvider>
-                  <MemberLeaderboard role="member"/>
-                </SidebarProvider>
-              }/>
               
               <Route path="/member/:memberId/settings" element={
                 <SidebarProvider>
@@ -101,12 +96,6 @@ const App = () => (<I18nProvider>
               <Route path="/leader/:leaderId/tasks" element={
                 <SidebarProvider>
                   <LeaderTasks role="leader"/>
-                </SidebarProvider>
-              }/>
-              
-              <Route path="/leader/:leaderId/leaderboard" element={
-                <SidebarProvider>
-                  <LeaderLeaderboard role="leader"/>
                 </SidebarProvider>
               }/>
               

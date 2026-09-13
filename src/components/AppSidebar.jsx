@@ -9,7 +9,6 @@ import { useSidebar } from "@/App";
 const memberNav = [
     { to: "/member", icon: LayoutDashboard, key: "side.dashboard" },
     { to: "/member/tasks", icon: ClipboardList, key: "side.tasks" },
-    { to: "/member/leaderboard", icon: Trophy, key: "side.leaderboard" },
     { to: "/member/settings", icon: Settings, key: "side.settings" },
 ];
 
@@ -17,7 +16,6 @@ const leaderNav = [
     { to: "/leader", icon: LayoutDashboard, key: "side.overview" },
     { to: "/leader/members", icon: Users, key: "side.members" },
     { to: "/leader/tasks", icon: ClipboardList, key: "side.allTasks" },
-    {to: "/leader/leaderboard", icon: Trophy, key: "side.leaderboard" },
     { to: "/leader/settings", icon: Settings, key: "side.settings" },
 ];
 

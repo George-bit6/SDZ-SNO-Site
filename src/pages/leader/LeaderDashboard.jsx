@@ -7,7 +7,6 @@ import { Check, Clock, MoreHorizontal, Plus, Users } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import TaskForm from "@/components/TaskForm";
 import { leaderDataService } from "@/services/leaderDataService";
 import { memberDataService } from "@/services/memberDataService";
 import { getAccentColorBySubgroupId } from "@/utils/accentColors";
@@ -137,9 +136,7 @@ const LeaderDashboard = () => {
                 <main className="flex-1 overflow-y-auto px-4 md:px-8 py-8">
                     
                     <DashboardPageTitle title={leaderFullName} subtitle={subgrp} accentColor={accentColor}>
-                            <Button variant="ds-primary" size="sm" onClick={() => setIsTaskFormOpen(true)}>
-                                <Plus /> {t("ld.assign")}
-                            </Button>
+                            
                     </DashboardPageTitle>
                         
                     
@@ -160,7 +157,6 @@ const LeaderDashboard = () => {
                 </main>
             </div>
 
-            <TaskForm open={isTaskFormOpen} onClose={() => setIsTaskFormOpen(false)} leaderId={leaderId} />
         </div>
     );
 };
