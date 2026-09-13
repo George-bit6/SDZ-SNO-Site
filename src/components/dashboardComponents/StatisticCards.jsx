@@ -11,6 +11,8 @@
  * - columns: Grid column configuration (default: 2 on mobile, 4 on desktop)
  */
 export default function StatisticCards({ stats = [], accentColor, columns = { mobile: 2, desktop: 4 } }) {
+    const color = accentColor || '#4A7DFF';
+    
     return (
         <section className={`grid grid-cols-${columns.mobile} lg:grid-cols-${columns.desktop} gap-4 mb-10`}>
             {stats.length > 0 ? (
@@ -19,13 +21,13 @@ export default function StatisticCards({ stats = [], accentColor, columns = { mo
                         key={stat.label || index}
                         className="relative rounded-[20px] border border-[#E8ECF4] bg-white p-5 shadow-[0_4px_12px_rgba(0,0,0,0.06)] overflow-hidden"
                     >
-                        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#4A7DFF]/20 to-transparent" />
+                        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#4A7DFF]/20 to-transparent" style={{background: `linear-gradient(to right, transparent, ${color}33, transparent)`}} />
                         <p className="text-[12px] font-medium uppercase tracking-[0.25em] text-[#8A94A6]">
                             {stat.label}
                         </p>
                         <p
                             className="text-[20px] font-bold mt-2"
-                            style={{ color: stat.color || accentColor || '#4A7DFF' }}
+                            style={{ color: stat.color || color }}
                         >
                             {stat.value}
                         </p>
@@ -36,8 +38,8 @@ export default function StatisticCards({ stats = [], accentColor, columns = { mo
                             <div className="mt-3">
                                 <div className="h-[7px] rounded-full bg-[#E8ECF4] overflow-hidden">
                                     <div
-                                        className="h-full rounded-full bg-[#4A7DFF] transition-all duration-300"
-                                        style={{ width: `${stat.progress}%` }}
+                                        className="h-full rounded-full transition-all duration-300"
+                                        style={{ width: `${stat.progress}%`, backgroundColor: color }}
                                     />
                                 </div>
                             </div>

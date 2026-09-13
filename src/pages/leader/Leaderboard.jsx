@@ -36,22 +36,22 @@ const LeaderboardPage = ({ role }) => {
 
             try {
                 setLoading(true);
-                
-                // Load leader data
-                const leaderData = await leaderDataService.getLeaderById(leaderId);
-                if (isMounted && leaderData) {
-                    setLeader(leaderDataService.formatLeaderData(leaderData));
 
-                    // Get subgroup ID for accent color
-                    const subgroupId = await leaderDataService.getLeaderSubgroupId(leaderId);
-                    if (isMounted && subgroupId) {
-                        const subgroupAccentColor = getAccentColorBySubgroupId(subgroupId);
-                        setAccentColor(subgroupAccentColor);
-                    }
+                // Get subgroup ID first for accent color
+                const subgroupId = await leaderDataService.getLeaderSubgroupId(leaderId);
+                if (isMounted && subgroupId) {
+                    const subgroupAccentColor = getAccentColorBySubgroupId(subgroupId);
+                    setAccentColor(subgroupAccentColor || '#4A7DFF');
+                }
+
+                // Load leader data with user info
+                const leaderData = await leaderDataService.getLeaderById(leaderId);
+                const userData = await leaderDataService.getLeaderUserInfo(leaderId);
+                if (isMounted && leaderData) {
+                    setLeader(leaderDataService.formatLeaderData(leaderData, userData));
                 }
 
                 // Load members from leader's subgroup for leaderboard
-                const subgroupId = await leaderDataService.getLeaderSubgroupId(leaderId);
                 if (isMounted && subgroupId) {
                     const subgroupMembers = await memberDataService.getMembersBySubgroup(subgroupId);
                     if (isMounted && subgroupMembers) {

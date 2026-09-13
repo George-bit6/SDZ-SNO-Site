@@ -5,12 +5,13 @@ import { useI18n } from "@/i18n/I18nProvider";
 
 export default function PendingList(props) {
 const {t} = useI18n();
+const accentColor = props.accentColor || '#4A7DFF';
 
   return (
     <section className="rounded-lg border-black/5 border shadow-[0_0_6px_rgba(0,0,0,0.1)] p-6">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-serif text-lg flex items-center gap-2">
-          <Clock className="size-4 " style={{color: props.accentColor}} />
+          <Clock className="size-4 " style={{color: accentColor}} />
           {"No Reviews"}
         </h3>
         <span className="text-xs px-2 py-0.5 rounded-full bg-crimson/20 text-crimson">

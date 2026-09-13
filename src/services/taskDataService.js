@@ -1,5 +1,5 @@
 import { BaseDataService } from './baseDataService';
-import supabase from "../../supabase";
+import supabase from "../../supabase.js";
 
 /**
  * Task Data Service - Handles all task-related data operations
@@ -7,19 +7,25 @@ import supabase from "../../supabase";
  */
 export class TaskDataService extends BaseDataService {
   /**
-   * Get tasks by subgroup
-   * @param {string} subgroupId - Subgroup ID
-   * @returns {Promise<Array|null>} Tasks or null
+   * Get all tasks belonging to a specific subgroup
+   * Purpose: Retrieves all tasks from the Tasks table that are assigned to a particular subgroup
+   * Frontend Display: Used to populate task lists in subgroup views, show available tasks in leader dashboard,
+   *                  display task catalogs and subgroup-specific task assignments
+   * @param {string} subgroupId - Subgroup's unique identifier to fetch its tasks
+   * @returns {Promise<Array|null>} Array of task objects in the subgroup, or null if error occurs
    */
   async getTasksBySubgroup(subgroupId) {
     return this.fetchAll('Tasks', { subgrp_id: subgroupId });
   }
 
   /**
-   * Get tasks by subgroup and level
-   * @param {string} subgroupId - Subgroup ID
-   * @param {string} levelName - Level name
-   * @returns {Promise<Array|null>} Tasks or null
+   * Get tasks belonging to a specific subgroup and level
+   * Purpose: Retrieves tasks from the Tasks table that match both a subgroup and a specific level/rank
+   * Frontend Display: Used to filter tasks by level in task views, show level-specific task requirements,
+   *                  display progressive task lists for different scout levels within a subgroup
+   * @param {string} subgroupId - Subgroup's unique identifier to filter tasks
+   * @param {string} levelName - Level name (e.g., 'Cub', 'Scout', 'Venturer') to further filter tasks
+   * @returns {Promise<Array|null>} Array of task objects matching the subgroup and level, or null if error occurs
    */
   async getTasksBySubgroupAndLevel(subgroupId, levelName) {
     return this.fetchAll('Tasks', { 
@@ -29,35 +35,59 @@ export class TaskDataService extends BaseDataService {
   }
 
   /**
-   * Get all tasks
-   * @returns {Promise<Array|null>} All tasks or null
+   * Get all tasks from the Tasks table
+   * Purpose: Retrieves every task in the system without any filtering
+   * Frontend Display: Used for administrative views, task management interfaces, system-wide task catalogs,
+   *                  and any UI component that needs to display the complete task inventory
+   * @returns {Promise<Array|null>} Array of all task objects in the system, or null if error occurs
    */
   async getAllTasks() {
     return this.fetchAll('Tasks');
   }
 
   /**
-   * Get task by name
-   * @param {string} taskName - Task name
-   * @returns {Promise<object|null>} Task or null
+   * Get a specific task by its composite key (subgroup, level, and task name)
+   * Purpose: Retrieves a single task from the Tasks table using its composite primary key
+   * Frontend Display: Used to display task details in task views, populate task edit forms, show task information
+   *                  in task detail pages, and fetch specific task data for task management
+   * @param {string} subgroupId - Subgroup's unique identifier
+   * @param {string} levelName - Level name for the task
+   * @param {string} taskName - The unique name of the task to retrieve
+   * @returns {Promise<object|null>} Single task object with all task details, or null if not found or error occurs
    */
-  async getTaskByName(taskName) {
-    return this.fetchOne('Tasks', { task_name: taskName });
+  async getTaskByKey(subgroupId, levelName, taskName) {
+    let {data: task, error} = await supabase
+      .from('Tasks')
+      .select('*')
+      .eq('subgrp_id', subgroupId)
+      .eq('level_name', levelName)
+      .eq('task_name', taskName)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Error fetching task by key:', error);
+      return null;
+    }
+
+    return task;
   }
 
   /**
-   * Add new task
-   * @param {object} taskData - Task data
-   * @returns {Promise<object>} Result
+   * Add a new task to the Tasks table
+   * Purpose: Creates a new task record in the database with specified properties including name, subgroup, level, description, points, and type
+   * Frontend Display: Used in task creation forms, administrative task management interfaces, and any UI component
+   *                  that allows leaders or administrators to create new tasks for their subgroups
+   * @param {object} taskData - Task object containing taskName, subgroupId, levelName, taskDesc, points, and taskType
+   * @returns {Promise<object>} Result object with success status, created task data, or error details if creation fails
    */
   async addTask(taskData) {
     try {
       const { data, error } = await supabase
         .from('Tasks')
         .insert([{
-          task_name: taskData.taskName,
           subgrp_id: taskData.subgroupId,
           level_name: taskData.levelName,
+          task_name: taskData.taskName,
           task_desc: taskData.taskDesc,
           points: taskData.points,
           task_type: taskData.taskType
@@ -88,13 +118,17 @@ export class TaskDataService extends BaseDataService {
   }
 
   /**
-   * Get task statistics
-   * @param {string} subgroupId - Subgroup ID
-   * @returns {Promise<object>} Task statistics
+   * Get task statistics for a specific subgroup
+   * Purpose: Calculates and aggregates task statistics including total tasks and counts by status (not-started, in-progress, pending, complete, verified)
+   * Frontend Display: Used to display task progress dashboards, show completion statistics, populate progress charts,
+   *                  and provide task status summaries in leader and member dashboards
+   * @param {string} subgroupId - Subgroup's unique identifier to calculate task statistics for
+   * @returns {Promise<object>} Statistics object with total, notStarted, inProgress, pending, complete, and verified counts
    */
   async getTaskStats(subgroupId) {
+    // Get total tasks available in the subgroup
     const tasks = await this.getTasksBySubgroup(subgroupId);
-    
+
     if (!tasks) {
       return {
         total: 0,
@@ -106,33 +140,115 @@ export class TaskDataService extends BaseDataService {
       };
     }
 
+    // Get task progress data for the subgroup
+    let {data: progress, error} = await supabase
+      .from('Task_Scout_Progress')
+      .select('task_status')
+      .eq('subgrp_id', subgroupId);
+
+    if (error) {
+      console.error('Error fetching task progress for stats:', error);
+      // Return just the total task count if progress query fails
+      return {
+        total: tasks.length,
+        notStarted: 0,
+        inProgress: 0,
+        pending: 0,
+        complete: 0,
+        verified: 0
+      };
+    }
+
+    const progressArray = progress || [];
+
     return {
       total: tasks.length,
-      notStarted: tasks.filter(t => t.task_status === 'not-started').length,
-      inProgress: tasks.filter(t => t.task_status === 'in-progress').length,
-      pending: tasks.filter(t => t.task_status === 'pending').length,
-      complete: tasks.filter(t => t.task_status === 'complete').length,
-      verified: tasks.filter(t => t.task_status === 'verified').length
+      notStarted: progressArray.filter(p => p.task_status === 'not-started').length,
+      inProgress: progressArray.filter(p => p.task_status === 'in-progress').length,
+      pending: progressArray.filter(p => p.task_status === 'pending').length,
+      complete: progressArray.filter(p => p.task_status === 'complete').length,
+      verified: progressArray.filter(p => p.task_status === 'verified').length
     };
   }
 
   /**
-   * Format task data for display
-   * @param {object} taskData - Raw task data
-   * @returns {object} Formatted task data
+   * Update task progress for a specific scout
+   * Purpose: Updates the status of a task for a specific scout in the Task_Scout_Progress table
+   * Frontend Display: Used to update task completion status in member dashboard, progress tracking,
+   *                  and achievement status updates
+   * @param {string} scoutId - Scout's unique identifier
+   * @param {string} subgroupId - Subgroup's unique identifier
+   * @param {string} levelName - Level name for the task
+   * @param {string} taskName - Task name
+   * @param {string} taskStatus - New task status (not-started, in-progress, pending, complete, verified)
+   * @returns {Promise<object>} Result object with success status or error details
    */
-  formatTaskData(taskData) {
+  async updateTaskProgress(scoutId, subgroupId, levelName, taskName, taskStatus) {
+    try {
+      const { data, error } = await supabase
+        .from('Task_Scout_Progress')
+        .upsert([{
+          scout_id: scoutId,
+          subgrp_id: subgroupId,
+          level_name: levelName,
+          task_name: taskName,
+          task_status: taskStatus
+        }], {
+          onConflict: 'scout_id,subgrp_id,level_name,task_name'
+        });
+
+      if (error) {
+        console.error("Error updating task progress:", error);
+        return {
+          success: false,
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code
+        };
+      }
+
+      return {
+        success: true,
+        data
+      };
+    } catch (error) {
+      console.error("Unexpected error updating task progress:", error);
+      return {
+        success: false,
+        message: error.message || "An unexpected error occurred."
+      };
+    }
+  }
+
+  /**
+   * Format raw task data for frontend display
+   * Purpose: Transforms raw database task data into a standardized format suitable for UI components,
+   *          renaming database fields to more user-friendly property names
+   * Frontend Display: Used to prepare task data for display in task cards, task lists, detail views,
+   *                  progress trackers, and any UI component that shows task information
+   * @param {object} taskData - Raw task data object from database queries
+   * @param {object} progressData - Optional progress data from Task_Scout_Progress table
+   * @returns {object} Formatted task object with composite key fields, name, description, points, level, type, status, and subgroupId
+   *                   for consistent frontend display
+   */
+  formatTaskData(taskData, progressData = null) {
     if (!taskData) return null;
 
     return {
-      id: taskData.task_id || taskData.id,
+      // Composite key fields
+      subgroupId: taskData.subgrp_id,
+      levelName: taskData.level_name,
+      taskName: taskData.task_name,
+      // User-friendly fields
       name: taskData.task_name,
       description: taskData.task_desc,
       points: taskData.points,
       level: taskData.level_name,
       type: taskData.task_type,
-      status: taskData.task_status || 'not-started',
-      subgroupId: taskData.subgrp_id
+      // Status from progress data if available
+      status: progressData?.task_status || 'not-started',
+      createdAt: taskData.created_at
     };
   }
 }

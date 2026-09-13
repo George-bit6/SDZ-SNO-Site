@@ -34,7 +34,7 @@ export default function Footer(props){
             <p className="font-semibold mb-3">Get Involved</p>
             <ul className="space-y-2 text-muted-foreground">
               <li><Link to="/login" className="hover:text-gold">Portal Login</Link></li>
-              <li><a href="#donate" className="hover:text-gold">Donate</a></li>
+              <li><Link to="/donations" className="hover:text-gold">Donate</Link></li>
               <li><a href="mailto:contact@antiochscouts.org" className="hover:text-gold">Contact</a></li>
             </ul>
           </div>

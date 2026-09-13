@@ -2,7 +2,7 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { Topbar } from "@/components/Topbar";
 import { Crest } from "@/components/Crest";
 import { Button } from "@/components/ui/button";
-import { Mail, MoreHorizontal, Plus, Search, Users } from "lucide-react";
+import { Plus, Search, Users } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -14,6 +14,26 @@ import StatisticCards from "@/components/dashboardComponents/StatisticCards";
 
 const MEMBERS = [];
 const GROUPS = ["all", "groups.cubs.name", "groups.scouts.name", "groups.guides.name", "groups.pioneers.name"];
+
+// Helper function to calculate age from birthdate
+const calculateAge = (birthdate) => {
+    if (!birthdate) return "N/A";
+    const birth = new Date(birthdate);
+    const today = new Date();
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+        age--;
+    }
+    return age;
+};
+
+// Helper function to format date
+const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+};
 
 const Members = () => {
     const { t } = useI18n();
@@ -41,35 +61,47 @@ const Members = () => {
 
             try {
                 setLoading(true);
-                
+
+                console.log('Leader ID:', leaderId);
+
                 // Get subgroup ID first for accent color
-                const subgroupId = await leaderDataService.getLeaderSubgroupId(leaderId);
-                if (isMounted && subgroupId) {
-                    const subgroupAccentColor = getAccentColorBySubgroupId(subgroupId);
-                    setAccentColor(subgroupAccentColor);
-                }
+                const subgroupIds = await leaderDataService.getLeaderSubgroupIds(leaderId);
+                console.log('Subgroup IDs:', subgroupIds);
                 
-                // Load leader data
-                const leaderData = await leaderDataService.getLeaderById(leaderId);
-                if (isMounted && leaderData) {
-                    setLeader(leaderDataService.formatLeaderData(leaderData));
+                if (isMounted && subgroupIds && subgroupIds.length > 0) {
+                    const subgroupId = subgroupIds[0]; // Use first subgroup ID
+                    console.log('Selected Subgroup ID:', subgroupId);
+                    const subgroupAccentColor = getAccentColorBySubgroupId(subgroupId);
+                    setAccentColor(subgroupAccentColor || '#4A7DFF');
                 }
 
-                // Load leader's members
-                const leaderMembers = await leaderDataService.getLeaderMembers(leaderId);
+                // Load leader data with user info
+                const leaderData = await leaderDataService.getLeaderById(leaderId);
+                const userData = await leaderDataService.getLeaderUserInfo(leaderId);
+                if (isMounted && leaderData) {
+                    const formattedLeader = await leaderDataService.formatLeaderDataWithSubgroup(leaderData, userData, leaderId);
+                    setLeader(formattedLeader);
+                }
+
+                // Load leader's members from all subgroups
+                const leaderMembers = await leaderDataService.getAllLeaderMembers(leaderId);
+                console.log('Raw Members Data:', leaderMembers);
+                
                 if (isMounted && leaderMembers) {
                     const formattedMembers = leaderMembers.map(m => memberDataService.formatMemberData(m));
+                    console.log('Formatted Members:', formattedMembers);
                     setMembers(formattedMembers);
                 }
 
-                // Load leader statistics
-                const leaderStats = await leaderDataService.getLeaderStats(leaderId);
+                // Load leader statistics (using all members)
+                const leaderStats = {
+                    totalMembers: leaderMembers ? leaderMembers.length : 0
+                };
+                console.log('Leader Stats:', leaderStats);
+                
                 if (isMounted) {
                     setStats([
-                        { label: t("mbr.stat.total"), value: leaderStats.totalMembers, color: accentColor },
-                        { label: t("mbr.stat.active"), value: leaderStats.activeMembers, color: "#34D399" },
-                        { label: t("mbr.stat.honor"), value: leaderStats.totalHonorPoints, color: "#FFC107" },
-                        { label: t("mbr.stat.hours"), value: leaderStats.totalServiceHours, color: "#FF9F43" },
+                        { label: t("mbr.stat.total"), value: leaderStats.totalMembers, color: '#4A7DFF' },
                     ]);
                 }
             } catch (error) {
@@ -97,7 +129,7 @@ const Members = () => {
 
     const filtered = members.filter((m) => {
         const matchesQ = (m.fullName || "").toLowerCase().includes(q.toLowerCase());
-        const matchesG = group === "all" || (m.unitName || "") === t(group);
+        const matchesG = group === "all" || (m.subgroupName || "").toLowerCase().includes(t(group).toLowerCase());
         return matchesQ && matchesG;
     });
 
@@ -142,21 +174,7 @@ const Members = () => {
                                         className="bg-[#F4F6FB] border border-[#E8ECF4] rounded-xl ps-8 pe-3 py-2 text-xs w-56 focus:outline-none focus:border-[#4A7DFF] focus:ring-1 focus:ring-[#4A7DFF]/40"
                                     />
                                 </div>
-                                <div className="flex gap-1">
-                                    {GROUPS.map((g) => (
-                                        <button
-                                            key={g}
-                                            onClick={() => setGroup(g)}
-                                            className={`text-[10px] uppercase tracking-wider px-2.5 py-1.5 rounded-xl border transition-colors ${
-                                                group === g
-                                                    ? "border-[#4A7DFF] text-[#4A7DFF] bg-[#EAF1FF]"
-                                                    : "border-[#E8ECF4] text-[#8A94A6] hover:text-[#1E2A45]"
-                                            }`}
-                                        >
-                                            {g === "all" ? t("tasks.filter.all") : t(g)}
-                                        </button>
-                                    ))}
-                                </div>
+                               
                             </div>
                         </header>
 
@@ -165,11 +183,11 @@ const Members = () => {
                                 <thead className="bg-[#F4F6FB]/50">
                                     <tr className="text-[10px] uppercase tracking-[0.2em] text-[#8A94A6]">
                                         <th className="py-3 px-6 font-medium text-start">{t("ld.col.member")}</th>
-                                        <th className="py-3 px-2 font-medium text-start">{t("lb.col.group")}</th>
-                                        <th className="py-3 px-2 font-medium text-start">{t("ld.col.progress")}</th>
-                                        <th className="py-3 px-2 font-medium text-end">{t("mem.stat.badges")}</th>
-                                        <th className="py-3 px-2 font-medium text-end">{t("lb.honor")}</th>
-                                        <th className="py-3 px-6 font-medium text-end">{t("ld.col.actions")}</th>
+                                        <th className="py-3 px-2 font-medium text-start">{"subgroup"}</th>
+                                        <th className="py-3 px-2 font-medium text-start">{"unit"}</th>
+                                        <th className="py-3 px-2 font-medium text-start">{"age"}</th>
+                                        <th className="py-3 px-2 font-medium text-start">{"unit role"}</th>
+                                        <th className="py-3 px-2 font-medium text-start">{"date of membership"}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -184,27 +202,11 @@ const Members = () => {
                                                     </div>
                                                 </div>
                                             </td>
+                                            <td className="py-3 px-2 text-xs text-[#8A94A6]">{m.subgroupName || "Unknown"}</td>
                                             <td className="py-3 px-2 text-xs text-[#8A94A6]">{m.unitName || t("groups.scouts.name")}</td>
-                                            <td className="py-3 px-2 min-w-[160px]">
-                                                <div className="flex items-center gap-2">
-                                                    <div className="flex-1 h-[7px] rounded-full bg-[#E8ECF4] overflow-hidden">
-                                                        <div className="h-full bg-[#4A7DFF]" style={{ width: `${m.progress || 0}%` }}/>
-                                                    </div>
-                                                    <span className="text-xs w-9 text-end text-[#8A94A6]">{m.progress || 0}%</span>
-                                                </div>
-                                            </td>
-                                            <td className="py-3 px-2 text-end text-[#8A94A6]">{m.badges || 0}</td>
-                                            <td className="py-3 px-2 text-end">
-                                                <span className="text-[20px] font-bold text-[#4A7DFF]">{m.honorPoints || 0}</span>
-                                            </td>
-                                            <td className="py-3 px-6 text-end">
-                                                <Button size="icon" variant="ghost" className="size-8" title={m.email}>
-                                                    <Mail className="size-4"/>
-                                                </Button>
-                                                <Button size="icon" variant="ghost" className="size-8">
-                                                    <MoreHorizontal className="size-4"/>
-                                                </Button>
-                                            </td>
+                                            <td className="py-3 px-2 text-xs text-[#8A94A6]">{m.age || calculateAge(m.birthdate)}</td>
+                                            <td className="py-3 px-2 text-xs text-[#8A94A6]">{m.unitTitle || "Scout"}</td>
+                                            <td className="py-3 px-2 text-xs text-[#8A94A6]">{m.membershipDate ? formatDate(m.membershipDate) : "N/A"}</td>
                                         </tr>
                                     ))}
                                     {filtered.length === 0 && (

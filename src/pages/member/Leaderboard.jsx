@@ -4,7 +4,7 @@ import { Crest } from "@/components/Crest";
 import { Award, Crown, Medal, Trophy } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useMemberData } from "@/hooks/useMemberData";
 import { memberDataService } from "@/services/memberDataService";
 import { getAccentColorBySubgroupId } from "@/utils/accentColors";
 import DashboardPageTitle from "@/components/dashboardComponents/DashboardPageTitle";
@@ -15,69 +15,32 @@ const podiumColor = ["text-[#FFC107]", "text-[#8A94A6]", "text-[#FF5C5C]"];
 
 const LeaderboardPage = ({ role }) => {
     const { t } = useI18n();
-    const { memberId } = useParams();
+    const { data: memberData, isLoading } = useMemberData();
     const [rows, setRows] = useState([]);
-    const [member, setMember] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [accentColor, setAccentColor] = useState('#4A7DFF'); // Default blue
 
     useEffect(() => {
-        let isMounted = true;
+        if (memberData?.subgroupId) {
+            const subgroupAccentColor = getAccentColorBySubgroupId(memberData.subgroupId);
+            setAccentColor(subgroupAccentColor || '#4A7DFF');
 
-        const loadLeaderboardData = async () => {
-            if (!memberId) {
-                setRows([]);
-                setMember(null);
-                setLoading(false);
-                setAccentColor('#4A7DFF');
-                return;
-            }
-
-            try {
-                setLoading(true);
-                
-                // Load member data
-                const memberData = await memberDataService.getMemberById(memberId);
-                if (isMounted && memberData) {
-                    // Calculate accent color based on subgroup first
-                    const subgroupAccentColor = getAccentColorBySubgroupId(memberData.subgrp_id);
-                    setAccentColor(subgroupAccentColor);
-
-                    const formattedMember = memberDataService.formatMemberData(memberData);
-                    setMember(formattedMember);
-                }
-
-                // Load members from same subgroup for leaderboard
-                if (memberData?.subgrp_id) {
-                    const subgroupMembers = await memberDataService.getMembersBySubgroup(memberData.subgrp_id);
-                    if (isMounted && subgroupMembers) {
-                        // Format and sort by honor points (this would need to be implemented in the database)
+            // Load members from same subgroup for leaderboard
+            memberDataService.getMembersBySubgroup(memberData.subgroupId)
+                .then(subgroupMembers => {
+                    if (subgroupMembers) {
+                        // Format and sort by honor points
                         const formattedMembers = subgroupMembers
                             .map(m => memberDataService.formatMemberData(m))
-                            .sort((a, b) => (b.honorPoints || 0) - (a.honorPoints || 0));
+                            .sort((a, b) => (b.scores?.total_points || 0) - (a.scores?.total_points || 0));
                         setRows(formattedMembers);
                     }
-                }
-            } catch (error) {
-                console.error("Error loading leaderboard data:", error);
-                if (isMounted) {
+                })
+                .catch(error => {
+                    console.error("Error loading leaderboard data:", error);
                     setRows([]);
-                    setMember(null);
-                    setAccentColor('#4A7DFF');
-                }
-            } finally {
-                if (isMounted) {
-                    setLoading(false);
-                }
-            }
-        };
-
-        loadLeaderboardData();
-
-        return () => {
-            isMounted = false;
-        };
-    }, [memberId]);
+                });
+        }
+    }, [memberData?.subgroupId]);
 
     const top3 = rows.slice(0, 3);
     const rest = rows.slice(3);
@@ -117,7 +80,7 @@ const LeaderboardPage = ({ role }) => {
                                         <Crest initials={m.initials} className="size-16 mx-auto mb-3"/>
                                         <p className="text-[18px] font-semibold leading-tight text-[#1E2A45]">{m.fullName}</p>
                                         <p className="text-xs text-[#8A94A6] mt-0.5">{m.unitTitle || "Scout"} · {m.unitName || "Unit"}</p>
-                                        <p className="text-[20px] font-bold text-[#4A7DFF] mt-4">{m.honorPoints || 0}</p>
+                                        <p className="text-[20px] font-bold text-[#4A7DFF] mt-4">{m.scores?.total_points || 0}</p>
                                         <p className="text-[10px] uppercase tracking-[0.25em] text-[#8A94A6] mt-1">{t("lb.honor")}</p>
                                     </article>
                                 );

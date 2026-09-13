@@ -225,7 +225,7 @@ export default function HomePage() {
         title="Support Our Church"
         description="Your gift supports the price of the Church land and the building of the Church at Saint Demetrios Zouk."
         ctaText="Donate Now"
-        ctaLink="https://example.com/donate"
+        ctaLink="/donations"
         subtitle="Tax-deductible · Secure via parish account"
       />
 

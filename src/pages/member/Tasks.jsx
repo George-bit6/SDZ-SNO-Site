@@ -1,78 +1,31 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { AppSidebar } from "@/components/AppSidebar";
 import { Topbar } from "@/components/Topbar";
 import { TaskCard } from "@/components/TaskCard";
 import { Button } from "@/components/ui/button";
 import { ClipboardList, Filter, Plus, Search } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
-import { useParams } from "react-router-dom";
-import { memberDataService } from "@/services/memberDataService";
-import { taskDataService } from "@/services/taskDataService";
+import { useMemberData } from "@/hooks/useMemberData";
 import { getAccentColorBySubgroupId } from "@/utils/accentColors";
 import DashboardPageTitle from "@/components/dashboardComponents/DashboardPageTitle";
 import StatisticCards from "@/components/dashboardComponents/StatisticCards";
 
 const TasksPage = ({ role }) => {
     const { t } = useI18n();
-    const { memberId } = useParams();
+    const { data: memberData, isLoading } = useMemberData();
     const [filter, setFilter] = useState("all");
     const [query, setQuery] = useState("");
-    const [allTasks, setAllTasks] = useState([]);
-    const [member, setMember] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [accentColor, setAccentColor] = useState('#4A7DFF'); // Default blue
 
-    useEffect(() => {
-        let isMounted = true;
+    // Update accent color when member data changes
+    useMemo(() => {
+        if (memberData?.subgroupId) {
+            const subgroupAccentColor = getAccentColorBySubgroupId(memberData.subgroupId);
+            setAccentColor(subgroupAccentColor || '#4A7DFF');
+        }
+    }, [memberData?.subgroupId]);
 
-        const loadTasksData = async () => {
-            if (!memberId) {
-                setAllTasks([]);
-                setMember(null);
-                setLoading(false);
-                setAccentColor('#4A7DFF');
-                return;
-            }
-
-            try {
-                setLoading(true);
-                
-                // Load member data
-                const memberData = await memberDataService.getMemberById(memberId);
-                if (isMounted && memberData) {
-                    // Calculate accent color based on subgroup first
-                    const subgroupAccentColor = getAccentColorBySubgroupId(memberData.subgrp_id);
-                    setAccentColor(subgroupAccentColor);
-
-                    const formattedMember = memberDataService.formatMemberData(memberData);
-                    setMember(formattedMember);
-                }
-
-                // Load member tasks
-                const tasks = await memberDataService.getMemberTasks(memberId);
-                if (isMounted) {
-                    setAllTasks(Array.isArray(tasks) ? tasks : []);
-                }
-            } catch (error) {
-                console.error("Error loading tasks data:", error);
-                if (isMounted) {
-                    setAllTasks([]);
-                    setMember(null);
-                    setAccentColor('#4A7DFF');
-                }
-            } finally {
-                if (isMounted) {
-                    setLoading(false);
-                }
-            }
-        };
-
-        loadTasksData();
-
-        return () => {
-            isMounted = false;
-        };
-    }, [memberId]);
+    const allTasks = memberData?.tasks || [];
 
     const filters = [
         { key: "all", labelKey: "tasks.filter.all" },

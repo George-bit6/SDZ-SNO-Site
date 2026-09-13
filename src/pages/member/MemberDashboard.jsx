@@ -7,13 +7,10 @@ import { Award, Calendar, Compass, Flag, Flame, HandHeart, Tent, TreePine } from
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { memberDataService } from "@/services/memberDataService";
+import { useMemberData } from "@/hooks/useMemberData";
 import { getAccentColorBySubgroupId } from "@/utils/accentColors";
 import DashboardPageTitle from "@/components/dashboardComponents/DashboardPageTitle";
 import StatisticCards from "@/components/dashboardComponents/StatisticCards";
-
-const fallbackTasks = [];
 
 const normalizeTaskTitleKey = (rawKey) => {
     if (!rawKey) {
@@ -25,81 +22,28 @@ const normalizeTaskTitleKey = (rawKey) => {
 
 const MemberDashboard = () => {
     const { t } = useI18n();
-    const { memberId } = useParams();
-    const [member, setMember] = useState(null);
-    const [tasks, setTasks] = useState(fallbackTasks);
-    const [stats, setStats] = useState([]);
+    const { data: memberData, isLoading } = useMemberData();
     const [accentColor, setAccentColor] = useState('#4A7DFF'); // Default blue
 
     useEffect(() => {
-        let isMounted = true;
+        if (memberData?.subgroupId) {
+            const subgroupAccentColor = getAccentColorBySubgroupId(memberData.subgroupId);
+            setAccentColor(subgroupAccentColor || '#4A7DFF');
+        }
+    }, [memberData?.subgroupId]);
 
-        const loadMemberData = async () => {
-            if (!memberId) {
-                setMember(null);
-                setTasks(fallbackTasks);
-                setStats([]);
-                setAccentColor('#4A7DFF');
-                return;
-            }
+    const stats = memberData ? [
+        { label: "Badges Earned", value: memberData.scores.badges.toString(), delta: "", color: accentColor || '#4A7DFF' },
+        { label: "Tasks Completed", value: memberData.tasks.filter(t => t.task_status === 'complete' || t.task_status === 'verified').length.toString(), delta: `${memberData.tasks.length - memberData.tasks.filter(t => t.task_status === 'complete' || t.task_status === 'verified').length} remaining`, color: "#4A7DFF" },
+        { label: "Service Hours", value: memberData.scores.service_hours.toString(), delta: "", color: "#34D399" },
+        { label: "Honor Points", value: memberData.scores.total_points.toString(), delta: "", color: "#FF5C5C", progress: memberData.scores.total_points },
+    ] : [];
 
-            try {
-                // Load member data
-                const memberData = await memberDataService.getMemberById(memberId);
-                console.log("MemberDashboard memberData:", memberData);
-
-                if (!isMounted) return;
-
-                if (memberData) {
-                    // Calculate accent color based on subgroup first
-                    const subgroupAccentColor = getAccentColorBySubgroupId(memberData.subgrp_id);
-                    setAccentColor(subgroupAccentColor);
-
-                    const formattedMember = memberDataService.formatMemberData(memberData);
-                    setMember(formattedMember);
-
-                    // Load member tasks
-                    const memberTasks = await memberDataService.getMemberTasks(memberId);
-                    console.log("MemberDashboard tasks:", memberTasks);
-                    setTasks(Array.isArray(memberTasks) && memberTasks.length > 0 ? memberTasks : fallbackTasks);
-
-                    // Load member stats
-                    const memberStats = await memberDataService.getMemberStats(memberId);
-                    setStats([
-                        { label: "Badges Earned", value: memberStats.badges.toString(), delta: "", color: subgroupAccentColor },
-                        { label: "Tasks Completed", value: memberStats.completedTasks.toString(), delta: `${memberStats.totalTasks - memberStats.completedTasks} remaining`, color: "#4A7DFF" },
-                        { label: "Service Hours", value: memberStats.hours.toString(), delta: "", color: "#34D399" },
-                        { label: "Honor Points", value: memberStats.totalPoints.toString(), delta: "", color: "#FF5C5C", progress: memberStats.totalPoints },
-                    ]);
-                } else {
-                    setMember(null);
-                    setTasks(fallbackTasks);
-                    setStats([]);
-                    setAccentColor('#4A7DFF');
-                }
-            } catch (error) {
-                console.error("Error loading member data:", error);
-                if (isMounted) {
-                    setMember(null);
-                    setTasks(fallbackTasks);
-                    setStats([]);
-                    setAccentColor('#4A7DFF');
-                }
-            }
-        };
-
-        loadMemberData();
-
-        return () => {
-            isMounted = false;
-        };
-    }, [memberId]);
-
-    const taskList = tasks.map(task => ({
-        id: task.id ?? task.task_id,
-        titleKey: normalizeTaskTitleKey(task.task_id ?? task.titleKey ?? task.taskKey),
+    const taskList = memberData?.tasks?.map(task => ({
+        id: task.task_name,
+        titleKey: normalizeTaskTitleKey(task.task_name),
         status: task.task_status ?? "not-started"
-    }));
+    })) || [];
 
     /*  const badges = [
         { icon: Flame, key: "badge.firekeeper" },
@@ -129,11 +73,11 @@ const MemberDashboard = () => {
       <AppSidebar role="member" accentColor={accentColor}/>
 
       <div className="flex-1 flex flex-col min-w-0 transition-all duration-300 lg:ml-0">
-        <Topbar name={member?.fullName || "Unknown"} rank={t("rank.senior")} subgroup={member?.unitName || t("groups.scouts.name")} initials={member?.initials || "UK"} accentColor={accentColor}/>
+        <Topbar name={memberData?.fullName || "Unknown"} rank={t("rank.senior")} subgroup={memberData?.unitName || t("groups.scouts.name")} initials={memberData?.initials || "UK"} accentColor={accentColor}/>
 
         <main className="flex-1 overflow-y-auto px-4 md:px-8 py-8">
           <DashboardPageTitle
-            title={t("mem.welcome", { name: member?.fullName || "Unknown" })}
+            title={t("mem.welcome", { name: memberData?.fullName || "Unknown" })}
             subtitle={t("mem.kicker")}
             accentColor={accentColor}
           />

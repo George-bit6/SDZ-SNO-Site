@@ -6,8 +6,11 @@ import supabase from "../../supabase";
  */
 export class AuthService {
   /**
-   * Get current user ID
-   * @returns {Promise<string|null>} User ID or null
+   * Get current user ID from Supabase authentication
+   * Purpose: Retrieves the authenticated user's unique identifier from the current session
+   * Frontend Display: Used to identify the current user throughout the application for personalized content,
+   *                  role-based access control, and user-specific data fetching
+   * @returns {Promise<string|null>} User ID if authenticated, null if not authenticated or error occurs
    */
   async getUserId() {
     try {
@@ -26,8 +29,11 @@ export class AuthService {
   }
 
   /**
-   * Get current user
-   * @returns {Promise<object|null>} User data or null
+   * Get current user data from Supabase authentication
+   * Purpose: Retrieves the complete user object including email, metadata, and session information
+   * Frontend Display: Used to display user profile information, show user-specific UI elements,
+   *                  and populate user profile forms with current data
+   * @returns {Promise<object|null>} Complete user object if authenticated, null if not authenticated or error occurs
    */
   async getCurrentUser() {
     try {
@@ -46,10 +52,13 @@ export class AuthService {
   }
 
   /**
-   * Sign in with email and password
-   * @param {string} email - User email
-   * @param {string} password - User password
-   * @returns {Promise<object>} Login result
+   * Sign in user with email and password
+   * Purpose: Authenticates a user using their email and password credentials via Supabase Auth
+   * Frontend Display: Triggers user login flow, redirects to dashboard on success,
+   *                  displays error messages on failure, and updates authentication state
+   * @param {string} email - User's email address for authentication
+   * @param {string} password - User's password for authentication
+   * @returns {Promise<object>} Login result object with success status, user data, session info, or error details
    */
   async signIn(email, password) {
     try {
@@ -81,8 +90,11 @@ export class AuthService {
   }
 
   /**
-   * Sign out
-   * @returns {Promise<object>} Sign out result
+   * Sign out current user
+   * Purpose: Terminates the current user's authentication session via Supabase Auth
+   * Frontend Display: Logs the user out of the application, redirects to login page,
+   *                  clears user-specific data from state, and updates UI to show logged-out state
+   * @returns {Promise<object>} Sign out result object with success status or error details
    */
   async signOut() {
     try {
@@ -109,9 +121,12 @@ export class AuthService {
   }
 
   /**
-   * Get user role (member or leader)
-   * @param {string} userId - User ID
-   * @returns {Promise<string|null>} User role or null
+   * Get user role from database (member or leader)
+   * Purpose: Determines the user's role by checking if they exist in Leaders or Scout_members tables
+   * Frontend Display: Used for role-based access control, determines which dashboard/features are accessible,
+   *                  controls navigation menu options, and shows role-specific UI components
+   * @param {string} userId - User's unique identifier to check role for
+   * @returns {Promise<string|null>} User role ('leader', 'member', or null if user has no role)
    */
   async getUserRole(userId) {
     try {

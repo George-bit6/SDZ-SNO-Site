@@ -1,0 +1,7 @@
+{
+  "name": "SDZ-SNO-Site",
+  "compatibility_date": "2026-09-13",
+  "assets": {
+    "directory": "./dist"
+  }
+}

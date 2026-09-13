@@ -1,113 +1,262 @@
+import supabase from '../../supabase.js';
 import { BaseDataService } from './baseDataService';
 
-/**
- * Leader Data Service - Handles all leader-related data operations
- * Follows SOLID principles: Single Responsibility for leader data
- */
+
 export class LeaderDataService extends BaseDataService {
-  /**
-   * Get leader by ID
-   * @param {string} leaderId - Leader ID
-   * @returns {Promise<object|null>} Leader data or null
-   */
+  
   async getLeaderById(leaderId) {
-    const data = await this.fetchAll('Leaders', { leader_id: leaderId });
-    
-    if (!data || !data.length) {
+    let {data: Leaders, error} = await supabase
+      .from('Leaders')
+      .select('leader_id, leader_title')
+      .eq('leader_id', leaderId);
+
+    if (error) {
+      console.error('Error fetching leader by ID:', error);
       return null;
     }
 
-    // Combine all titles from matching records
-    const titles = data
-      .map(row => row.leader_title)
-      .filter(title => title != null && title !== '');
-
-    return {
-      id: data[0].leader_id,
-      titles: titles.length > 0 ? titles : ['N/A'],
-      primaryTitle: titles.length > 0 ? titles[0] : 'N/A',
-      dateOfRoleAcquisition: data[0].date_of_role_acquisition
-    };
-  }
-
-  /**
-   * Get leader's subgroup ID
-   * @param {string} leaderId - Leader ID
-   * @returns {Promise<string|null>} Subgroup ID or null
-   */
-  async getLeaderSubgroupId(leaderId) {
-    const data = await this.fetchOne('Subgrp_Leaders', { leader_id: leaderId }, 'subgrp_id');
-    
-    if (!data) {
+    if (!Leaders || Leaders.length === 0) {
       return null;
     }
 
-    return data.subgrp_id;
+    let Leader = {
+      leader_id: Leaders[0].leader_id,
+      titles: Leaders.map(leader => ({
+        title: leader.leader_title
+      }))
+    }
+
+    return Leader;
   }
 
-  /**
-   * Get all members in leader's subgroup
-   * @param {string} leaderId - Leader ID
-   * @returns {Promise<Array|null>} Members or null
-   */
-  async getLeaderMembers(leaderId) {
-    const subgroupId = await this.getLeaderSubgroupId(leaderId);
+ 
+  async getLeaderSubgroupIds(leaderId) {
+    let {data: Subgrp_Leaders, error} = await supabase
+      .from('Subgrp_Leaders')
+      .select('subgrp_id')
+      .eq('leader_id', leaderId);
+
+    if (error) {
+      console.error('Error fetching leader subgroup IDs:', error);
+      return null;
+    }
+
+    let subgroupIds = Subgrp_Leaders ? Subgrp_Leaders.map(sl => sl.subgrp_id) : [];
+
+    return subgroupIds;
+  }
+
+  async getLeaderSubgroupIdByTitle(leaderId, leader_title) {
+    let {data: Subgrp_Leaders, error} = await supabase
+      .from('Subgrp_Leaders')
+      .select('subgrp_id')
+      .eq('leader_id', leaderId)
+      .eq('leader_title', leader_title)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Error fetching leader subgroup ID:', error);
+      return null;
+    }
+
+    return Subgrp_Leaders ? Subgrp_Leaders.subgrp_id : null;
+  }
+
+  async getLeaderUserInfo(leaderId) {
+    let {data: user, error} = await supabase
+      .from('Users')
+      .select('id, Fname, Lname, city, country, phone_nb, gender, birthdate, created_at')
+      .eq('id', leaderId)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Error fetching leader user info:', error);
+      return null;
+    }
+
+    return user;
+  }
+
+  async getSubgroupMembers(subgroupId) {
+    let{data: Scout_members, error} = await supabase
+      .from('Scout_members')
+      .select(`
+        Scout_id,
+        date_of_membership,
+        unit_title,
+        created_at,
+        subgrp_id,
+        unit_name,
+        Users!inner (
+          id,
+          Fname,
+          Lname,
+          city,
+          country,
+          phone_nb,
+          gender,
+          birthdate,
+          created_at
+        )
+      `)
+      .eq('subgrp_id', subgroupId);
+
+    if (error) {
+      console.error('Error fetching members for leader subgroup:', error);
+      return null;
+    }
+
+    if (!Scout_members) {
+      return [];
+    }
+
+    // Flatten the nested Users data for each member
+    return Scout_members.map(member => ({
+      ...member,
+      ...member.Users,
+      Users: undefined // Remove the nested object
+    }));
     
+    }
+
+  async getLeaderMembers(leaderId, leader_title) {
+    const subgroupId = await this.getLeaderSubgroupIdByTitle(leaderId, leader_title);
+
     if (!subgroupId) {
       return [];
     }
 
-    return this.fetchAll('Scout_members', { subgrp_id: subgroupId });
+    const members = await this.getSubgroupMembers(subgroupId);
+
+    if (!members) {
+      return null;
+    }
+
+    return members;
   }
 
-  /**
-   * Get leader statistics
-   * @param {string} leaderId - Leader ID
-   * @returns {Promise<object>} Leader statistics
-   */
-  async getLeaderStats(leaderId) {
-    const members = await this.getLeaderMembers(leaderId);
+  async getAllLeaderMembers(leaderId) {
+    const subgroupIds = await this.getLeaderSubgroupIds(leaderId);
+    console.log('All Subgroup IDs for leader:', subgroupIds);
+
+    if (!subgroupIds || subgroupIds.length === 0) {
+      return [];
+    }
+
+    // Get members from all subgroups
+    const allMembers = [];
+    for (const subgroupId of subgroupIds) {
+      const members = await this.getSubgroupMembers(subgroupId);
+      console.log(`Members from subgroup ${subgroupId}:`, members);
+      
+      if (members && members.length > 0) {
+        // Add subgroup info to each member
+        const subgroupInfo = await this.getSubgroupInfo(subgroupId);
+        console.log(`Subgroup info for ${subgroupId}:`, subgroupInfo);
+        
+        const membersWithSubgroup = members.map(member => ({
+          ...member,
+          subgroupName: subgroupInfo?.subgrp_name || 'Unknown'
+        }));
+        allMembers.push(...membersWithSubgroup);
+      }
+    }
+
+    console.log('All members from all subgroups:', allMembers);
+    return allMembers;
+  }
+
+
+  async getLeaderStats(leaderId, leader_title = null) {
+    // If no leader_title provided, use the first title from leader data
+    if (!leader_title) {
+      const leaderData = await this.getLeaderById(leaderId);
+      leader_title = leaderData?.titles?.[0]?.title;
+    }
     
+    const members = await this.getLeaderMembers(leaderId, leader_title);
+
     if (!members) {
       return {
-        totalMembers: 0,
-        activeMembers: 0,
-        totalHonorPoints: 0,
-        totalServiceHours: 0
+        totalMembers: 0
       };
     }
 
-    const activeMembers = members.filter(member => 
-      member.active_status === 'active'
-    ).length;
-
-    // This would ideally come from database aggregation
-    const totalHonorPoints = members.reduce((sum, member) => sum + (member.honor_points || 0), 0);
-    const totalServiceHours = members.reduce((sum, member) => sum + (member.service_hours || 0), 0);
-
     return {
-      totalMembers: members.length,
-      activeMembers,
-      totalHonorPoints,
-      totalServiceHours
+      totalMembers: members.length
     };
   }
 
-  /**
-   * Format leader data for display
-   * @param {object} leaderData - Raw leader data
-   * @returns {object} Formatted leader data
-   */
-  formatLeaderData(leaderData) {
+
+  async getSubgroupInfo(subgroupId) {
+    let {data: subgroup, error} = await supabase
+      .from('Subgroups')
+      .select('subgrp_id, subgrp_name, patron_saint, created_at')
+      .eq('subgrp_id', subgroupId)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Error fetching subgroup info:', error);
+      return null;
+    }
+
+    return subgroup;
+  }
+
+
+  async formatLeaderDataWithSubgroup(leaderData, userData = null, leaderId = null) {
     if (!leaderData) return null;
 
+    const firstName = userData?.Fname || 'Unknown';
+    const lastName = userData?.Lname || 'Leader';
+    const fullName = `${firstName} ${lastName}`;
+    const initials = this.getInitials(firstName, lastName);
+
+    // Get subgroup information
+    let subgroupName = 'Unknown Unit';
+    let subgroupId = null;
+    
+    if (leaderId) {
+      const subgroupIds = await this.getLeaderSubgroupIds(leaderId);
+      if (subgroupIds && subgroupIds.length > 0) {
+        subgroupId = subgroupIds[0];
+        const subgroupInfo = await this.getSubgroupInfo(subgroupId);
+        if (subgroupInfo) {
+          subgroupName = subgroupInfo.subgrp_name;
+        }
+      }
+    }
+
     return {
-      id: leaderData.id,
-      fullName: 'Leader Name', // This would come from a user table in a real system
-      initials: 'LN', // This would be calculated from user data
-      titles: leaderData.titles,
-      primaryTitle: leaderData.primaryTitle,
-      dateOfRoleAcquisition: leaderData.dateOfRoleAcquisition,
+      id: leaderData.leader_id,
+      fullName: fullName,
+      initials: initials,
+      titles: leaderData.titles || [],
+      primaryTitle: leaderData.titles?.[0]?.title || null,
+      // Add subgroup info for accent color determination
+      subgroupId: subgroupId,
+      subgroupName: subgroupName,
+      subgroupData: {
+        id: subgroupId,
+        name: subgroupName
+      }
+    };
+  }
+
+  formatLeaderData(leaderData, userData = null) {
+    if (!leaderData) return null;
+
+    const firstName = userData?.Fname || 'Unknown';
+    const lastName = userData?.Lname || 'Leader';
+    const fullName = `${firstName} ${lastName}`;
+    const initials = this.getInitials(firstName, lastName);
+
+    return {
+      id: leaderData.leader_id,
+      fullName: fullName,
+      initials: initials,
+      titles: leaderData.titles || [],
+      primaryTitle: leaderData.titles?.[0]?.title || null,
       // Add subgroup info for accent color determination
       subgroupId: leaderData.subgroupId || null,
       subgroupName: leaderData.subgroupName || 'Unknown Unit',
@@ -116,6 +265,13 @@ export class LeaderDataService extends BaseDataService {
         name: leaderData.subgroupName || 'Unknown Unit'
       }
     };
+  }
+
+  
+  getInitials(firstName, lastName) {
+    const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : '';
+    const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : '';
+    return firstInitial + lastInitial;
   }
 }
 

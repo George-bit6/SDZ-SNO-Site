@@ -6,8 +6,7 @@ import { Bell, Lock, LogOut, ShieldCheck, User, Settings as SettingsIcon } from 
 import { useI18n } from "@/i18n/I18nProvider";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { memberDataService } from "@/services/memberDataService";
+import { useMemberData } from "@/hooks/useMemberData";
 import { authService } from "@/services/authService";
 import { getAccentColorBySubgroupId } from "@/utils/accentColors";
 import DashboardPageTitle from "@/components/dashboardComponents/DashboardPageTitle";
@@ -25,62 +24,24 @@ const Toggle = ({ on, onChange }) => (
 const Settings = ({ role }) => {
     const { t, lang, setLang } = useI18n();
     const navigate = useNavigate();
-    const { memberId } = useParams();
+    const { data: memberData, isLoading } = useMemberData();
     const [notifTasks, setNotifTasks] = useState(true);
     const [notifReviews, setNotifReviews] = useState(true);
     const [notifEvents, setNotifEvents] = useState(false);
     const [notifEmail, setNotifEmail] = useState(true);
-    const [member, setMember] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [accentColor, setAccentColor] = useState('#4A7DFF'); // Default blue
 
     useEffect(() => {
-        let isMounted = true;
+        if (memberData?.subgroupId) {
+            const subgroupAccentColor = getAccentColorBySubgroupId(memberData.subgroupId);
+            setAccentColor(subgroupAccentColor || '#4A7DFF');
+        }
+    }, [memberData?.subgroupId]);
 
-        const loadMemberData = async () => {
-            if (!memberId) {
-                setMember(null);
-                setLoading(false);
-                setAccentColor('#4A7DFF');
-                return;
-            }
-
-            try {
-                setLoading(true);
-                const memberData = await memberDataService.getMemberById(memberId);
-                
-                if (isMounted && memberData) {
-                    // Calculate accent color based on subgroup first
-                    const subgroupAccentColor = getAccentColorBySubgroupId(memberData.subgrp_id);
-                    setAccentColor(subgroupAccentColor);
-
-                    const formattedMember = memberDataService.formatMemberData(memberData);
-                    setMember(formattedMember);
-                }
-            } catch (error) {
-                console.error("Error loading member data:", error);
-                if (isMounted) {
-                    setMember(null);
-                    setAccentColor('#4A7DFF');
-                }
-            } finally {
-                if (isMounted) {
-                    setLoading(false);
-                }
-            }
-        };
-
-        loadMemberData();
-
-        return () => {
-            isMounted = false;
-        };
-    }, [memberId]);
-
-    const profile = member || { 
-        name: "Loading...", 
-        initials: "LD", 
-        rank: t("rank.senior"), 
+    const profile = memberData || {
+        name: "Loading...",
+        initials: "LD",
+        rank: t("rank.senior"),
         email: "",
         unitName: t("groups.scouts.name"),
         unitTitle: "Scout"
