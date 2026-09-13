@@ -82,7 +82,7 @@ const LeaderDashboard = () => {
                     setMembers(formattedMembers);
                 }
 
-                // Load leader statistics (using all members)
+                // Load leader statistics (using all members) ..
                 const leaderStats = {
                     totalMembers: leaderMembers ? leaderMembers.length : 0
                 };
