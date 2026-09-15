@@ -4,18 +4,17 @@ import supabase from "../../supabase";
 
 export default class ScoutMember {
 
-    constructor(scout_id='N/A', 
+    constructor(scout_id='N/A',
                 subgrp_id='N/A',
                 unit_name='N/A',
-                fname = 'N/A', 
-                lname='N/A', 
-                city='N/A', 
-                country='N/A', 
-                phone_nb='N/A', 
-                gender='N/A', 
-                birthdate='N/A', 
-                date_of_membership='N/A', 
-                unit_title='N/A'){
+                fname = 'N/A',
+                lname = 'N/A',
+                city = 'N/A',
+                country = 'N/A',
+                phone_nb='N/A',
+                gender='N/A',
+                birthdate='N/A',
+                date_of_membership='N/A'){
 
         this.Scout_id = scout_id;
         this.subgrp_id = subgrp_id;
@@ -28,14 +27,27 @@ export default class ScoutMember {
         this.gender = gender;
         this.birthdate = birthdate;
         this.date_of_membership = date_of_membership;
-        this.unit_title = unit_title;
-                    
+
     }
 
     async getMemberById(member_id){
         const { data: memberData, error } = await supabase
             .from('Scout_members')
-            .select('*')
+            .select(`
+                Scout_id,
+                subgrp_id,
+                unit_name,
+                date_of_membership,
+                Users!inner (
+                    Fname,
+                    Lname,
+                    city,
+                    country,
+                    phone_nb,
+                    gender,
+                    birthdate
+                )
+            `)
             .eq('Scout_id', member_id)
             .single();
 
@@ -48,15 +60,14 @@ export default class ScoutMember {
             memberData.Scout_id,
             memberData.subgrp_id,
             memberData.unit_name,
-            memberData.Fname,
-            memberData.Lname,
-            memberData.city,
-            memberData.country,
-            memberData.phone_nb,
-            memberData.gender,
-            memberData.birthdate,
-            memberData.date_of_membership,
-            memberData.unit_title
+            memberData.Users.Fname,
+            memberData.Users.Lname,
+            memberData.Users.city,
+            memberData.Users.country,
+            memberData.Users.phone_nb,
+            memberData.Users.gender,
+            memberData.Users.birthdate,
+            memberData.date_of_membership
         );
 
     }

@@ -24,7 +24,10 @@ const MemberDashboard = () => {
     const { t } = useI18n();
     const { data: memberData, isLoading } = useMemberData();
     const [accentColor, setAccentColor] = useState('#4A7DFF'); // Default blue
-
+    const [ringValue, setRingValue] = useState(0);
+    const [attendanceStreak, setAttendanceStreak] = useState(0);
+    const events = [];
+    
     useEffect(() => {
         if (memberData?.subgroupId) {
             const subgroupAccentColor = getAccentColorBySubgroupId(memberData.subgroupId);
@@ -33,11 +36,9 @@ const MemberDashboard = () => {
     }, [memberData?.subgroupId]);
 
     const stats = memberData ? [
-        { label: "Badges Earned", value: memberData.scores.badges.toString(), delta: "", color: accentColor || '#4A7DFF' },
-        { label: "Tasks Completed", value: memberData.tasks.filter(t => t.task_status === 'complete' || t.task_status === 'verified').length.toString(), delta: `${memberData.tasks.length - memberData.tasks.filter(t => t.task_status === 'complete' || t.task_status === 'verified').length} remaining`, color: "#4A7DFF" },
-        { label: "Service Hours", value: memberData.scores.service_hours.toString(), delta: "", color: "#34D399" },
-        { label: "Honor Points", value: memberData.scores.total_points.toString(), delta: "", color: "#FF5C5C", progress: memberData.scores.total_points },
-    ] : [];
+        /*{ label: "Badges Earned", value: memberData.scores.badges.toString(), delta:'TO BE ADDED' , color: accentColor || '#4A7DFF' },*/
+        { label: "Tasks Completed", value: memberData.tasks.filter(t => t.task_status === 'complete' || t.task_status === 'verified').length.toString(), color: "#4A7DFF" },
+         ] : [];
 
     const taskList = memberData?.tasks?.map(task => ({
         id: task.task_name,
@@ -45,30 +46,9 @@ const MemberDashboard = () => {
         status: task.task_status ?? "not-started"
     })) || [];
 
-    /*  const badges = [
-        { icon: Flame, key: "badge.firekeeper" },
-        { icon: HandHeart, key: "badge.service" },
-        { icon: Compass, key: "badge.navigator" },
-        { icon: Tent, key: "badge.camper" },
-        { icon: TreePine, key: "badge.naturalist" },
-        { icon: Award, key: "badge.honor", earned: false },
-        { icon: Flag, key: "badge.leader", earned: false },
-    ];
-    const events = [
-        { day: "03", monthKey: "evt.month.may", titleKey: "evt.assembly", timeKey: "evt.time.morning" },
-        { day: "10", monthKey: "evt.month.may", titleKey: "evt.outreach", timeKey: "evt.time.allday" },
-        { day: "17", monthKey: "evt.month.may", titleKey: "evt.camping", timeKey: "evt.time.weekend" },
-    ];
-    const activity = [
-        { whoKey: "act.leaderTony", whatKey: "act.a1", whenKey: "act.t.2h" },
-        { whoKey: "act.you", whatKey: "act.a2", whenKey: "act.t.1d" },
-        { whoKey: "act.leaderMaya", whatKey: "act.a3", whenKey: "act.t.3d" },
-    ]; */
 
-    const badges = [];
-    const events = [];
-    const activity = [];
-
+    
+    
     return (<div className="min-h-screen flex bg-[#F4F6FB]">
       <AppSidebar role="member" accentColor={accentColor}/>
 
@@ -89,12 +69,11 @@ const MemberDashboard = () => {
               <section className="rounded-[20px] border border-[#E8ECF4] bg-white shadow-[0_4px_12px_rgba(0,0,0,0.06)] overflow-hidden ">
                 <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#4A7DFF]/20 to-transparent"/>
                 <div className="grid md:grid-cols-[auto_1fr] gap-8 p-8 items-center ">
-                  <ProgressRing value={99} label={t("mem.honor")}/>
+                  <ProgressRing value={ringValue} label={"level progress"}/>
                   <div className="grid grid-cols-3 gap-4 ">
                     {[
-            { label: t("mem.stat.badges"), value: "12" },
-            { label: t("mem.stat.tasks"), value: "47" },
-            { label: t("mem.stat.hours"), value: "84" },
+            { label: "Attendance Streak", value: attendanceStreak },
+            
         ].map((s) => (<div key={s.label} className="rounded-xl border border-[#E8ECF4] bg-[#F4F6FB] p-4">
                         <p className="text-[20px] font-bold text-[#4A7DFF]">{s.value}</p>
                         <p className="text-[10px] uppercase tracking-[0.2em] text-[#8A94A6] mt-1">
@@ -104,30 +83,10 @@ const MemberDashboard = () => {
                   </div>
                 </div>
               </section>
+{/*
 
-              <section>
-                <div className=" flex items-baseline justify-between mb-5">
-                  <h2 className="text-[22px] font-semibold text-[#253858]">{t("mem.missions")}</h2>
-                  <a href="#" className="text-xs uppercase tracking-wider text-[#4A7DFF] hover:underline">{t("mem.viewAll")}</a>
-                </div>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  {taskList.length > 0 ? (
-                    taskList.map((tk) => (
-                      <TaskCard
-                        key={tk.id}
-                        id={tk.id}
-                        title={t(tk.titleKey)}
-                        status={tk.status}
-                        subgroup={t("groups.scouts.name")}
-                      />
-                    ))
-                  ) : (
-                    <div className="sm:col-span-2 rounded-[20px] border border-dashed border-[#E8ECF4] bg-[#F4F6FB]/60 p-6 text-center text-sm text-[#8A94A6]">
-                      {t("mem.emptyMissions")}
-                    </div>
-                  )}
-                </div>
-              </section>
+        Will include Badges that are fetched from the badges_members table that wil be later added
+
 
               <section>
                 <div className=" flex items-baseline justify-between mb-5">
@@ -150,7 +109,9 @@ const MemberDashboard = () => {
                   )}
                 </div>
               </section>
-
+              */
+              }
+              {/*
               <section>
                 <h2 className="text-[22px] font-semibold text-[#253858] mb-5">{t("mem.activity")}</h2>
                 {activity.length > 0 ? (
@@ -172,6 +133,11 @@ const MemberDashboard = () => {
                   </div>
                 )}
               </section>
+              
+              Will be added later when all else is done, it will showcase completed tasks
+              
+              */
+                }
             </div>
 
             <aside className="space-y-6">

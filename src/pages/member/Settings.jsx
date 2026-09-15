@@ -43,8 +43,7 @@ const Settings = ({ role }) => {
         initials: "LD",
         rank: t("rank.senior"),
         email: "",
-        unitName: t("groups.scouts.name"),
-        unitTitle: "Scout"
+        unitName: t("groups.scouts.name")
     };
 
     const handleSignOut = async () => {
@@ -56,10 +55,10 @@ const Settings = ({ role }) => {
         <div className="min-h-screen flex bg-[#F4F6FB]">
             <AppSidebar role={role} accentColor={accentColor}/>
             <div className="flex-1 flex flex-col min-w-0 transition-all duration-300 lg:ml-0">
-                <Topbar 
-                    name={profile.fullName || profile.name} 
-                    rank={profile.unitTitle || profile.rank} 
-                    subgroup={profile.unitName || t("groups.scouts.name")} 
+                <Topbar
+                    name={profile.fullName || profile.name}
+                    rank={profile.rank}
+                    subgroup={profile.unitName || t("groups.scouts.name")}
                     initials={profile.initials}
                     accentColor={accentColor}
                 />
@@ -101,7 +100,7 @@ const Settings = ({ role }) => {
                                     <Crest initials={profile.initials} className="size-20"/>
                                     <div>
                                         <p className="text-[22px] font-bold text-[#1E2A45]">{profile.fullName || profile.name}</p>
-                                        <p className="text-xs uppercase tracking-[0.25em] text-[#4A7DFF] mt-1">{profile.unitTitle || profile.rank}</p>
+                                        <p className="text-xs uppercase tracking-[0.25em] text-[#4A7DFF] mt-1">{profile.rank}</p>
                                         <Button variant="ds-secondary" size="sm" className="mt-3">
                                             {t("set.changePhoto")}
                                         </Button>
@@ -142,7 +141,7 @@ const Settings = ({ role }) => {
                                             {t("set.field.rank")}
                                         </label>
                                         <input
-                                            defaultValue={profile.unitTitle || profile.rank}
+                                            defaultValue={profile.rank}
                                             readOnly
                                             className="mt-1.5 w-full bg-[#F4F6FB]/40 border border-[#E8ECF4] rounded-xl px-3 py-2 text-sm text-[#8A94A6]"
                                         />

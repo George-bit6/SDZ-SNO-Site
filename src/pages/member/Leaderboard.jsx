@@ -79,7 +79,7 @@ const LeaderboardPage = ({ role }) => {
                                         </div>
                                         <Crest initials={m.initials} className="size-16 mx-auto mb-3"/>
                                         <p className="text-[18px] font-semibold leading-tight text-[#1E2A45]">{m.fullName}</p>
-                                        <p className="text-xs text-[#8A94A6] mt-0.5">{m.unitTitle || "Scout"} · {m.unitName || "Unit"}</p>
+                                        <p className="text-xs text-[#8A94A6] mt-0.5">Scout · {m.unitName || "Unit"}</p>
                                         <p className="text-[20px] font-bold text-[#4A7DFF] mt-4">{m.scores?.total_points || 0}</p>
                                         <p className="text-[10px] uppercase tracking-[0.25em] text-[#8A94A6] mt-1">{t("lb.honor")}</p>
                                     </article>
@@ -118,7 +118,7 @@ const LeaderboardPage = ({ role }) => {
                                                     <Crest initials={m.initials} variant="muted" className="size-9"/>
                                                     <div>
                                                         <p className="font-medium leading-tight text-[#1E2A45]">{m.fullName}</p>
-                                                        <p className="text-xs text-[#8A94A6]">{m.unitTitle || "Scout"}</p>
+                                                        <p className="text-xs text-[#8A94A6]">Scout</p>
                                                     </div>
                                                 </div>
                                             </td>

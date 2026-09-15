@@ -20,7 +20,6 @@ export class MemberDataService extends BaseDataService {
       .select(`
         Scout_id,
         date_of_membership,
-        unit_title,
         created_at,
         subgrp_id,
         unit_name,
@@ -169,7 +168,6 @@ export class MemberDataService extends BaseDataService {
       .select(`
         Scout_id,
         date_of_membership,
-        unit_title,
         created_at,
         subgrp_id,
         unit_name,
@@ -261,7 +259,6 @@ export class MemberDataService extends BaseDataService {
       initials: this.getInitials(memberData.Fname, memberData.Lname),
       subgroupId: memberData.subgrp_id,
       unitName: memberData.unit_name,
-      unitTitle: memberData.unit_title,
       city: memberData.city,
       country: memberData.country,
       phone: memberData.phone_nb,
@@ -273,7 +270,7 @@ export class MemberDataService extends BaseDataService {
       subgroupData: {
         id: memberData.subgrp_id,
         name: memberData.subgroupName || memberData.unit_name || 'Unknown Unit',
-        title: memberData.unit_title || 'Scout'
+        title: 'Scout'
       }
     };
   }

@@ -27,15 +27,6 @@ const TasksPage = ({ role }) => {
 
     const allTasks = memberData?.tasks || [];
 
-    const filters = [
-        { key: "all", labelKey: "tasks.filter.all" },
-        { key: "not-started", labelKey: "status.not-started" },
-        { key: "in-progress", labelKey: "status.in-progress" },
-        { key: "pending", labelKey: "status.pending" },
-        { key: "complete", labelKey: "status.complete" },
-        { key: "verified", labelKey: "status.verified" },
-    ];
-
     const visible = allTasks.filter((tk) => {
         const taskStatus = tk.task_status || tk.status || "not-started";
         if (filter !== "all" && taskStatus !== filter)
@@ -55,8 +46,6 @@ const TasksPage = ({ role }) => {
 
     const stats = [
         { label: t("tasks.stat.total"), value: counts.total, color: "#4A7DFF" },
-        { label: t("tasks.stat.open"), value: counts.open, color: "#FFC107" },
-        { label: t("tasks.stat.pending"), value: counts.pending, color: "#FF5C5C" },
         { label: t("tasks.stat.done"), value: counts.done, color: "#34D399" },
     ];
 
@@ -66,10 +55,10 @@ const TasksPage = ({ role }) => {
 
             <div className="flex-1 flex flex-col min-w-0 transition-all duration-300 lg:ml-0">
                 <Topbar 
-                    name={member?.fullName || "Loading..."} 
+                    name={memberData?.fullName || "Loading..."} 
                     rank={t("rank.senior")} 
-                    subgroup={member?.unitName || t("groups.scouts.name")} 
-                    initials={member?.initials || "UK"}
+                    subgroup={memberData?.unitName || t("groups.scouts.name")} 
+                    initials={memberData?.initials || "UK"}
                     accentColor={accentColor}
                 />
 
@@ -98,22 +87,7 @@ const TasksPage = ({ role }) => {
                                 className="w-full bg-white border border-[#E8ECF4] rounded-xl ps-10 pe-3 py-2 text-sm focus:outline-none focus:border-[#4A7DFF] focus:ring-1 focus:ring-[#4A7DFF]/40"
                             />
                         </div>
-                        <div className="flex items-center gap-1.5 text-xs flex-wrap">
-                            <Filter className="size-3.5 text-[#8A94A6] me-1"/>
-                            {filters.map((f) => (
-                                <button
-                                    key={f.key}
-                                    onClick={() => setFilter(f.key)}
-                                    className={`px-3 py-1.5 rounded-full border transition-colors ${
-                                        filter === f.key
-                                            ? "border-[#4A7DFF] bg-[#EAF1FF] text-[#4A7DFF]"
-                                            : "border-[#E8ECF4] text-[#8A94A6] hover:text-[#1E2A45] hover:border-[#E8ECF4]"
-                                    }`}
-                                >
-                                    {t(f.labelKey)}
-                                </button>
-                            ))}
-                        </div>
+                       
                     </div>
 
                     <section className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">

@@ -24,9 +24,9 @@ export default class Leader {
     async getLeaderById(leader_id) {
         // Ask Supabase for every record that matches this leader ID.
         const { data, error } = await supabase
-            .from('Leaders')
+            .from('Group_Leaders')
             .select('*')
-            .eq('leader_id', leader_id);
+            .eq('group_leader_id', leader_id);
 
         if (error) {
             // Report the problem if the database request fails.
@@ -41,12 +41,12 @@ export default class Leader {
 
         // Pull all non-empty titles from the returned rows.
         const titles = data
-            .map((row) => row.leader_title)
+            .map((row) => row.group_leader_title)
             .filter((title) => title != null && title !== '');
 
         // Create a Leader object using the collected titles.
         return new Leader(
-            data[0].leader_id,
+            data[0].group_leader_id,
             titles.length > 0 ? titles : 'N/A',
             data[0].date_of_role_acquisition
         );
