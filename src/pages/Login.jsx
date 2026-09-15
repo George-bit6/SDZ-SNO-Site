@@ -30,16 +30,38 @@ const Login = () => {
       const userId = await authService.getUserId();
       console.log("User ID:", userId); // Log the user ID for debugging
       
-      // Determine user role from database
-      const userRole = await authService.getUserRole(userId);
-      console.log("User Role:", userRole);
+      // Get comprehensive user role data
+      const completeRoleData = await authService.getCompleteUserRole(userId);
+      console.log("Complete Role Data:", completeRoleData);
       
-      if (userRole === 'leader') {
-        navigate(`/leader/${userId}`);
-      } else if (userRole === 'member') {
-        navigate(`/member/${userId}`);
-      } else {
+      if (!completeRoleData || completeRoleData.availableRoles.length === 0) {
+        await authService.signOut();
         setError("User role not found in database. Please contact administrator.");
+        return;
+      }
+
+      // Set the current role based on priority: admin > groupLeader > leader > member
+      let defaultRole = 'member';
+      if (completeRoleData.isAdmin) {
+        defaultRole = 'admin';
+      } else if (completeRoleData.isGroupLeader) {
+        defaultRole = 'groupLeader';
+      } else if (completeRoleData.isLeader) {
+        defaultRole = 'leader';
+      } else if (completeRoleData.isMember) {
+        defaultRole = 'member';
+      }
+
+      // Navigate to the appropriate dashboard based on default role
+      // The UserRoleContext will be initialized in the dashboard components
+      if (defaultRole === 'admin') {
+        navigate(`/admin/${userId}`);
+      } else if (defaultRole === 'groupLeader') {
+        navigate(`/leader/${userId}`); // Group leaders use leader dashboard for now
+      } else if (defaultRole === 'leader') {
+        navigate(`/leader/${userId}`);
+      } else if (defaultRole === 'member') {
+        navigate(`/member/${userId}`);
       }
     } else {
       setError(result.error || t("login.error") || "Invalid email or password");

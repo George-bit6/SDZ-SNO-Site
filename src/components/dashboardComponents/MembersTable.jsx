@@ -57,14 +57,14 @@ export default function MembersTable(props){
                                                         <Crest initials={m.initials} variant="muted" className="size-9"/>
                                                         <div className="min-w-0">
                                                             <p className="font-medium leading-tight text-[#1E2A45]">{m.fullName || m.name}</p>
-                                                            <p className="text-xs text-[#8A94A6]">{m.unitTitle || m.rank || "Scout"}</p>
+                                                            <p className="text-xs text-[#8A94A6]">{m.rank || "Scout"}</p>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td className="py-3 px-2 text-xs text-[#8A94A6]">{m.subgroupName || "Unknown"}</td>
                                                 <td className="py-3 px-2 text-xs text-[#8A94A6]">{m.unitName || t("groups.scouts.name")}</td>
                                                 <td className="py-3 px-2 text-xs text-[#8A94A6]">{m.age || calculateAge(m.birthdate)}</td>
-                                                <td className="py-3 px-2 text-xs text-[#8A94A6]">{m.unitTitle || m.rank || "Scout"}</td>
+                                                <td className="py-3 px-2 text-xs text-[#8A94A6]">{m.rank || "Scout"}</td>
                                                 <td className="py-3 px-2 text-xs text-[#8A94A6]">{m.membershipDate ? formatDate(m.membershipDate) : "N/A"}</td>
                                             </tr>
                                         ))}
