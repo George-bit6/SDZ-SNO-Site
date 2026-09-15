@@ -13,8 +13,6 @@ import MemberDashboard from "./pages/member/MemberDashboard.jsx";
 import LeaderDashboard from "./pages/leader/LeaderDashboard.jsx";
 import MemberTasks from "./pages/member/Tasks.jsx";
 import LeaderTasks from "./pages/leader/Tasks.jsx";
-import MemberLeaderboard from "./pages/member/Leaderboard.jsx";
-import LeaderLeaderboard from "./pages/leader/Leaderboard.jsx";
 import Members from "./pages/leader/Members.jsx";
 import MemberSettings from "./pages/member/Settings.jsx";
 import LeaderSettings from "./pages/leader/Settings.jsx";

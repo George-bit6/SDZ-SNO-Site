@@ -1,5 +1,5 @@
-import { BaseDataService } from './baseDataService';
-import supabase from '../../supabase.js';
+import { BaseDataService } from "./baseDataService";
+import supabase from "../../supabase.js";
 
 /**
  * Member Data Service - Handles all member-related data operations
@@ -15,9 +15,10 @@ export class MemberDataService extends BaseDataService {
    * @returns {Promise<object|null>} Member object with personal details or null if not found
    */
   async getMemberById(memberId) {
-    let {data: member, error} = await supabase
-      .from('Scout_members')
-      .select(`
+    let { data: member, error } = await supabase
+      .from("Scout_members")
+      .select(
+        `
         Scout_id,
         date_of_membership,
         created_at,
@@ -33,13 +34,15 @@ export class MemberDataService extends BaseDataService {
           gender,
           birthdate,
           created_at
-        )
-      `)
-      .eq('Scout_id', memberId)
+        ),
+          Subgroups!Scout_members_subgrp_id_fkey(subgrp_name)
+      `,
+      )
+      .eq("Scout_id", memberId)
       .maybeSingle();
 
     if (error) {
-      console.error('Error fetching member by ID:', error);
+      console.error("Error fetching member by ID:", error);
       return null;
     }
 
@@ -51,7 +54,9 @@ export class MemberDataService extends BaseDataService {
     return {
       ...member,
       ...member.Users,
-      Users: undefined // Remove the nested object
+      subgroupName: member.Subgroups?.subgrp_name,
+      Users: undefined,
+      Subgroups: undefined,
     };
   }
 
@@ -65,9 +70,12 @@ export class MemberDataService extends BaseDataService {
    */
   async getMemberTasks(memberId) {
     try {
-      return await this.callRpc('get_member_tasks', { member_id: memberId });
+      return await this.callRpc("get_member_tasks", { member_id: memberId });
     } catch (error) {
-      console.error('RPC function get_member_tasks not available, falling back to task progress:', error);
+      console.error(
+        "RPC function get_member_tasks not available, falling back to task progress:",
+        error,
+      );
       // Fallback to task progress if RPC function doesn't exist
       return this.getMemberTaskProgress(memberId);
     }
@@ -83,9 +91,14 @@ export class MemberDataService extends BaseDataService {
    */
   async getMemberTaskScore(memberId) {
     try {
-      return await this.callRpc('get_member_task_score', { member_id: memberId });
+      return await this.callRpc("get_member_task_score", {
+        member_id: memberId,
+      });
     } catch (error) {
-      console.error('RPC function get_member_task_score not available, computing stats:', error);
+      console.error(
+        "RPC function get_member_task_score not available, computing stats:",
+        error,
+      );
       // Fallback to computed stats if RPC function doesn't exist
       const progress = await this.getMemberTaskProgress(memberId);
       if (!progress) {
@@ -94,7 +107,10 @@ export class MemberDataService extends BaseDataService {
 
       // Calculate total points from task progress
       const totalPoints = progress.reduce((sum, task) => {
-        if (task.task_status === 'complete' || task.task_status === 'verified') {
+        if (
+          task.task_status === "complete" ||
+          task.task_status === "verified"
+        ) {
           return sum + (task.points || 0);
         }
         return sum;
@@ -102,8 +118,8 @@ export class MemberDataService extends BaseDataService {
 
       return {
         total_points: totalPoints,
-        badges: progress.filter(t => t.task_status === 'verified').length,
-        service_hours: 0 // This would need to be implemented in the database
+        badges: progress.filter((t) => t.task_status === "verified").length,
+        service_hours: 0, // This would need to be implemented in the database
       };
     }
   }
@@ -116,9 +132,10 @@ export class MemberDataService extends BaseDataService {
    * @returns {Promise<Array|null>} Array of task progress objects or null if error occurs
    */
   async getMemberTaskProgress(memberId) {
-    let {data: progress, error} = await supabase
-      .from('Task_Scout_Progress')
-      .select(`
+    let { data: progress, error } = await supabase
+      .from("Task_Scout_Progress")
+      .select(
+        `
         scout_id,
         subgrp_id,
         level_name,
@@ -134,11 +151,12 @@ export class MemberDataService extends BaseDataService {
           created_at,
           task_type
         )
-      `)
-      .eq('scout_id', memberId);
+      `,
+      )
+      .eq("scout_id", memberId);
 
     if (error) {
-      console.error('Error fetching member task progress:', error);
+      console.error("Error fetching member task progress:", error);
       return null;
     }
 
@@ -147,10 +165,10 @@ export class MemberDataService extends BaseDataService {
     }
 
     // Flatten the nested Tasks data for each progress record
-    return progress.map(record => ({
+    return progress.map((record) => ({
       ...record,
       ...record.Tasks,
-      Tasks: undefined // Remove the nested object
+      Tasks: undefined, // Remove the nested object
     }));
   }
 
@@ -163,9 +181,10 @@ export class MemberDataService extends BaseDataService {
    * @returns {Promise<Array|null>} Array of member objects in the subgroup, or null if error occurs
    */
   async getMembersBySubgroup(subgroupId) {
-    let {data: members, error} = await supabase
-      .from('Scout_members')
-      .select(`
+    let { data: members, error } = await supabase
+      .from("Scout_members")
+      .select(
+        `
         Scout_id,
         date_of_membership,
         created_at,
@@ -181,12 +200,14 @@ export class MemberDataService extends BaseDataService {
           gender,
           birthdate,
           created_at
-        )
-      `)
-      .eq('subgrp_id', subgroupId);
+        ),
+       Subgroups!Scout_members_subgrp_id_fkey(subgrp_name)
+      `,
+      )
+      .eq("subgrp_id", subgroupId);
 
     if (error) {
-      console.error('Error fetching members by subgroup:', error);
+      console.error("Error fetching members by subgroup:", error);
       return null;
     }
 
@@ -196,10 +217,12 @@ export class MemberDataService extends BaseDataService {
 
     // Flatten the nested Users data for each member
     return members.map(member => ({
-      ...member,
-      ...member.Users,
-      Users: undefined // Remove the nested object
-    }));
+  ...member,
+  ...member.Users,
+  subgroupName: member.Subgroups?.subgrp_name,
+  Users: undefined,
+  Subgroups: undefined
+}));
   }
 
   /**
@@ -220,12 +243,13 @@ export class MemberDataService extends BaseDataService {
         completedTasks: 0,
         totalPoints: 0,
         badges: 0,
-        hours: 0
+        hours: 0,
       };
     }
 
-    const completedTasks = progress.filter(task =>
-      task.task_status === 'complete' || task.task_status === 'verified'
+    const completedTasks = progress.filter(
+      (task) =>
+        task.task_status === "complete" || task.task_status === "verified",
     ).length;
 
     return {
@@ -233,7 +257,7 @@ export class MemberDataService extends BaseDataService {
       completedTasks,
       totalPoints: scores?.total_points || 0,
       badges: scores?.badges || 0,
-      hours: scores?.service_hours || 0
+      hours: scores?.service_hours || 0,
     };
   }
 
@@ -253,9 +277,9 @@ export class MemberDataService extends BaseDataService {
 
     return {
       id: memberData.Scout_id,
-      firstName: memberData.Fname || 'Unknown',
-      lastName: memberData.Lname || 'Member',
-      fullName: `${memberData.Fname || 'Unknown'} ${memberData.Lname || 'Member'}`,
+      firstName: memberData.Fname || "Unknown",
+      lastName: memberData.Lname || "Member",
+      fullName: `${memberData.Fname || "Unknown"} ${memberData.Lname || "Member"}`,
       initials: this.getInitials(memberData.Fname, memberData.Lname),
       subgroupId: memberData.subgrp_id,
       unitName: memberData.unit_name,
@@ -266,12 +290,13 @@ export class MemberDataService extends BaseDataService {
       birthdate: memberData.birthdate,
       membershipDate: memberData.date_of_membership,
       // Add subgroup info for accent color determination
-      subgroupName: memberData.subgroupName || memberData.unit_name || 'Unknown Unit',
+      subgroupName:
+        memberData.subgroupName || memberData.unit_name || "Unknown Unit",
       subgroupData: {
         id: memberData.subgrp_id,
-        name: memberData.subgroupName || memberData.unit_name || 'Unknown Unit',
-        title: 'Scout'
-      }
+        name: memberData.subgroupName || memberData.unit_name || "Unknown Unit",
+        title: "Scout",
+      },
     };
   }
 
@@ -285,8 +310,8 @@ export class MemberDataService extends BaseDataService {
    * @returns {string} Two-letter uppercase initials (e.g., "JD" for John Doe)
    */
   getInitials(firstName, lastName) {
-    const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : '';
-    const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : '';
+    const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : "";
+    const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : "";
     return firstInitial + lastInitial;
   }
 }

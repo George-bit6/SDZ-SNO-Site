@@ -99,8 +99,8 @@ const Settings = ({ role }) => {
             <div className="flex-1 flex flex-col min-w-0">
                 <Topbar
                     name={profile.fullName || profile.name}
-                    rank={profile.rank}
-                    subgroup={profile.unitName || t("groups.scouts.name")}
+                    unitName={profile.unitName}
+                    subgroup={profile.subgroupName}
                     initials={profile.initials}
                     accentColor={accentColor}
                 />
@@ -195,47 +195,8 @@ const Settings = ({ role }) => {
                                 </div>
                             </section>
 
-                            {/* Notifications */}
-                            <section id="notifications" className="rounded-[20px] border border-[#E8ECF4] bg-white shadow-[0_4px_12px_rgba(0,0,0,0.06)] p-6">
-                                <div className="flex items-center gap-2 mb-5">
-                                    <Bell className="size-4 text-[#4A7DFF]"/>
-                                    <h2 className="text-[18px] font-semibold text-[#253858]">{t("set.section.notifications")}</h2>
-                                </div>
-
-                                <div className="space-y-4">
-                                    <div>
-                                        <p className="text-sm font-medium mb-3 text-[#1E2A45]">{t("set.language")}</p>
-                                        <div className="flex gap-2">
-                                            {["en", "ar"].map((l) => (
-                                                <button
-                                                    key={l}
-                                                    onClick={() => setLang(l)}
-                                                    className={`px-4 py-2 rounded-xl text-sm border transition-colors ${
-                                                        lang === l
-                                                            ? "border-[#4A7DFF] text-[#4A7DFF] bg-[#EAF1FF]"
-                                                            : "border-[#E8ECF4] text-[#8A94A6] hover:text-[#1E2A45]"
-                                                    }`}
-                                                >
-                                                    {l === "en" ? "English" : "العربية"}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    {[
-                                        { label: t("set.notif.tasks"), on: notifTasks, set: setNotifTasks },
-                                        { label: t("set.notif.reviews"), on: notifReviews, set: setNotifReviews },
-                                        { label: t("set.notif.events"), on: notifEvents, set: setNotifEvents },
-                                        { label: t("set.notif.email"), on: notifEmail, set: setNotifEmail },
-                                    ].map((n) => (
-                                        <div key={n.label} className="flex items-center justify-between py-2 border-b border-[#E8ECF4] last:border-0">
-                                            <p className="text-sm text-[#1E2A45]">{n.label}</p>
-                                            <Toggle on={n.on} onChange={() => n.set(!n.on)}/>
-                                        </div>
-                                    ))}
-                                </div>
-                            </section>
-
+    
+                            
                             {/* Security */}
                             <section id="security" className="rounded-[20px] border border-[#E8ECF4] bg-white shadow-[0_4px_12px_rgba(0,0,0,0.06)] p-6">
                                 <div className="flex items-center gap-2 mb-5">
