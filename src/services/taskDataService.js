@@ -135,8 +135,8 @@ export class TaskDataService extends BaseDataService {
         notStarted: 0,
         inProgress: 0,
         pending: 0,
-        complete: 0,
-        verified: 0
+        complete: 0
+  
       };
     }
 
@@ -154,8 +154,7 @@ export class TaskDataService extends BaseDataService {
         notStarted: 0,
         inProgress: 0,
         pending: 0,
-        complete: 0,
-        verified: 0
+        complete: 0
       };
     }
 

@@ -93,9 +93,15 @@ const Settings = ({ role }) => {
                                     <div>
                                         <p className="text-[22px] font-bold text-[#1E2A45]">{profile.fullName}</p>
                                         <p className="text-xs uppercase tracking-[0.25em] text-[#4A7DFF] mt-1">{profile.rank}</p>
+                                        
+                                        {
+                                            /*
                                         <Button variant="ds-secondary" size="sm" className="mt-3">
                                             {t("set.changePhoto")}
                                         </Button>
+                                        */
+                                        }
+
                                     </div>
                                 </div>
 
@@ -127,7 +133,7 @@ const Settings = ({ role }) => {
                                         <input
                                             defaultValue={profile.subgroupName}
                                             readOnly
-                                            className="mt-1.5 w-full bg-[#F4F6FB]/40 border border-[#E8ECF4] rounded-xl px-3 py-2 focus:outline-none  not-last-of-type:text-sm text-[#8A94A6]"
+                                            className="mt-1.5 w-full bg-[#F4F6FB]/40 border border-[#E8ECF4] rounded-xl px-3 py-2 focus:outline-none  text-sm text-[#8A94A6]"
                                         />
                                     </div>
                                     <div>

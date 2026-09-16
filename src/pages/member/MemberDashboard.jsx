@@ -3,6 +3,7 @@ import { Topbar } from "@/components/Topbar";
 import { ProgressRing } from "@/components/ProgressRing";
 import { TaskCard } from "@/components/TaskCard";
 import { BadgeMedallion } from "@/components/BadgeMedallion";
+import { CalendarDialog } from "@/components/CalendarDialog";
 import { Award, Calendar, Compass, Flag, Flame, HandHeart, Tent, TreePine } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/i18n/I18nProvider";
@@ -26,6 +27,8 @@ const MemberDashboard = () => {
     const [accentColor, setAccentColor] = useState('#4A7DFF'); // Default blue
     const [ringValue, setRingValue] = useState(0);
     const [attendanceStreak, setAttendanceStreak] = useState(0);
+    const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+    const [selectedDays, setSelectedDays] = useState([]);
     const events = [];
     
     useEffect(() => {
@@ -45,6 +48,10 @@ const MemberDashboard = () => {
         titleKey: normalizeTaskTitleKey(task.task_name),
         status: task.task_status ?? "not-started"
     })) || [];
+
+    const handleDaySelect = (days) => {
+        setSelectedDays(days);
+    };
 
 
     
@@ -166,7 +173,7 @@ const MemberDashboard = () => {
                     {t("mem.emptyEvents")}
                   </div>
                 )}
-                <Button variant="ds-secondary" size="sm" className="w-full mt-4">{t("mem.viewCalendar")}</Button>
+                <Button variant="ds-secondary" size="sm" className="w-full mt-4" onClick={() => setIsCalendarOpen(true)}>{t("mem.viewCalendar")}</Button>
               </div>
 
               <div className="relative rounded-[20px] border border-[#E8ECF4] bg-gradient-to-br from-[#EAF1FF]/40 to-white p-6 overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.06)]">
@@ -181,6 +188,13 @@ const MemberDashboard = () => {
           </div>
         </main>
       </div>
+      
+      <CalendarDialog
+        open={isCalendarOpen}
+        onOpenChange={setIsCalendarOpen}
+        selectedDays={selectedDays}
+        onDaySelect={handleDaySelect}
+      />
     </div>);
 };
 export default MemberDashboard;
