@@ -243,13 +243,6 @@ const TasksPage = ({ role }) => {
         return Array.from(levels).sort();
     }, [subgroupsTasks]);
 
-    const stats = [
-        { label: t("tasks.stat.total"), value: overallStats.totalTasks, color: "#4A7DFF" },
-        { label: "Total Members", value: overallStats.totalMembers, color: "#FFC107" },
-        { label: "Completed", value: overallStats.totalCompleted, color: "#34D399" },
-        { label: "In Progress", value: overallStats.totalInProgress, color: "#FF5C5C" },
-    ];
-
     return (
         <div className="min-h-screen flex bg-[#F4F6FB]">
             <AppSidebar role={role} accentColor={accentColor}/>
@@ -275,8 +268,6 @@ const TasksPage = ({ role }) => {
                             </Button>
                         )}
                     </DashboardPageTitle>
-
-                    <StatisticCards stats={stats} accentColor="#4A7DFF" />
 
                     {loading ? (
                         <div className="text-center py-12 text-sm text-[#8A94A6]">
@@ -314,7 +305,7 @@ const TasksPage = ({ role }) => {
                                                                 key={`${task.subgrp_id}-${task.level_name}-${task.task_name}`}
                                                                 id={`${task.subgrp_id}-${task.level_name}-${task.task_name}`}
                                                                 title={task.task_name}
-                                                                status={task.task_status || "not-started"}
+                                                                status={task.task_status || "pending"}
                                                                 level={task.level_name}
                                                                 subgroup={subgroup.subgroupName}
                                                             />

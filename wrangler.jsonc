@@ -1,7 +1,8 @@
 {
   "name": "saint-demetrios-orthodox-church-website",
-  "compatibility_date": "2026-09-13",
+  "compatibility_date": "2026-09-19",
   "assets": {
-    "directory": "./dist"
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
   }
 }
