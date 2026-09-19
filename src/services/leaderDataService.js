@@ -5,10 +5,22 @@ import { BaseDataService } from './baseDataService';
 export class LeaderDataService extends BaseDataService {
   
   async getLeaderById(leaderId) {
+    // First verify the leader is a Scout_member (per schema requirement)
+    let {data: scoutMember, error: memberError} = await supabase
+      .from('Scout_members')
+      .select('Scout_id')
+      .eq('Scout_id', leaderId)
+      .maybeSingle();
+
+    if (memberError || !scoutMember) {
+      console.error('Leader is not a Scout_member:', memberError);
+      return null;
+    }
+
     let {data: Leaders, error} = await supabase
-      .from('Leaders')
-      .select('leader_id, leader_title')
-      .eq('leader_id', leaderId);
+      .from('Group_Leaders')
+      .select('group_leader_id, group_leader_title')
+      .eq('group_leader_id', leaderId);
 
     if (error) {
       console.error('Error fetching leader by ID:', error);
@@ -20,9 +32,9 @@ export class LeaderDataService extends BaseDataService {
     }
 
     let Leader = {
-      leader_id: Leaders[0].leader_id,
+      leader_id: Leaders[0].group_leader_id,
       titles: Leaders.map(leader => ({
-        title: leader.leader_title
+        title: leader.group_leader_title
       }))
     }
 
@@ -31,6 +43,18 @@ export class LeaderDataService extends BaseDataService {
 
  
   async getLeaderSubgroupIds(leaderId) {
+    // First verify the leader is a Scout_member (per schema requirement)
+    let {data: scoutMember, error: memberError} = await supabase
+      .from('Scout_members')
+      .select('Scout_id')
+      .eq('Scout_id', leaderId)
+      .maybeSingle();
+
+    if (memberError || !scoutMember) {
+      console.error('Leader is not a Scout_member:', memberError);
+      return null;
+    }
+
     let {data: Subgrp_Leaders, error} = await supabase
       .from('Subgrp_Leaders')
       .select('subgrp_id')
@@ -47,6 +71,18 @@ export class LeaderDataService extends BaseDataService {
   }
 
   async getLeaderSubgroupIdByTitle(leaderId, leader_title) {
+    // First verify the leader is a Scout_member (per schema requirement)
+    let {data: scoutMember, error: memberError} = await supabase
+      .from('Scout_members')
+      .select('Scout_id')
+      .eq('Scout_id', leaderId)
+      .maybeSingle();
+
+    if (memberError || !scoutMember) {
+      console.error('Leader is not a Scout_member:', memberError);
+      return null;
+    }
+
     let {data: Subgrp_Leaders, error} = await supabase
       .from('Subgrp_Leaders')
       .select('subgrp_id')
@@ -83,7 +119,6 @@ export class LeaderDataService extends BaseDataService {
       .select(`
         Scout_id,
         date_of_membership,
-        unit_title,
         created_at,
         subgrp_id,
         unit_name,
@@ -116,10 +151,22 @@ export class LeaderDataService extends BaseDataService {
       ...member.Users,
       Users: undefined // Remove the nested object
     }));
-    
+
     }
 
   async getLeaderMembers(leaderId, leader_title) {
+    // First verify the leader is a Scout_member (per schema requirement)
+    let {data: scoutMember, error: memberError} = await supabase
+      .from('Scout_members')
+      .select('Scout_id')
+      .eq('Scout_id', leaderId)
+      .maybeSingle();
+
+    if (memberError || !scoutMember) {
+      console.error('Leader is not a Scout_member:', memberError);
+      return [];
+    }
+
     const subgroupId = await this.getLeaderSubgroupIdByTitle(leaderId, leader_title);
 
     if (!subgroupId) {
@@ -136,6 +183,18 @@ export class LeaderDataService extends BaseDataService {
   }
 
   async getAllLeaderMembers(leaderId) {
+    // First verify the leader is a Scout_member (per schema requirement)
+    let {data: scoutMember, error: memberError} = await supabase
+      .from('Scout_members')
+      .select('Scout_id')
+      .eq('Scout_id', leaderId)
+      .maybeSingle();
+
+    if (memberError || !scoutMember) {
+      console.error('Leader is not a Scout_member:', memberError);
+      return [];
+    }
+
     const subgroupIds = await this.getLeaderSubgroupIds(leaderId);
     console.log('All Subgroup IDs for leader:', subgroupIds);
 
@@ -168,6 +227,20 @@ export class LeaderDataService extends BaseDataService {
 
 
   async getLeaderStats(leaderId, leader_title = null) {
+    // First verify the leader is a Scout_member (per schema requirement)
+    let {data: scoutMember, error: memberError} = await supabase
+      .from('Scout_members')
+      .select('Scout_id')
+      .eq('Scout_id', leaderId)
+      .maybeSingle();
+
+    if (memberError || !scoutMember) {
+      console.error('Leader is not a Scout_member:', memberError);
+      return {
+        totalMembers: 0
+      };
+    }
+
     // If no leader_title provided, use the first title from leader data
     if (!leader_title) {
       const leaderData = await this.getLeaderById(leaderId);

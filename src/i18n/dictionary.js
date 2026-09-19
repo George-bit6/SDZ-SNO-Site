@@ -110,6 +110,10 @@ export const dictionary = {
     // Tasks (member)
     "task.due": "Due {date}",
     "task.open": "Open",
+    "task.type": "Type",
+    "task.level": "Level",
+    "task.points": "Points",
+    "task.status": "Status",
     "task.t1": "Memorize the Scout Oath in full",
     "task.t2": "Lead a 30-min outreach at St. Joseph orphanage",
     "task.t3": "Complete first-aid certification module 3",
@@ -121,6 +125,7 @@ export const dictionary = {
     "status.complete": "Complete",
     "status.verified": "Verified",
     "status.pending": "Pending Review",
+    "status.done": "Done",
 
     // Badges
     "badge.firekeeper": "Firekeeper",
@@ -204,6 +209,9 @@ export const dictionary = {
     "tasks.search": "Search missions…",
     "tasks.empty": "No missions match your filters.",
     "tasks.filter.all": "All",
+    "tasks.inProgress": "In Progress",
+    "tasks.completed": "Completed",
+    "tasks.emptyTasks": "No tasks to display",
 
     // Leaderboard
     "side.leaderboard": "Leaderboard",
@@ -476,6 +484,10 @@ export const dictionary = {
 
     "task.due": "الاستحقاق {date}",
     "task.open": "افتح",
+    "task.type": "النوع",
+    "task.level": "المستوى",
+    "task.points": "النقاط",
+    "task.status": "الحالة",
     "task.t1": "احفظ وعد الكشّاف كاملًا",
     "task.t2": "قُد جولة خدمة مدّتها 30 دقيقة في ميتم القدّيس يوسف",
     "task.t3": "أكمل وحدة الإسعافات الأوّلية الثالثة",
@@ -486,6 +498,7 @@ export const dictionary = {
     "status.complete": "مكتملة",
     "status.verified": "موثّقة",
     "status.pending": "بانتظار المراجعة",
+    "status.done": "منتهية",
 
     "badge.firekeeper": "حارس النار",
     "badge.service": "الخدمة",
@@ -562,6 +575,9 @@ export const dictionary = {
     "tasks.search": "ابحث عن مهام…",
     "tasks.empty": "لا توجد مهام مطابقة.",
     "tasks.filter.all": "الكل",
+    "tasks.inProgress": "قيد التنفيذ",
+    "tasks.completed": "مكتملة",
+    "tasks.emptyTasks": "لا توجد مهام للعرض",
 
     "side.leaderboard": "لوحة الشرف",
     "lb.kicker": "الترتيب · هذا الموسم",

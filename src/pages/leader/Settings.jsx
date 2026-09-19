@@ -80,13 +80,12 @@ const Settings = ({ role }) => {
         };
     }, [leaderId]);
 
-    const profile = leader || { 
-        name: "Loading...", 
-        initials: "LD", 
-        rank: t("rank.subleader"), 
+    const profile = leader || {
+        name: "Loading...",
+        initials: "LD",
+        rank: t("rank.subleader"),
         email: "",
-        unitName: t("groups.scouts.name"),
-        unitTitle: "Leader"
+        unitName: t("groups.scouts.name")
     };
 
     const handleSignOut = async () => {
@@ -98,10 +97,10 @@ const Settings = ({ role }) => {
         <div className="min-h-screen flex bg-[#F4F6FB]">
             <AppSidebar role={role} accentColor={accentColor}/>
             <div className="flex-1 flex flex-col min-w-0">
-                <Topbar 
-                    name={profile.fullName || profile.name} 
-                    rank={profile.unitTitle || profile.rank} 
-                    subgroup={profile.unitName || t("groups.scouts.name")} 
+                <Topbar
+                    name={profile.fullName || profile.name}
+                    unitName={profile.unitName}
+                    subgroup={profile.subgroupName}
                     initials={profile.initials}
                     accentColor={accentColor}
                 />
@@ -143,7 +142,7 @@ const Settings = ({ role }) => {
                                     <Crest initials={profile.initials} className="size-20"/>
                                     <div>
                                         <p className="text-[22px] font-bold text-[#1E2A45]">{profile.fullName || profile.name}</p>
-                                        <p className="text-xs uppercase tracking-[0.25em] text-[#4A7DFF] mt-1">{profile.unitTitle || profile.rank}</p>
+                                        <p className="text-xs uppercase tracking-[0.25em] text-[#4A7DFF] mt-1">{profile.rank}</p>
                                         <Button variant="ds-secondary" size="sm" className="mt-3">
                                             {t("set.changePhoto")}
                                         </Button>
@@ -184,7 +183,7 @@ const Settings = ({ role }) => {
                                             {t("set.field.rank")}
                                         </label>
                                         <input
-                                            defaultValue={profile.unitTitle || profile.rank}
+                                            defaultValue={profile.rank}
                                             readOnly
                                             className="mt-1.5 w-full bg-[#F4F6FB]/40 border border-[#E8ECF4] rounded-xl px-3 py-2 text-sm text-[#8A94A6]"
                                         />
@@ -196,47 +195,8 @@ const Settings = ({ role }) => {
                                 </div>
                             </section>
 
-                            {/* Notifications */}
-                            <section id="notifications" className="rounded-[20px] border border-[#E8ECF4] bg-white shadow-[0_4px_12px_rgba(0,0,0,0.06)] p-6">
-                                <div className="flex items-center gap-2 mb-5">
-                                    <Bell className="size-4 text-[#4A7DFF]"/>
-                                    <h2 className="text-[18px] font-semibold text-[#253858]">{t("set.section.notifications")}</h2>
-                                </div>
-
-                                <div className="space-y-4">
-                                    <div>
-                                        <p className="text-sm font-medium mb-3 text-[#1E2A45]">{t("set.language")}</p>
-                                        <div className="flex gap-2">
-                                            {["en", "ar"].map((l) => (
-                                                <button
-                                                    key={l}
-                                                    onClick={() => setLang(l)}
-                                                    className={`px-4 py-2 rounded-xl text-sm border transition-colors ${
-                                                        lang === l
-                                                            ? "border-[#4A7DFF] text-[#4A7DFF] bg-[#EAF1FF]"
-                                                            : "border-[#E8ECF4] text-[#8A94A6] hover:text-[#1E2A45]"
-                                                    }`}
-                                                >
-                                                    {l === "en" ? "English" : "العربية"}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    {[
-                                        { label: t("set.notif.tasks"), on: notifTasks, set: setNotifTasks },
-                                        { label: t("set.notif.reviews"), on: notifReviews, set: setNotifReviews },
-                                        { label: t("set.notif.events"), on: notifEvents, set: setNotifEvents },
-                                        { label: t("set.notif.email"), on: notifEmail, set: setNotifEmail },
-                                    ].map((n) => (
-                                        <div key={n.label} className="flex items-center justify-between py-2 border-b border-[#E8ECF4] last:border-0">
-                                            <p className="text-sm text-[#1E2A45]">{n.label}</p>
-                                            <Toggle on={n.on} onChange={() => n.set(!n.on)}/>
-                                        </div>
-                                    ))}
-                                </div>
-                            </section>
-
+    
+                            
                             {/* Security */}
                             <section id="security" className="rounded-[20px] border border-[#E8ECF4] bg-white shadow-[0_4px_12px_rgba(0,0,0,0.06)] p-6">
                                 <div className="flex items-center gap-2 mb-5">

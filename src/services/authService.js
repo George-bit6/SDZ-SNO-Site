@@ -1,4 +1,5 @@
 import supabase from "../../supabase";
+import { userRoleService } from "./userRoleService";
 
 /**
  * Authentication Service - Handles all authentication operations
@@ -121,40 +122,57 @@ export class AuthService {
   }
 
   /**
-   * Get user role from database (member or leader)
-   * Purpose: Determines the user's role by checking if they exist in Leaders or Scout_members tables
+   * Get user role from database (member, leader, admin, or both)
+   * Purpose: Determines the user's role by checking if they exist in Leaders, Scout_members, or have admin privileges
    * Frontend Display: Used for role-based access control, determines which dashboard/features are accessible,
    *                  controls navigation menu options, and shows role-specific UI components
    * @param {string} userId - User's unique identifier to check role for
-   * @returns {Promise<string|null>} User role ('leader', 'member', or null if user has no role)
+   * @returns {Promise<object>} User role object with isMember, isLeader, isAdmin flags and primary role
    */
   async getUserRole(userId) {
     try {
-      // Check if user is a leader
-      const { data: leaderData } = await supabase
-        .from('Leaders')
-        .select('leader_id')
-        .eq('leader_id', userId)
-        .single();
-
-      if (leaderData) {
-        return 'leader';
+      // Use the comprehensive user role service for complete role information
+      const completeRoleData = await userRoleService.getUserCompleteRoles(userId);
+      
+      // Determine primary role for routing (for backward compatibility)
+      let primaryRole = null;
+      if (completeRoleData.isAdmin) {
+        primaryRole = 'admin';
+      } else if (completeRoleData.isLeader && completeRoleData.isMember) {
+        primaryRole = 'both'; // User has both roles
+      } else if (completeRoleData.isLeader) {
+        primaryRole = 'leader';
+      } else if (completeRoleData.isMember) {
+        primaryRole = 'member';
       }
 
-      // Check if user is a member
-      const { data: memberData } = await supabase
-        .from('Scout_members')
-        .select('Scout_id')
-        .eq('Scout_id', userId)
-        .single();
-
-      if (memberData) {
-        return 'member';
-      }
-
-      return null;
+      return {
+        ...completeRoleData,
+        primaryRole
+      };
     } catch (error) {
       console.error("Error getting user role:", error);
+      return {
+        isAdmin: false,
+        isLeader: false,
+        isMember: false,
+        primaryRole: null
+      };
+    }
+  }
+
+  /**
+   * Get complete user role information for comprehensive access control
+   * Purpose: Retrieves full role data including member details, leader titles, subgroups, and admin status
+   * Frontend Display: Used for dynamic navigation, role switching, and comprehensive access control
+   * @param {string} userId - User's unique identifier
+   * @returns {Promise<object>} Complete user role information
+   */
+  async getCompleteUserRole(userId) {
+    try {
+      return await userRoleService.getUserCompleteRoles(userId);
+    } catch (error) {
+      console.error("Error getting complete user role:", error);
       return null;
     }
   }

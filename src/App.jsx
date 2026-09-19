@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { I18nProvider } from "@/i18n/I18nProvider";
+import { UserRoleProvider } from "@/contexts/UserRoleContext";
 import { useState, createContext, useContext } from "react";
 import HomePage from "./pages/HomePage.jsx";
 import Donations from "./pages/Donations.jsx";
@@ -12,11 +13,10 @@ import MemberDashboard from "./pages/member/MemberDashboard.jsx";
 import LeaderDashboard from "./pages/leader/LeaderDashboard.jsx";
 import MemberTasks from "./pages/member/Tasks.jsx";
 import LeaderTasks from "./pages/leader/Tasks.jsx";
-import MemberLeaderboard from "./pages/member/Leaderboard.jsx";
-import LeaderLeaderboard from "./pages/leader/Leaderboard.jsx";
 import Members from "./pages/leader/Members.jsx";
 import MemberSettings from "./pages/member/Settings.jsx";
 import LeaderSettings from "./pages/leader/Settings.jsx";
+import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
 import NotFound from "./pages/NotFound.jsx";
 
 const queryClient = new QueryClient();
@@ -64,52 +64,93 @@ const App = () => (<I18nProvider>
               <Route path="/donations" element={<Donations />}/>
               <Route path="/login" element={<Login />}/>
               <Route path="/member" element={
-                <SidebarProvider>
-                  <MemberDashboard />
-                </SidebarProvider>
+                <UserRoleProvider>
+                  <SidebarProvider>
+                    <MemberDashboard />
+                  </SidebarProvider>
+                </UserRoleProvider>
               }/>
               <Route path="/member/:memberId" element={
-                <SidebarProvider>
-                  <MemberDashboard />
-                </SidebarProvider>
+                <UserRoleProvider>
+                  <SidebarProvider>
+                    <MemberDashboard />
+                  </SidebarProvider>
+                </UserRoleProvider>
               }/>
               
               <Route path="/member/:memberId/tasks" element={
-                <SidebarProvider>
-                  <MemberTasks role="member"/>
-                </SidebarProvider>
+                <UserRoleProvider>
+                  <SidebarProvider>
+                    <MemberTasks role="member"/>
+                  </SidebarProvider>
+                </UserRoleProvider>
               }/>
               
               
               <Route path="/member/:memberId/settings" element={
-                <SidebarProvider>
-                  <MemberSettings role="member"/>
-                </SidebarProvider>
+                <UserRoleProvider>
+                  <SidebarProvider>
+                    <MemberSettings role="member"/>
+                  </SidebarProvider>
+                </UserRoleProvider>
               }/>
               
               <Route path="/leader/:leaderId" element={
-                <SidebarProvider>
-                  <LeaderDashboard />
-                </SidebarProvider>
+                <UserRoleProvider>
+                  <SidebarProvider>
+                    <LeaderDashboard />
+                  </SidebarProvider>
+                </UserRoleProvider>
               }/>
               
               <Route path="/leader/:leaderId/tasks" element={
-                <SidebarProvider>
-                  <LeaderTasks role="leader"/>
-                </SidebarProvider>
+                <UserRoleProvider>
+                  <SidebarProvider>
+                    <LeaderTasks role="leader"/>
+                  </SidebarProvider>
+                </UserRoleProvider>
               }/>
               
               <Route path="/leader/:leaderId/members" element={
-                <SidebarProvider>
-                  <Members />
-                </SidebarProvider>
+                <UserRoleProvider>
+                  <SidebarProvider>
+                    <Members />
+                  </SidebarProvider>
+                </UserRoleProvider>
               }/>
              
               <Route path="/leader/:leaderId/settings" element={
-                <SidebarProvider>
-                  <LeaderSettings role="leader"/>
-                </SidebarProvider>
+                <UserRoleProvider>
+                  <SidebarProvider>
+                    <LeaderSettings role="leader"/>
+                  </SidebarProvider>
+                </UserRoleProvider>
               }/>
+              
+              <Route path="/admin/:adminId" element={
+                <UserRoleProvider>
+                  <SidebarProvider>
+                    <AdminDashboard />
+                  </SidebarProvider>
+                </UserRoleProvider>
+              }/>
+              
+              <Route path="/admin/:adminId/users" element={
+                <UserRoleProvider>
+                  <SidebarProvider>
+                    <AdminDashboard />
+                  </SidebarProvider>
+                </UserRoleProvider>
+              }/>
+              
+              <Route path="/admin/:adminId/settings" element={
+                <UserRoleProvider>
+                  <SidebarProvider>
+                    <LeaderSettings role="admin"/>
+                  </SidebarProvider>
+                </UserRoleProvider>
+              }/>
+              
               <Route path="*" element={<NotFound />}/>
             </Routes>
           </BrowserRouter>

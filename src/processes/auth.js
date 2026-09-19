@@ -6,7 +6,6 @@ export async function getUserId() {
 }
 
 export async function submit(email, password) {
-  const result = await authService.signIn(email, password);
-  return result.success;
+  return await authService.signIn(email, password);
 }
 

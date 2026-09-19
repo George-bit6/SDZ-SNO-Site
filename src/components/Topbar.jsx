@@ -5,7 +5,7 @@ import { LanguageToggle } from "./LanguageToggle";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useSidebar } from "@/App";
 
-export const Topbar = ({ name, rank, subgroup, initials, accentColor = "#D4AF37" }) => {
+export const Topbar = ({ name, unitName, subgroup, initials, accentColor = "#D4AF37" }) => {
     const { t } = useI18n();
     const { toggleSidebar } = useSidebar();
 
@@ -36,19 +36,15 @@ export const Topbar = ({ name, rank, subgroup, initials, accentColor = "#D4AF37"
                     <span className="tracking-wide">
                         {subgroup}
                     </span>
+                    
                 </span>
 
                 <LanguageToggle className="hidden md:inline-flex" />
 
-                <Button variant="ghost" size="icon" className="relative">
-                    <Bell className="size-4"/>
-                    <span className="absolute top-2 end-2 size-1.5 rounded-full bg-crimson"/>
-                </Button>
-
                 <div className="flex items-center gap-3 ps-3 border-s border-border">
                     <div className="text-end hidden sm:block">
                         <p className="text-sm font-medium leading-tight">{name}</p>
-                        <p className="text-xs text-muted-foreground">{rank}</p>
+                        <p className="text-xs text-muted-foreground">{unitName}</p>
                     </div>
                     <Crest initials={initials} accentColor={accentColor} className="size-9"/>
                 </div>
